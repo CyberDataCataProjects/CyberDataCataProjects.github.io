@@ -75,7 +75,7 @@
             padding: 20px;
             border-radius: 5px;
             background: rgba(0, 255, 65, 0.05);
-            max-width: 500px;
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
             box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
@@ -112,7 +112,7 @@
             padding: 20px;
             border-radius: 5px;
             background: rgba(0, 255, 65, 0.05);
-            max-width: 500px;
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
             box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
@@ -282,9 +282,17 @@
             margin-top: 10px;
             transition: all 0.3s ease;
         }
-        .download-btn:hover {
-            box-shadow: 0 0 15px #00ff41;
-            background: rgba(0, 255, 65, 0.2);
+        .log-content {
+            display: none;
+            background: #000000;
+            border: 1px solid #00ff41;
+            padding: 15px;
+            margin: 10px 0;
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            text-align: left;
+            line-height: 1.4;
         }
         @media (min-width: 2000px) {
             .wide-layout {
@@ -324,6 +332,11 @@
         function showTerminal(id) {
             const terminal = document.getElementById(id);
             terminal.style.display = terminal.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        function showLog(id) {
+            const log = document.getElementById(id);
+            log.style.display = log.style.display === 'block' ? 'none' : 'block';
         }
     </script>
 </head>
@@ -448,8 +461,17 @@
     <section class="project-section">
         <h2>[ PROJECT_EXPLORER ]</h2>
         
-        <div class="folder" onclick="toggleFolder('homelab-files')">
+        <div class="folder" onclick="showLog('homelab-log')">
             > HOME_LAB_AUDITS
+        </div>
+        <div id="homelab-log" class="log-content">
+            ===== TECHNICAL REPORT =====<br>
+            REPORT_ID: LAB-001-ALFA<br>
+            ACTIVITY: Wireless Network Auditing using Alfa Network Adapter and Airodump-ng<br>
+            FINDING: Successfully identified local BSSID and validated WPA2 encryption layers<br>
+            METHODOLOGY: Used Kali Linux terminal to monitor packet handshakes and verify network integrity<br>
+            STATUS: COMPLETE<br>
+            ============================
         </div>
         <div id="homelab-files" class="files">
             <div class="file" onclick="showTerminal('airodump-terminal')">
