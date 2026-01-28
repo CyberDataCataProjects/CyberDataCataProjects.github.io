@@ -156,6 +156,69 @@
             justify-content: space-between;
             margin: 10px 0;
         }
+        .arsenal-section {
+            margin-top: 40px;
+            border: 1px solid #00ff41;
+            padding: 20px;
+            border-radius: 5px;
+            background: rgba(0, 255, 65, 0.05);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+        }
+        .arsenal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .arsenal-item {
+            border: 1px solid #00ff41;
+            padding: 15px;
+            background: rgba(0, 255, 65, 0.1);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: left;
+        }
+        .arsenal-item:hover {
+            box-shadow: 0 0 25px #00ff41;
+            background: rgba(0, 255, 65, 0.15);
+            transform: translateY(-2px);
+        }
+        .arsenal-item strong {
+            color: #00ff41;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .hardware-specs {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed #00ff41;
+        }
+        .terminal-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: rgba(11, 14, 20, 0.95);
+            border-top: 1px solid #00ff41;
+            overflow: hidden;
+            z-index: 10;
+        }
+        .terminal-scroll {
+            animation: scroll 15s linear infinite;
+            white-space: nowrap;
+            line-height: 40px;
+            color: #00ff41;
+            font-size: 0.9em;
+        }
+        @keyframes scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
         hr {
             width: 50%;
             border: 1px solid #00ff41;
@@ -203,7 +266,46 @@
             <span>CURRENT_MISSION:</span>
             <span>Mastering NOC Operations and QA Validation through intensive lab builds.</span>
         </div>
+        
+        <div class="hardware-specs">
+            <h3 style="color: #00ff41; font-size: 1rem; margin-bottom: 15px;">[ HARDWARE_SPECS ]</h3>
+            <div class="bio-row">
+                <span>CPU:</span>
+                <span>AMD Ryzen 9 7900X (12-Core)</span>
+            </div>
+            <div class="bio-row">
+                <span>GPU:</span>
+                <span>NVIDIA GeForce RTX Architecture</span>
+            </div>
+            <div class="bio-row">
+                <span>DISPLAY:</span>
+                <span>49-inch Ultrawide Tactical Visualization Suite</span>
+            </div>
+        </div>
     </section>
+    
+    <section class="arsenal-section">
+        <h2>[ TECHNICAL_ARSENAL ]</h2>
+        <div class="arsenal-grid">
+            <div class="arsenal-item">
+                <strong>NETWORK_SCANNING:</strong>
+                Nmap, Airodump-ng (Wireless Auditing with Alfa Adapter)
+            </div>
+            <div class="arsenal-item">
+                <strong>PACKET_ANALYSIS:</strong>
+                Wireshark, TCPdump
+            </div>
+            <div class="arsenal-item">
+                <strong>INTELLIGENCE_GATHERING:</strong>
+                Maltego, SpiderFoot (OSINT)
+            </div>
+            <div class="arsenal-item">
+                <strong>ENVIRONMENT:</strong>
+                Kali Linux Terminal, Sudo-level System Administration
+            </div>
+        </div>
+    </section>
+    
     <section class="cert-section">
         <h2>[ CREDENTIALS_VALIDATED ]</h2>
         <h2 style="border-bottom: 1px solid #00ff41; padding-bottom: 10px;">[ GLOBAL_CERTIFICATION_HUB ]</h2>
@@ -238,6 +340,12 @@
             </div>
         </div>
     </section>
+</div>
+
+<div class="terminal-footer">
+    <div class="terminal-scroll">
+        [OK] nmap scan complete... [OK] tcpdump capturing on eth0... [OK] airodump-ng tracking BSSID... [OK] wireshark analyzing packets... [OK] maltego OSINT gathering... [OK] spiderfoot reconnaissance active... [OK] kali linux terminal ready... [OK] sudo privileges validated...
+    </div>
 </div>
 </body>
 </html>
