@@ -287,6 +287,57 @@
             0%, 50% { opacity: 1; }
             51%, 100% { opacity: 0.3; }
         }
+        .hikari-terminal {
+            margin-top: 40px;
+            border: 1px solid #00ff41;
+            padding: 20px;
+            border-radius: 5px;
+            background: rgba(0, 255, 65, 0.05);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+        }
+        .terminal-input {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .terminal-prompt {
+            color: #00ff41;
+            margin-right: 10px;
+        }
+        .terminal-command {
+            background: transparent;
+            border: none;
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            outline: none;
+            flex: 1;
+        }
+        .terminal-output {
+            color: #00ff41;
+            margin: 10px 0;
+            text-align: left;
+            min-height: 20px;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .uplink-message {
+            display: none;
+            color: #00ff41;
+            font-size: 0.75em;
+            text-align: center;
+            margin-top: 5px;
+            animation: blink 0.5s infinite;
+        }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.7; }
@@ -410,6 +461,29 @@
                 message.style.display = 'none';
                 window.location.href = 'mailto:cyberdatacat@gmail.com';
             }, 1000);
+        }
+        
+        function processCommand(event) {
+            if (event.key === 'Enter') {
+                const input = event.target;
+                const command = input.value.toLowerCase().trim();
+                const output = document.getElementById('terminal-output');
+                
+                if (command === 'status') {
+                    output.innerHTML = 'AI Core: Offline (Handshake Error 503) | Logic Engine: Active';
+                } else if (command === 'scan') {
+                    output.innerHTML = 'Searching for vulnerabilities...';
+                    setTimeout(() => {
+                        output.innerHTML = 'Searching for vulnerabilities... Found 0 in local environment.';
+                    }, 1500);
+                } else if (command === 'clear') {
+                    output.innerHTML = '';
+                } else if (command !== '') {
+                    output.innerHTML = `Command '${command}' not recognized. Try 'status' or 'scan'.`;
+                }
+                
+                input.value = '';
+            }
         }
     </script>
 </head>
@@ -597,6 +671,15 @@
                 <div class="download-btn">Download Report</div>
             </div>
         </div>
+    </section>
+    
+    <section class="hikari-terminal">
+        <h2>[ HIKARI_LOGIC_TERMINAL ]</h2>
+        <div class="terminal-input">
+            <span class="terminal-prompt">User@Hikari:~$</span>
+            <input type="text" class="terminal-command" onkeypress="processCommand(event)" placeholder="Type 'status' or 'scan'...">
+        </div>
+        <div id="terminal-output" class="terminal-output"></div>
     </section>
 </div>
 
