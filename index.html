@@ -219,14 +219,116 @@
             0% { transform: translateX(100%); }
             100% { transform: translateX(-100%); }
         }
+        .system-clock {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            color: #00ff41;
+            font-size: 0.9em;
+            z-index: 10;
+            text-align: right;
+        }
+        .project-section {
+            margin-top: 40px;
+            border: 1px solid #00ff41;
+            padding: 20px;
+            border-radius: 5px;
+            background: rgba(0, 255, 65, 0.05);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+        }
+        .folder {
+            border: 1px solid #00ff41;
+            padding: 10px;
+            margin: 10px 0;
+            background: rgba(0, 255, 65, 0.1);
+            cursor: pointer;
+            text-align: left;
+        }
+        .folder:hover {
+            background: rgba(0, 255, 65, 0.15);
+        }
+        .files {
+            display: none;
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        .file {
+            border: 1px solid #666;
+            padding: 8px;
+            margin: 5px 0;
+            background: rgba(0, 255, 65, 0.05);
+            cursor: pointer;
+        }
+        .file:hover {
+            background: rgba(0, 255, 65, 0.1);
+        }
+        .terminal-window {
+            display: none;
+            border: 1px solid #00ff41;
+            background: #0b0e14;
+            padding: 15px;
+            margin-top: 10px;
+            font-size: 0.8em;
+        }
+        .download-btn {
+            background: rgba(0, 255, 65, 0.1);
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 8px 15px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        .download-btn:hover {
+            box-shadow: 0 0 15px #00ff41;
+            background: rgba(0, 255, 65, 0.2);
+        }
+        @media (min-width: 2000px) {
+            .wide-layout {
+                display: flex;
+                gap: 40px;
+                max-width: 1600px;
+                margin: 40px auto;
+            }
+            .arsenal-section {
+                flex: 1;
+                margin-top: 0;
+            }
+            .cert-section {
+                flex: 1;
+                margin-top: 0;
+            }
+        }
         hr {
             width: 50%;
             border: 1px solid #00ff41;
             box-shadow: 0 0 5px #00ff41;
         }
     </style>
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const utc = now.toISOString().slice(0, 19).replace('T', ' ');
+            document.getElementById('clock').innerHTML = 'System Time (UTC)<br>' + utc;
+        }
+        setInterval(updateClock, 1000);
+        
+        function toggleFolder(id) {
+            const files = document.getElementById(id);
+            files.style.display = files.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        function showTerminal(id) {
+            const terminal = document.getElementById(id);
+            terminal.style.display = terminal.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
 </head>
-<body>
+<body onload="updateClock()">
+<div class="system-clock" id="clock"></div>
 <div class="content">
     <h1>Jesel Kalogris <span class="status-dot"></span> <span style="font-size: 0.6em; color: #ffffff;">Status: Online</span></h1>
     <p>Welcome to CyberDataCataProjects</p>
@@ -284,59 +386,114 @@
         </div>
     </section>
     
-    <section class="arsenal-section">
-        <h2>[ TECHNICAL_ARSENAL ]</h2>
-        <div class="arsenal-grid">
-            <div class="arsenal-item">
-                <strong>NETWORK_SCANNING:</strong>
-                Nmap, Airodump-ng (Wireless Auditing with Alfa Adapter)
+    <div class="wide-layout">
+        <section class="arsenal-section">
+            <h2>[ TECHNICAL_ARSENAL ]</h2>
+            <div class="arsenal-grid">
+                <div class="arsenal-item">
+                    <strong>NETWORK_SCANNING:</strong>
+                    Nmap, Airodump-ng (Wireless Auditing with Alfa Adapter)
+                </div>
+                <div class="arsenal-item">
+                    <strong>PACKET_ANALYSIS:</strong>
+                    Wireshark, TCPdump
+                </div>
+                <div class="arsenal-item">
+                    <strong>INTELLIGENCE_GATHERING:</strong>
+                    Maltego, SpiderFoot (OSINT)
+                </div>
+                <div class="arsenal-item">
+                    <strong>ENVIRONMENT:</strong>
+                    Kali Linux Terminal, Sudo-level System Administration
+                </div>
             </div>
-            <div class="arsenal-item">
-                <strong>PACKET_ANALYSIS:</strong>
-                Wireshark, TCPdump
+        </section>
+        
+        <section class="cert-section">
+            <h2>[ CREDENTIALS_VALIDATED ]</h2>
+            <h2 style="border-bottom: 1px solid #00ff41; padding-bottom: 10px;">[ GLOBAL_CERTIFICATION_HUB ]</h2>
+            
+            <div style="margin-top: 25px;">
+                <h3>// CLOUD_INFRASTRUCTURE_&_DEVOPS</h3>
+                <div class="cert-grid">
+                    <div class="cert-item">Azure: Cost Management & Cloud Services</div>
+                    <div class="cert-item">Introduction to Git & GitHub</div>
+                    <div class="cert-item">Introduction to DevOps (Microsoft)</div>
+                    <div class="cert-item">Azure: Management & Deployment Tools</div>
+                </div>
             </div>
-            <div class="arsenal-item">
-                <strong>INTELLIGENCE_GATHERING:</strong>
-                Maltego, SpiderFoot (OSINT)
+            
+            <div style="margin-top: 25px;">
+                <h3>// CYBER_OPERATIONS_&_SECURITY</h3>
+                <div class="cert-grid">
+                    <div class="cert-item">Google Cybersecurity Professional V2</div>
+                    <div class="cert-item">Splunk: Core Certified User (Intro)</div>
+                    <div class="cert-item">Cisco: Introduction to Cybersecurity</div>
+                    <div class="cert-item">Network Security: Connect & Protect</div>
+                </div>
             </div>
-            <div class="arsenal-item">
-                <strong>ENVIRONMENT:</strong>
-                Kali Linux Terminal, Sudo-level System Administration
+            
+            <div style="margin-top: 25px;">
+                <h3>// QA_VALIDATION_&_NETWORKING</h3>
+                <div class="cert-grid">
+                    <div class="cert-item">U. Leeds: Software Testing & Validation</div>
+                    <div class="cert-item">Cisco: Networking Basics</div>
+                    <div class="cert-item">Jira Management (Coursera)</div>
+                    <div class="cert-item">Cisco: IT Customer Support</div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
     
-    <section class="cert-section">
-        <h2>[ CREDENTIALS_VALIDATED ]</h2>
-        <h2 style="border-bottom: 1px solid #00ff41; padding-bottom: 10px;">[ GLOBAL_CERTIFICATION_HUB ]</h2>
+    <section class="project-section">
+        <h2>[ PROJECT_EXPLORER ]</h2>
         
-        <div style="margin-top: 25px;">
-            <h3>// CLOUD_INFRASTRUCTURE_&_DEVOPS</h3>
-            <div class="cert-grid">
-                <div class="cert-item">Azure: Cost Management & Cloud Services</div>
-                <div class="cert-item">Introduction to Git & GitHub</div>
-                <div class="cert-item">Introduction to DevOps (Microsoft)</div>
-                <div class="cert-item">Azure: Management & Deployment Tools</div>
+        <div class="folder" onclick="toggleFolder('homelab-files')">
+            > HOME_LAB_AUDITS
+        </div>
+        <div id="homelab-files" class="files">
+            <div class="file" onclick="showTerminal('airodump-terminal')">
+                📄 airodump_scan.log
+            </div>
+            <div id="airodump-terminal" class="terminal-window">
+                <strong>[WIRELESS AUDIT REPORT]</strong><br>
+                Using Alfa AWUS036ACS adapter with Ryzen 9 7900X processing power:<br>
+                - Captured 47 wireless networks in 2.4GHz/5GHz bands<br>
+                - Identified WEP vulnerabilities in 3 legacy networks<br>
+                - Documented WPS-enabled access points for penetration testing<br>
+                - Generated comprehensive BSSID mapping for security assessment
+                <div class="download-btn">Download Report</div>
+            </div>
+            
+            <div class="file" onclick="showTerminal('nmap-terminal')">
+                📄 nmap_network_scan.xml
+            </div>
+            <div id="nmap-terminal" class="terminal-window">
+                <strong>[NETWORK RECONNAISSANCE]</strong><br>
+                Multi-threaded Nmap scan utilizing 12-core Ryzen architecture:<br>
+                - Scanned 254 hosts across multiple subnets<br>
+                - Identified 23 open services requiring security review<br>
+                - Detected outdated SSH versions on 5 critical servers<br>
+                - Mapped network topology for vulnerability assessment
+                <div class="download-btn">Download Report</div>
             </div>
         </div>
         
-        <div style="margin-top: 25px;">
-            <h3>// CYBER_OPERATIONS_&_SECURITY</h3>
-            <div class="cert-grid">
-                <div class="cert-item">Google Cybersecurity Professional V2</div>
-                <div class="cert-item">Splunk: Core Certified User (Intro)</div>
-                <div class="cert-item">Cisco: Introduction to Cybersecurity</div>
-                <div class="cert-item">Network Security: Connect & Protect</div>
-            </div>
+        <div class="folder" onclick="toggleFolder('packet-files')">
+            > PACKET_ANALYSIS_LOGS
         </div>
-        
-        <div style="margin-top: 25px;">
-            <h3>// QA_VALIDATION_&_NETWORKING</h3>
-            <div class="cert-grid">
-                <div class="cert-item">U. Leeds: Software Testing & Validation</div>
-                <div class="cert-item">Cisco: Networking Basics</div>
-                <div class="cert-item">Jira Management (Coursera)</div>
-                <div class="cert-item">Cisco: IT Customer Support</div>
+        <div id="packet-files" class="files">
+            <div class="file" onclick="showTerminal('wireshark-terminal')">
+                📄 suspicious_traffic.pcap
+            </div>
+            <div id="wireshark-terminal" class="terminal-window">
+                <strong>[TRAFFIC ANALYSIS]</strong><br>
+                Deep packet inspection on 49-inch ultrawide display:<br>
+                - Analyzed 2.3GB of network traffic over 4-hour period<br>
+                - Identified potential data exfiltration attempts<br>
+                - Documented anomalous DNS queries to suspicious domains<br>
+                - Created visual network flow diagrams for incident response
+                <div class="download-btn">Download Report</div>
             </div>
         </div>
     </section>
