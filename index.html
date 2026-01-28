@@ -275,6 +275,22 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0.7; }
         }
+        .uplink-message {
+            display: none;
+            color: #00ff41;
+            font-size: 0.75em;
+            text-align: center;
+            margin-top: 5px;
+            animation: blink 0.5s infinite;
+        }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
         .project-section {
             margin-top: 40px;
             border: 1px solid #00ff41;
@@ -385,6 +401,16 @@
             const log = document.getElementById(id);
             log.style.display = log.style.display === 'block' ? 'none' : 'block';
         }
+        
+        function initiateEmail(event) {
+            event.preventDefault();
+            const message = document.getElementById('uplink-message');
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+                window.location.href = 'mailto:your.email@domain.com';
+            }, 1000);
+        }
     </script>
 </head>
 <body onload="updateClock()">
@@ -392,7 +418,8 @@
 <div class="external-uplinks">
     <h3 style="color: #00ff41; font-size: 0.9em; margin: 0 0 10px 0; text-align: center;">[ EXTERNAL_UPLINKS ]</h3>
     <a href="https://linkedin.com/in/your-profile" target="_blank" class="uplink-btn">LINKEDIN_SIGNAL</a>
-    <a href="mailto:your.email@domain.com" class="uplink-btn">DIRECT_EMAIL</a>
+    <a href="#" onclick="initiateEmail(event)" class="uplink-btn">DIRECT_EMAIL</a>
+    <div id="uplink-message" class="uplink-message">ESTABLISHING SECURE UPLINK...</div>
 </div>
 <div class="content">
     <h1>Jesel Kalogris <span class="status-dot"></span> <span style="font-size: 0.6em; color: #ffffff;">Status: Online</span></h1>
