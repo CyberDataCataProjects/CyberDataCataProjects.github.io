@@ -52,8 +52,8 @@ function sanitizeInput(input) {
 
 let terminalLogs = [];
 
-function addToTerminalLogs(command, response) {
-    terminalLogs.push({ command, response });
+function addToTerminalLogs(command, response, type = 'system') {
+    terminalLogs.push({ command, response: { text: response, type } });
     updateTerminalDisplay();
 }
 
@@ -61,9 +61,10 @@ function updateTerminalDisplay() {
     const output = document.getElementById('terminal-output');
     if (!output) return;
     
-    output.innerHTML = terminalLogs.map(log => 
-        `<div>User@Hikari:~$ ${sanitizeInput(log.command)}</div><div>${log.response}</div>`
-    ).join('');
+    output.innerHTML = terminalLogs.map(log => {
+        const typeClass = log.response.type || 'system';
+        return `<div>User@Hikari:~$ ${sanitizeInput(log.command)}</div><div class="log-${typeClass}">${log.response.text}</div>`;
+    }).join('');
 }
 
 function typewriterEffect(text, elementId, callback) {
@@ -100,20 +101,20 @@ function handleHikariCommand(input) {
 
 function generateHikariLogs() {
     const hikariLogs = [
-        '[OK] Integrity check: [TECHNICAL_ARSENAL] secured.',
-        '[INFO] Monitoring packet flow... No anomalies detected.',
-        '[OK] Credential validation: Splunk Core User status confirmed.',
-        '[WARN] Latency spike detected in external uplink... Stabilized.',
-        '[INFO] HIKARI logic gates operating at 98.4% efficiency.',
-        '[OK] GitHub repository sync complete. All source code validated.',
-        '[INFO] Environment check: Kali Linux sub-systems active.',
-        '[OK] Azure Cloud nodes responding. Connectivity nominal.',
-        '[INFO] Running heuristic analysis on latest project logs...',
-        '[SYSTEM] Heartbeat pulse sent. Operator Jesel Kalogris online.'
+        { text: '[OK] Integrity check: [TECHNICAL_ARSENAL] secured.', type: 'success' },
+        { text: '[INFO] Monitoring packet flow... No anomalies detected.', type: 'intel' },
+        { text: '[OK] Credential validation: Splunk Core User status confirmed.', type: 'success' },
+        { text: '[WARN] Latency spike detected in external uplink... Stabilized.', type: 'error' },
+        { text: '[INFO] HIKARI logic gates operating at 98.4% efficiency.', type: 'intel' },
+        { text: '[OK] GitHub repository sync complete. All source code validated.', type: 'success' },
+        { text: '[INFO] Environment check: Kali Linux sub-systems active.', type: 'intel' },
+        { text: '[OK] Azure Cloud nodes responding. Connectivity nominal.', type: 'success' },
+        { text: '[INFO] Running heuristic analysis on latest project logs...', type: 'intel' },
+        { text: '[SYSTEM] Heartbeat pulse sent. Operator Jesel Kalogris online.', type: 'system' }
     ];
     
     const randomLog = hikariLogs[Math.floor(Math.random() * hikariLogs.length)];
-    addToTerminalLogs('HIKARI_SYSTEM', randomLog);
+    addToTerminalLogs('HIKARI_SYSTEM', randomLog.text, randomLog.type);
 }
 
 function startHikariLiveMonitoring() {
@@ -124,8 +125,14 @@ let isBooting = true;
 let bootLines = [];
 
 function triggerOverrideSequence() {
-    // Add override message
-    addToTerminalLogs('override', 'PROTOCOL BREAK: Manual Override Accepted. Accessing Restricted QA Logs...');
+    // Add override message with error type
+    addToTerminalLogs('override', 'PROTOCOL BREAK: Manual Override Accepted. Accessing Restricted QA Logs...', 'error');
+    
+    // Add glitch animation to terminal container
+    const terminalContainer = document.querySelector('.hikari-terminal');
+    if (terminalContainer) {
+        terminalContainer.classList.add('glitch-effect');
+    }
     
     // Trigger screen shake
     document.body.classList.add('screen-shake');
@@ -137,6 +144,9 @@ function triggerOverrideSequence() {
     setTimeout(() => {
         document.body.classList.remove('screen-shake');
         document.body.classList.remove('emergency-mode');
+        if (terminalContainer) {
+            terminalContainer.classList.remove('glitch-effect');
+        }
         terminalLogs = [];
         updateTerminalDisplay();
     }, 3000);
@@ -271,7 +281,7 @@ function handleCommand(command) {
         case 'purge':
         case 'self-destruct':
             terminalLogs = [];
-            addToTerminalLogs(command, '[!] SYSTEM PURGE COMPLETE. REBOOTING HIKARI...');
+            addToTerminalLogs(command, '[!] SYSTEM PURGE COMPLETE. REBOOTING HIKARI...', 'error');
             break;
         case 'override':
             triggerOverrideSequence();
