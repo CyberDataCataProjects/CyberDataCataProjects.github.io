@@ -19,6 +19,18 @@ function toggleFolder(id) { toggleElement(id); }
 function showTerminal(id) { toggleElement(id); }
 function showLog(id) { toggleElement(id); }
 
+function initiateLinkedIn(event) {
+    event.preventDefault();
+    const message = document.getElementById('uplink-message');
+    if (message) {
+        message.style.display = 'block';
+        setTimeout(() => {
+            message.style.display = 'none';
+            window.open('https://www.linkedin.com/in/jesel-kalogris-7617bb25a/', '_blank');
+        }, 1000);
+    }
+}
+
 function initiateEmail(event) {
     event.preventDefault();
     const message = document.getElementById('uplink-message');
@@ -26,11 +38,7 @@ function initiateEmail(event) {
         message.style.display = 'block';
         setTimeout(() => {
             message.style.display = 'none';
-            if (event.target.textContent === 'LINKEDIN_SIGNAL') {
-                window.open('https://www.linkedin.com/in/jesel-kalogris-7617bb25a/', '_blank');
-            } else {
-                window.location.href = 'mailto:cyberdatacat@gmail.com';
-            }
+            window.location.href = 'mailto:cyberdatacat@gmail.com';
         }, 1000);
     }
 }
