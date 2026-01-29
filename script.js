@@ -121,62 +121,67 @@ function startHikariLiveMonitoring() {
 }
 
 let isBooting = true;
+let bootLines = [];
 
-function startHikariBootSequence() {
-    const identityText = [
+function triggerOverrideSequence() {
+    // Add override message
+    addToTerminalLogs('override', 'PROTOCOL BREAK: Manual Override Accepted. Accessing Restricted QA Logs...');
+    
+    // Trigger screen shake
+    document.body.classList.add('screen-shake');
+    
+    // Switch to emergency red theme
+    document.body.classList.add('emergency-mode');
+    
+    // Revert after 3 seconds
+    setTimeout(() => {
+        document.body.classList.remove('screen-shake');
+        document.body.classList.remove('emergency-mode');
+        terminalLogs = [];
+        updateTerminalDisplay();
+    }, 3000);
+}
+
+function startBootLineSequence() {
+    const lines = [
         '[ IDENTITY_ANALYSIS ]',
         'NAME: HIKARI',
-        'DESIGNATION: Heuristic Interactive Knowledge & Analysis Response Interface',
-        'ROLE: Adaptive QA Intelligence & NOC Monitor',
-        'MISSION: Oversee system integrity and validate technical credentials'
+        'DESIGNATION: Heuristic Interactive Knowledge Interface',
+        'MISSION: QA Validation & NOC Monitoring'
     ];
     
-    let lineIndex = 0;
+    let index = 0;
     
-    function typeNextLine() {
-        if (lineIndex < identityText.length) {
-            const currentLine = identityText[lineIndex];
-            const lineElement = document.getElementById(`identity-line-${lineIndex + 1}`);
-            
+    function addNextLine() {
+        if (index < lines.length) {
+            bootLines.push(lines[index]);
+            const lineElement = document.getElementById(`identity-line-${index + 1}`);
             if (lineElement) {
-                let charIndex = 0;
-                lineElement.style.opacity = '0.7';
-                lineElement.textContent = '';
-                
-                function typeChar() {
-                    if (charIndex < currentLine.length) {
-                        lineElement.textContent += currentLine.charAt(charIndex);
-                        charIndex++;
-                        setTimeout(typeChar, 30);
-                    } else {
-                        lineIndex++;
-                        if (lineIndex < identityText.length) {
-                            setTimeout(typeNextLine, 500);
-                        } else {
-                            // Boot sequence complete
-                            setTimeout(() => {
-                                isBooting = false;
-                                const coreInput = document.querySelector('.core-input');
-                                if (coreInput) {
-                                    coreInput.style.display = 'flex';
-                                    coreInput.style.opacity = '1';
-                                }
-                            }, 500);
-                        }
+                lineElement.textContent = lines[index];
+                lineElement.style.opacity = '0.6';
+            }
+            index++;
+            if (index < lines.length) {
+                setTimeout(addNextLine, 600);
+            } else {
+                setTimeout(() => {
+                    isBooting = false;
+                    const coreInput = document.querySelector('.core-input');
+                    if (coreInput) {
+                        coreInput.style.display = 'flex';
+                        coreInput.style.opacity = '1';
                     }
-                }
-                typeChar();
+                }, 600);
             }
         }
     }
     
-    // Hide input initially
     const coreInput = document.querySelector('.core-input');
     if (coreInput) {
         coreInput.style.display = 'none';
     }
     
-    setTimeout(typeNextLine, 1000);
+    setTimeout(addNextLine, 1000);
 }
 
 function hikariProcess(input) {
@@ -263,6 +268,9 @@ function handleCommand(command) {
                 });
             }
             return;
+        case 'override':
+            triggerOverrideSequence();
+            return;
         case 'clear':
             terminalLogs = [];
             updateTerminalDisplay();
@@ -335,5 +343,5 @@ window.onload = function() {
     updateClock();
     startHeartbeatMonitoring();
     startHikariLiveMonitoring();
-    startHikariBootSequence();
+    startBootLineSequence();
 };
