@@ -259,7 +259,7 @@ function animateLatencyGraph() {
     }, 100);
 }
 
-// Live network latency monitoring
+// Live network latency monitoring with flicker effect
 function updateNetworkLatency() {
     const stats = document.querySelector('.latency-stats');
     if (!stats) return;
@@ -267,11 +267,17 @@ function updateNetworkLatency() {
     const spans = stats.querySelectorAll('span');
     if (spans.length < 4) return;
     
-    // Generate realistic fluctuating values
-    const min = Math.floor(Math.random() * 8) + 5;  // 5-12ms
-    const max = Math.floor(Math.random() * 15) + 20; // 20-34ms
-    const avg = Math.floor((min + max) / 2 + (Math.random() * 6 - 3)); // Between min/max with variance
-    const jitter = Math.floor(Math.random() * 4) + 1; // 1-4ms
+    // Generate realistic NOC ranges
+    const min = Math.floor(Math.random() * 8) + 5;   // 5-12ms
+    const max = Math.floor(Math.random() * 15) + 25; // 25-39ms
+    const avg = Math.floor(Math.random() * (max - min)) + min; // Between min-max
+    const jitter = Math.floor(Math.random() * 3) + 1; // 1-3ms
+    
+    // Add flicker effect and update values
+    spans.forEach(span => {
+        span.classList.add('flicker');
+        setTimeout(() => span.classList.remove('flicker'), 200);
+    });
     
     spans[0].textContent = `Min: ${min}ms`;
     spans[1].textContent = `Avg: ${avg}ms`;
@@ -280,8 +286,8 @@ function updateNetworkLatency() {
 }
 
 function startNetworkMonitoring() {
-    updateNetworkLatency(); // Initial update
-    setInterval(updateNetworkLatency, 1500);
+    updateNetworkLatency();
+    setInterval(updateNetworkLatency, 800);
 }
 
 // Mobile detection and layout fixes

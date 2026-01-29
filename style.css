@@ -255,7 +255,7 @@ p {
     position: static;
 }
 
-/* Sections - Glassmorphism Effect */
+/* Sections - Glassmorphism Effect with Contained Scanlines */
 .bio-section, .section, .arsenal-section, .cert-section,
 .hikari-core, .hikari-terminal, .project-section,
 .ai-logic-subsystem, .subnet-calculator {
@@ -271,6 +271,75 @@ p {
     box-shadow: 0 0 10px rgba(0, 255, 65, 0.1);
     height: auto;
     min-height: auto;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Container Scanline Effect */
+.arsenal-section::after,
+.cert-section::after,
+.hikari-terminal::after,
+.hikari-core::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0, 255, 65, 0.02) 3px,
+        rgba(0, 255, 65, 0.02) 5px
+    );
+    pointer-events: none;
+    z-index: 1;
+    animation: containerScanlines 12s linear infinite;
+    opacity: 0.6;
+}
+
+@keyframes containerScanlines {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(0%); }
+}
+
+/* Terminal and Certification Scrolling */
+.hikari-terminal, .cert-section {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Custom Neon Green Scrollbar */
+.hikari-terminal::-webkit-scrollbar,
+.cert-section::-webkit-scrollbar {
+    width: 8px;
+}
+
+.hikari-terminal::-webkit-scrollbar-track,
+.cert-section::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+.hikari-terminal::-webkit-scrollbar-thumb,
+.cert-section::-webkit-scrollbar-thumb {
+    background: #00ff41;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+}
+
+.hikari-terminal::-webkit-scrollbar-thumb:hover,
+.cert-section::-webkit-scrollbar-thumb:hover {
+    background: #00ff41;
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.8);
+}
+
+/* Firefox Scrollbar */
+.hikari-terminal,
+.cert-section {
+    scrollbar-width: thin;
+    scrollbar-color: #00ff41 rgba(0, 0, 0, 0.3);
 }
 
 /* Bio Rows - Mobile Stack */
@@ -526,8 +595,35 @@ p {
 
 /* Dashboard Grid Layout */
 .dashboard-grid {
-    display: block;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: stretch;
     width: 100%;
+    margin: 20px 0;
+}
+
+/* Arsenal and Certification Sections - Equal Height */
+.arsenal-section, .cert-section {
+    margin: 0;
+    height: 600px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Arsenal Categories - Scrollable Content */
+.arsenal-categories {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Certification Categories - Scrollable Content */
+.cert-categories {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
 }
 
 .wide-layout {
@@ -562,6 +658,17 @@ hr {
         height: 80%;
         box-shadow: 0 0 20px #00ff41;
     }
+}
+
+/* Live Data Flicker Effect */
+.flicker {
+    animation: dataFlicker 0.2s ease-in-out;
+}
+
+@keyframes dataFlicker {
+    0% { opacity: 1; color: #00ff41; }
+    50% { opacity: 0.6; color: #ffffff; }
+    100% { opacity: 1; color: #00ff41; }
 }
 
 .status-dot {
@@ -616,6 +723,12 @@ hr {
 @media (max-width: 767px) {
     .dashboard-grid {
         display: block;
+        gap: 15px;
+    }
+    
+    .arsenal-section, .cert-section {
+        height: 400px;
+        margin: 15px 0;
     }
     
     .cert-grid {
