@@ -525,96 +525,153 @@ body {
         display: none;
     }
 }
+/* LinkedIn Mobile App Critical Fixes */
 @media (max-width: 768px) {
     body {
-        padding: 10px;
-        font-size: 0.9rem;
+        padding: 5px !important;
+        font-size: 0.85rem !important;
+        margin: 0 !important;
+    }
+    
+    .content {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
     h1 {
-        font-size: 1.5rem;
-        flex-direction: column;
-        gap: 10px;
+        font-size: 1.2rem !important;
+        margin: 10px 0 !important;
+        flex-direction: column !important;
+        gap: 5px !important;
     }
     
     .system-clock {
-        position: static;
-        text-align: center;
-        margin-bottom: 20px;
-        font-size: 0.8em;
+        position: static !important;
+        text-align: center !important;
+        margin: 10px auto !important;
+        font-size: 0.7em !important;
+        width: 100% !important;
+        right: auto !important;
+        top: auto !important;
     }
     
     .external-uplinks {
-        position: static;
-        margin: 20px auto;
-        max-width: 300px;
-        min-width: auto;
+        position: static !important;
+        margin: 10px auto !important;
+        width: 90% !important;
+        max-width: 280px !important;
+        min-width: auto !important;
+        right: auto !important;
+        top: auto !important;
     }
     
     .bio-section, .section, .arsenal-section, .cert-section,
     .hikari-core, .hikari-terminal, .project-section,
     .ai-logic-subsystem, .subnet-calculator {
-        max-width: 100%;
-        margin: 20px auto;
-        padding: 15px;
+        width: 95% !important;
+        max-width: 95% !important;
+        margin: 15px auto !important;
+        padding: 10px !important;
+        box-sizing: border-box !important;
     }
     
     .bio-row {
-        flex-direction: column;
-        text-align: center;
-        margin: 10px 0;
+        flex-direction: column !important;
+        text-align: left !important;
+        margin: 8px 0 !important;
     }
     
     .bio-row span:first-child {
-        min-width: auto;
-        margin-bottom: 5px;
-        display: block;
+        min-width: auto !important;
+        margin-bottom: 3px !important;
+        display: block !important;
+        font-weight: bold !important;
     }
     
     .arsenal-grid, .cert-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+        margin-top: 15px !important;
     }
     
     .arsenal-item, .cert-item {
-        padding: 10px;
-        text-align: center;
+        padding: 8px !important;
+        text-align: left !important;
+        font-size: 0.8rem !important;
+        margin: 0 !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
     
     .calc-input-row {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+        margin: 10px 0 !important;
     }
     
     .calc-prompt {
-        min-width: auto;
-        text-align: center;
+        min-width: auto !important;
+        text-align: left !important;
+        margin-bottom: 5px !important;
     }
     
     .calc-field, .calc-button {
-        width: 100%;
-        margin: 0;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 10px !important;
+        box-sizing: border-box !important;
     }
     
     .terminal-input {
-        flex-direction: column;
-        gap: 5px;
+        flex-direction: column !important;
+        gap: 5px !important;
+        margin: 10px 0 !important;
     }
     
     .terminal-prompt {
-        margin: 0;
+        margin: 0 0 5px 0 !important;
+    }
+    
+    .terminal-command, .core-command {
+        width: 100% !important;
+        padding: 10px !important;
+        box-sizing: border-box !important;
     }
     
     .noc-status-hud {
-        padding: 0 10px;
-        font-size: 0.8em;
+        padding: 0 5px !important;
+        font-size: 0.7em !important;
+        height: 35px !important;
     }
     
-    .latency-stats {
-        flex-wrap: wrap;
-        gap: 10px;
-        justify-content: center;
+    .uplink-btn {
+        font-size: 0.7em !important;
+        padding: 8px !important;
+        margin: 3px 0 !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
+    .wide-layout {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Hide problematic elements on mobile */
+    .scanline,
+    body::before,
+    body::after {
+        display: none !important;
+    }
+    
+    /* Simplify animations */
+    .system-glitch,
+    .critical-meltdown {
+        animation: none !important;
     }
 }
 
