@@ -83,16 +83,17 @@ p {
     color: #ffffff;
 }
 
-/* System Clock - Mobile First */
+/* System Clock - Static positioning */
 .system-clock {
     color: #00ff41;
     font-size: 12px;
     text-align: center;
     margin: 10px 0;
     padding: 5px;
+    position: static;
 }
 
-/* External Uplinks - Mobile First */
+/* External Uplinks - Static positioning */
 .external-uplinks {
     margin: 15px auto;
     border: 1px solid #00ff41;
@@ -102,6 +103,7 @@ p {
     width: calc(100% - 20px);
     max-width: 320px;
     box-sizing: border-box;
+    position: static;
 }
 
 .external-uplinks h3 {
@@ -387,26 +389,16 @@ p {
     }
     
     .system-clock {
-        position: fixed;
-        top: 20px;
-        right: 20px;
         text-align: right;
-        margin: 0;
+        margin: 10px 0;
     }
     
     .external-uplinks {
-        position: fixed;
-        top: 100px;
-        right: 20px;
+        max-width: 250px;
     }
     
     .bio-section, .section {
         max-width: 700px;
-    }
-    
-    .arsenal-section, .cert-section {
-        max-width: 1200px;
-        width: 95%;
     }
     
     .hikari-core, .hikari-terminal, .project-section,
@@ -472,6 +464,28 @@ p {
     }
 }
 
+/* Dashboard Grid for Large Screens */
+@media (min-width: 1200px) {
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 2rem;
+        align-items: start;
+    }
+    
+    .arsenal-section {
+        max-width: none;
+        width: 100%;
+        margin: 0;
+    }
+    
+    .cert-section {
+        max-width: none;
+        width: 100%;
+        margin: 0;
+    }
+}
+
 /* Small phones (320px - 480px) */
 @media (max-width: 480px) {
     body { font-size: 13px; padding: 8px; }
@@ -512,19 +526,13 @@ p {
     .wide-layout { display: block; max-width: 100%; margin: 40px auto; }
 }
 
-/* Utility Classes */
-.status-row {
-    display: flex;
-    justify-content: space-between;
-    margin: 8px 0;
+/* Dashboard Grid Layout */
+.dashboard-grid {
+    display: block;
+    width: 100%;
 }
 
-hr {
-    width: 50%;
-    border: 1px solid #00ff41;
-    margin: 15px auto;
-}
-
+/* Wide Layout */
 .wide-layout {
     width: 100%;
 }
