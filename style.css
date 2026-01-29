@@ -112,10 +112,38 @@ body::after {
     100% { transform: translateY(0%); }
 }
 
+/* Main Content Grid - 2-Column Tactical Dashboard */
 .content {
     width: 100%;
     max-width: 100%;
     margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    grid-template-areas:
+        "header header"
+        "left-col right-col";
+}
+
+/* Header spans both columns */
+h1, hr, p {
+    grid-area: header;
+}
+
+/* Left Column */
+.left-column {
+    grid-area: left-col;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Right Column */
+.right-column {
+    grid-area: right-col;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 /* Headers */
@@ -721,6 +749,15 @@ hr {
 
 /* Mobile Optimization */
 @media (max-width: 767px) {
+    .content {
+        display: block;
+        gap: 15px;
+    }
+    
+    .left-column, .right-column {
+        display: block;
+    }
+    
     .dashboard-grid {
         display: block;
         gap: 15px;
