@@ -1,9 +1,21 @@
+// Global variables
+let terminalLogs = [];
+let hikariMonitorInterval = null;
+let heartbeatInterval = null;
+
+function sanitizeInput(input) {
+    return input.replace(/[<>&"']/g, function(match) {
+        const escapeMap = { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#x27;' };
+        return escapeMap[match];
+    });
+}
+
 function updateClock() {
     const now = new Date();
     const utc = now.toISOString().slice(0, 19).replace('T', ' ');
     const clockElement = document.getElementById('clock');
     if (clockElement) {
-        clockElement.innerHTML = 'System Time (UTC)<br>' + utc;
+        clockElement.textContent = `System Time (UTC): ${utc}`;
     }
 }
 setInterval(updateClock, 1000);
@@ -15,45 +27,36 @@ function toggleElement(id) {
     }
 }
 
-function toggleFolder(id) { toggleElement(id); }
-function showTerminal(id) { toggleElement(id); }
-function showLog(id) { toggleElement(id); }
+function initiateUplink(event, action) {
+    event.preventDefault();
+    const message = document.getElementById('uplink-message');
+    if (message) {
+        message.style.display = 'block';
+        setTimeout(() => {
+            message.style.display = 'none';
+            action();
+        }, 1000);
+    }
+}
 
 function initiateLinkedIn(event) {
-    event.preventDefault();
-    const message = document.getElementById('uplink-message');
-    if (message) {
-        message.style.display = 'block';
-        setTimeout(() => {
-            message.style.display = 'none';
-            window.open('https://www.linkedin.com/in/jesel-kalogris-7617bb25a/', '_blank');
-        }, 1000);
-    }
-}
-
-function initiateEmail(event) {
-    event.preventDefault();
-    const message = document.getElementById('uplink-message');
-    if (message) {
-        message.style.display = 'block';
-        setTimeout(() => {
-            message.style.display = 'none';
-            window.location.href = 'mailto:cyberdatacat@gmail.com';
-        }, 1000);
-    }
-}
-
-function sanitizeInput(input) {
-    return input.replace(/[<>&"']/g, function(match) {
-        const escapeMap = { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#x27;' };
-        return escapeMap[match];
+    initiateUplink(event, () => {
+        window.open('https://www.linkedin.com/in/jesel-kalogris-7617bb25a/', '_blank', 'noopener,noreferrer');
     });
 }
 
-let terminalLogs = [];
+function initiateEmail(event) {
+    initiateUplink(event, () => {
+        window.location.href = 'mailto:cyberdatacat@gmail.com';
+    });
+}
 
 function addToTerminalLogs(command, response, type = 'system') {
-    terminalLogs.push({ command, response: { text: response, type } });
+    terminalLogs.push({ command: sanitizeInput(command), response: { text: sanitizeInput(response), type } });
+    // Limit to 50 entries to prevent memory issues
+    if (terminalLogs.length > 50) {
+        terminalLogs = terminalLogs.slice(-50);
+    }
     updateTerminalDisplay();
 }
 
@@ -61,29 +64,37 @@ function updateTerminalDisplay() {
     const output = document.getElementById('terminal-output');
     if (!output) return;
     
-    output.innerHTML = terminalLogs.map(log => {
-        const typeClass = log.response.type || 'system';
-        return `<div>User@Hikari:~$ ${sanitizeInput(log.command)}</div><div class="log-${typeClass}">${log.response.text}</div>`;
-    }).join('');
+    output.innerHTML = '';
+    terminalLogs.forEach(log => {
+        const logDiv = document.createElement('div');
+        
+        const commandSpan = document.createElement('span');
+        commandSpan.style.color = '#00ff41';
+        commandSpan.textContent = `User@Hikari:~$ ${log.command}`;
+        
+        const responseDiv = document.createElement('div');
+        responseDiv.className = `log-${log.response.type}`;
+        responseDiv.textContent = log.response.text;
+        
+        logDiv.appendChild(commandSpan);
+        logDiv.appendChild(responseDiv);
+        output.appendChild(logDiv);
+    });
 }
 
-function typewriterEffect(text, elementId, callback) {
-    const element = document.getElementById(elementId);
+function typewriterEffect(element, text, speed = 50) {
     if (!element) return;
-    
-    let i = 0;
     element.textContent = '';
-    
-    function type() {
+    let i = 0;
+    const timer = setInterval(() => {
         if (i < text.length) {
             element.textContent += text.charAt(i);
             i++;
-            setTimeout(type, 50);
-        } else if (callback) {
-            callback();
+        } else {
+            clearInterval(timer);
         }
-    }
-    type();
+    }, speed);
+    return timer;
 }
 
 function handleHikariCommand(input) {
@@ -118,53 +129,165 @@ function generateHikariLogs() {
 }
 
 function startHikariLiveMonitoring() {
-    setInterval(generateHikariLogs, 15000);
+    if (hikariMonitorInterval) clearInterval(hikariMonitorInterval);
+    hikariMonitorInterval = setInterval(generateHikariLogs, 15000);
 }
 
-let isBooting = true;
-let bootLines = [];
+function generateHeartbeat() {
+    const heartbeats = [
+        '[HEARTBEAT] System integrity check: All layers operational',
+        '[HEARTBEAT] Security monitoring: No threats detected',
+        '[HEARTBEAT] Portfolio connectivity: Stable connection maintained',
+        '[HEARTBEAT] Background processes: All systems nominal',
+        '[HEARTBEAT] Terminal interface: Responsive and secure'
+    ];
+    
+    const randomHeartbeat = heartbeats[Math.floor(Math.random() * heartbeats.length)];
+    addToTerminalLogs('SYSTEM', randomHeartbeat);
+}
 
-function triggerSelfDestruct() {
-    // Display critical message
-    addToTerminalLogs('self-destruct', '[!] CRITICAL: INITIATING SYSTEM PURGE...', 'error');
+function startHeartbeatMonitoring() {
+    if (heartbeatInterval) clearInterval(heartbeatInterval);
+    heartbeatInterval = setInterval(generateHeartbeat, 30000);
+}
+
+// Command registry for consistent handling
+const commandRegistry = {
+    scan: () => 'Running integrity check on GitHub repositories...',
+    status: () => 'AI Core: Offline (Handshake Error 503) | Logic Engine: Active',
+    whoami: () => 'I am HIKARI, your Adaptive Tactical Interface. Current Mission: Portfolio Security and QA Validation.',
+    help: () => 'Available commands: status, whoami, clear, scan, help',
+    monitor: () => `SYSTEM STATUS REPORT:
+[✓] Connectivity Layer: ACTIVE
+[✓] Security Layer: ACTIVE
+[✓] Portfolio Interface: OPERATIONAL
+[✓] Terminal Systems: ONLINE
+[!] Background Monitoring: ENABLED`,
+    validate: () => `CREDENTIAL VALIDATION SUITE:
+[TESTING] Azure Certifications... PASS
+[TESTING] Google Cybersecurity... PASS
+[TESTING] Cisco Networking... PASS
+[TESTING] QA Validation Skills... PASS
+[RESULT] All 12+ certifications verified and active`
+};
+
+function handleCommand(command) {
+    const sanitizedCommand = sanitizeInput(command);
     
-    // Switch to emergency red theme
-    document.body.classList.add('emergency-mode');
-    
-    // Wait 2 seconds then clear logs and revert
-    setTimeout(() => {
+    if (command === 'clear') {
         terminalLogs = [];
         updateTerminalDisplay();
-        document.body.classList.remove('emergency-mode');
-    }, 2000);
-}
-
-function triggerOverrideSequence() {
-    // Add override message with error type
-    addToTerminalLogs('override', 'PROTOCOL BREAK: Manual Override Accepted. Accessing Restricted QA Logs...', 'error');
-    
-    // Add glitch animation to terminal container
-    const terminalContainer = document.querySelector('.hikari-terminal');
-    if (terminalContainer) {
-        terminalContainer.classList.add('glitch-effect');
+        return;
     }
     
-    // Trigger screen shake
-    document.body.classList.add('screen-shake');
+    const response = commandRegistry[command] || (() => `Command '${sanitizedCommand}' not recognized. Type 'help' for available commands.`);
+    addToTerminalLogsWithTypewriter(sanitizedCommand, response());
+}
+
+function addToTerminalLogsWithTypewriter(command, response) {
+    const terminalOutput = document.querySelector('.terminal-output');
+    if (!terminalOutput) return;
     
-    // Switch to emergency red theme
-    document.body.classList.add('emergency-mode');
+    const newLine = document.createElement('div');
+    const commandSpan = document.createElement('span');
+    commandSpan.style.color = '#00ff41';
+    commandSpan.textContent = `[${command.toUpperCase()}] `;
     
-    // Revert after 3 seconds
-    setTimeout(() => {
-        document.body.classList.remove('screen-shake');
-        document.body.classList.remove('emergency-mode');
-        if (terminalContainer) {
-            terminalContainer.classList.remove('glitch-effect');
+    const responseSpan = document.createElement('span');
+    newLine.appendChild(commandSpan);
+    newLine.appendChild(responseSpan);
+    terminalOutput.appendChild(newLine);
+    
+    // Limit DOM elements to prevent memory issues
+    const children = terminalOutput.children;
+    if (children.length > 50) {
+        for (let i = 0; i < children.length - 50; i++) {
+            terminalOutput.removeChild(children[i]);
         }
-        terminalLogs = [];
-        updateTerminalDisplay();
-    }, 3000);
+    }
+    
+    typewriterEffect(responseSpan, response, 30);
+}
+
+function processCoreCommand(event) {
+    if (event.key !== 'Enter') return;
+    
+    const input = event.target;
+    const command = sanitizeInput(input.value.toLowerCase().trim());
+    const output = document.getElementById('core-output');
+    
+    if (!output || !command) {
+        input.value = '';
+        return;
+    }
+    
+    const coreCommands = {
+        status: () => 'AI_HANDSHAKE: [REFACTORING] | LOGIC_CORE: [ACTIVE]',
+        scan: () => {
+            output.textContent = 'Analyzing system integrity...';
+            setTimeout(() => {
+                output.textContent = 'System Integrity: Optimal.';
+            }, 2000);
+            return null;
+        },
+        report: () => `ERROR REPORT #QA-2024-503\nISSUE: OpenAI 503 Handshake Error\nSEVERITY: High\nSTEPS TO REPRODUCE:\n1. Initialize OpenAI API connection\n2. Attempt authentication handshake\n3. Service returns HTTP 503 error\nEXPECTED: Successful API handshake\nACTUAL: Service unavailable error\nSTATUS: Investigating upstream service`,
+        'self-destruct': () => {
+            output.textContent = '[!] CRITICAL: INITIATING SELF-DESTRUCT SEQUENCE...';
+            document.body.classList.add('system-glitch');
+            setTimeout(() => {
+                output.textContent = '';
+                document.body.classList.remove('system-glitch');
+                setTimeout(() => {
+                    output.textContent = '[SYSTEM_FATAL] HIKARI CORE DELETED. REBOOT REQUIRED.';
+                }, 100);
+            }, 3000);
+            return null;
+        },
+        override: () => {
+            document.documentElement.style.setProperty('--primary-color', '#ff0000');
+            return 'OVERRIDE ACTIVATED: Emergency Red mode engaged';
+        },
+        overide: () => {
+            document.documentElement.style.setProperty('--primary-color', '#ff0000');
+            return 'OVERRIDE ACTIVATED: Emergency Red mode engaged';
+        },
+        resume: () => '[ACCESSING_ARCHIVES] Resume link found: https://drive.google.com/file/d/your-cv-link-here',
+        monitor: () => commandRegistry.monitor(),
+        validate: () => commandRegistry.validate(),
+        whoami: () => commandRegistry.whoami(),
+        purge: () => '[!] SYSTEM PURGE COMPLETE. REBOOTING HIKARI...',
+        signal: () => {
+            output.textContent = 'Establishing secure uplink to Operator profile...';
+            setTimeout(() => {
+                window.open('https://www.linkedin.com/in/jesel-kalogris-7617bb25a/', '_blank', 'noopener,noreferrer');
+            }, 1500);
+            return null;
+        },
+        linkedin: () => {
+            output.textContent = 'Establishing secure uplink to Operator profile...';
+            setTimeout(() => {
+                window.open('https://www.linkedin.com/in/jesel-kalogris-7617bb25a/', '_blank', 'noopener,noreferrer');
+            }, 1500);
+            return null;
+        },
+        help: () => `Available Commands:\nstatus - Check system status\nscan - Analyze system integrity\nreport - Generate OpenAI error report\nhelp - Show this help menu\nclear - Clear terminal output\nself-destruct - Initiate system purge\noverride - Emergency mode activation\nresume - Access CV archives\nmonitor - System status report\nvalidate - Credential validation\nwhoami - System identity\npurge - System reboot\nsignal - LinkedIn uplink`,
+        clear: () => {
+            output.textContent = '';
+            return null;
+        }
+    };
+    
+    const handler = coreCommands[command];
+    if (handler) {
+        const result = handler();
+        if (result !== null) {
+            output.textContent = result;
+        }
+    } else {
+        output.textContent = `Command '${command}' not recognized. Type 'help' for available commands.`;
+    }
+    
+    input.value = '';
 }
 
 function startBootLineSequence() {
@@ -179,7 +302,6 @@ function startBootLineSequence() {
     
     function addNextLine() {
         if (index < lines.length) {
-            bootLines.push(lines[index]);
             const lineElement = document.getElementById(`identity-line-${index + 1}`);
             if (lineElement) {
                 lineElement.textContent = lines[index];
@@ -190,7 +312,6 @@ function startBootLineSequence() {
                 setTimeout(addNextLine, 600);
             } else {
                 setTimeout(() => {
-                    isBooting = false;
                     const coreInput = document.querySelector('.core-input');
                     if (coreInput) {
                         coreInput.style.display = 'flex';
@@ -209,110 +330,10 @@ function startBootLineSequence() {
     setTimeout(addNextLine, 1000);
 }
 
-function hikariProcess(input) {
-    const hikariResponse = handleHikariCommand(input);
-    if (hikariResponse !== 'Unknown command. Type help for system protocols.') {
-        return hikariResponse;
-    }
-    
-    switch(input) {
-        case 'monitor':
-            return `SYSTEM STATUS REPORT:
-[✓] Connectivity Layer: ACTIVE
-[✓] Security Layer: ACTIVE  
-[✓] Portfolio Interface: OPERATIONAL
-[✓] Terminal Systems: ONLINE
-[!] Background Monitoring: ENABLED`;
-        case 'validate':
-            return `CREDENTIAL VALIDATION SUITE:
-[TESTING] Azure Certifications... PASS
-[TESTING] Google Cybersecurity... PASS
-[TESTING] Cisco Networking... PASS
-[TESTING] QA Validation Skills... PASS
-[RESULT] All 12+ certifications verified and active`;
-        default:
-            return `HIKARI: Unknown process '${input}'. Available: monitor, validate`;
-    }
-}
-
-function generateHeartbeat() {
-    const heartbeats = [
-        '[HEARTBEAT] System integrity check: All layers operational',
-        '[HEARTBEAT] Security monitoring: No threats detected',
-        '[HEARTBEAT] Portfolio connectivity: Stable connection maintained',
-        '[HEARTBEAT] Background processes: All systems nominal',
-        '[HEARTBEAT] Terminal interface: Responsive and secure'
-    ];
-    
-    const randomHeartbeat = heartbeats[Math.floor(Math.random() * heartbeats.length)];
-    addToTerminalLogs('SYSTEM', randomHeartbeat);
-}
-
-function startHeartbeatMonitoring() {
-    setInterval(generateHeartbeat, 30000);
-}
-
-function typewriterEffect(element, text, speed = 50) {
-    element.textContent = '';
-    let i = 0;
-    const timer = setInterval(() => {
-        if (i < text.length) {
-            element.textContent += text.charAt(i);
-            i++;
-        } else {
-            clearInterval(timer);
-        }
-    }, speed);
-}
-
-function handleCommand(command) {
-    let response;
-    
-    switch(command) {
-        case 'scan':
-            response = handleHikariCommand(command);
-            break;
-        case 'help':
-        case 'commands':
-            response = 'Available commands: status, whoami, clear, scan, help';
-            break;
-        case 'status':
-            response = 'AI Core: Offline (Handshake Error 503) | Logic Engine: Active';
-            break;
-        case 'whoami':
-            response = 'I am HIKARI, your Adaptive Tactical Interface. Current Mission: Portfolio Security and QA Validation.';
-            break;
-        case 'clear':
-            terminalLogs = [];
-            updateTerminalDisplay();
-            return;
-        default:
-            response = `Command '${sanitizeInput(command)}' not recognized. Type 'help' for available commands.`;
-    }
-    
-    addToTerminalLogsWithTypewriter(command, response);
-}
-
-function addToTerminalLogsWithTypewriter(command, response) {
-    const logEntry = { command, response, timestamp: new Date().toISOString() };
-    terminalLogs.push(logEntry);
-    
-    const terminalOutput = document.querySelector('.terminal-output');
-    if (terminalOutput) {
-        const newLine = document.createElement('div');
-        newLine.innerHTML = `<span style="color: #00ff41;">[${command.toUpperCase()}]</span> `;
-        const responseSpan = document.createElement('span');
-        newLine.appendChild(responseSpan);
-        terminalOutput.appendChild(newLine);
-        
-        typewriterEffect(responseSpan, response, 30);
-    }
-}
-
 function processCommand(event) {
     if (event.key === 'Enter') {
         const input = event.target;
-        const command = input.value.toLowerCase().trim();
+        const command = sanitizeInput(input.value.toLowerCase().trim());
         
         if (command !== '') {
             handleCommand(command);
@@ -322,96 +343,7 @@ function processCommand(event) {
     }
 }
 
-function processCoreCommand(event) {
-    if (event.key === 'Enter') {
-        const input = event.target;
-        const command = input.value.toLowerCase().trim();
-        const output = document.getElementById('core-output');
-        
-        if (!output) return;
-        
-        if (command === 'status') {
-            output.textContent = 'AI_HANDSHAKE: [REFACTORING] | LOGIC_CORE: [ACTIVE]';
-        } else if (command === 'scan') {
-            output.textContent = 'Analyzing system integrity...';
-            setTimeout(() => {
-                if (output) output.textContent = 'System Integrity: Optimal.';
-            }, 2000);
-        } else if (command === 'report') {
-            output.textContent = `ERROR REPORT #QA-2024-503
-ISSUE: OpenAI 503 Handshake Error
-SEVERITY: High
-STEPS TO REPRODUCE:
-1. Initialize OpenAI API connection
-2. Attempt authentication handshake
-3. Service returns HTTP 503 error
-EXPECTED: Successful API handshake
-ACTUAL: Service unavailable error
-STATUS: Investigating upstream service`;
-        } else if (command === 'self-destruct') {
-            output.textContent = '[!] CRITICAL: INITIATING SELF-DESTRUCT SEQUENCE...';
-            document.body.classList.add('system-glitch');
-            setTimeout(() => {
-                output.textContent = '';
-                document.body.classList.remove('system-glitch');
-                setTimeout(() => {
-                    output.textContent = '[SYSTEM_FATAL] HIKARI CORE DELETED. REBOOT REQUIRED.';
-                }, 100);
-            }, 3000);
-        } else if (command === 'override' || command === 'overide') {
-            document.documentElement.style.setProperty('--primary-color', '#ff0000');
-            output.textContent = 'OVERRIDE ACTIVATED: Emergency Red mode engaged';
-        } else if (command === 'resume') {
-            output.textContent = '[ACCESSING_ARCHIVES] Resume link found: https://drive.google.com/file/d/your-cv-link-here';
-        } else if (command === 'monitor') {
-            output.textContent = `SYSTEM STATUS REPORT:
-[✓] Connectivity Layer: ACTIVE
-[✓] Security Layer: ACTIVE
-[✓] Portfolio Interface: OPERATIONAL
-[✓] Terminal Systems: ONLINE
-[!] Background Monitoring: ENABLED`;
-        } else if (command === 'validate') {
-            output.textContent = `CREDENTIAL VALIDATION SUITE:
-[TESTING] Azure Certifications... PASS
-[TESTING] Google Cybersecurity... PASS
-[TESTING] Cisco Networking... PASS
-[TESTING] QA Validation Skills... PASS
-[RESULT] All 12+ certifications verified and active`;
-        } else if (command === 'whoami') {
-            output.textContent = 'I am HIKARI, your Adaptive Tactical Interface. Current Mission: Portfolio Security and QA Validation.';
-        } else if (command === 'purge') {
-            output.textContent = '[!] SYSTEM PURGE COMPLETE. REBOOTING HIKARI...';
-        } else if (command === 'signal' || command === 'linkedin') {
-            output.textContent = 'Establishing secure uplink to Operator profile...';
-            setTimeout(() => {
-                window.open('https://www.linkedin.com/in/jesel-kalogris-7617bb25a/', '_blank');
-            }, 1500);
-        } else if (command === 'help') {
-            output.textContent = `Available Commands:
-status - Check system status
-scan - Analyze system integrity
-report - Generate OpenAI error report
-help - Show this help menu
-clear - Clear terminal output
-self-destruct - Initiate system purge
-override - Emergency mode activation
-resume - Access CV archives
-monitor - System status report
-validate - Credential validation
-whoami - System identity
-purge - System reboot
-signal - LinkedIn uplink`;
-        } else if (command === 'clear') {
-            output.textContent = '';
-        } else if (command !== '') {
-            output.textContent = `Command '${sanitizeInput(command)}' not recognized. Type 'help' for available commands.`;
-        }
-        
-        input.value = '';
-    }
-}
-
-// Initialize clock when page loads
+// Initialize application when page loads
 window.onload = function() {
     updateClock();
     startHeartbeatMonitoring();
