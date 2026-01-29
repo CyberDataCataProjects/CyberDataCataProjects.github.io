@@ -252,6 +252,19 @@ function startHeartbeatMonitoring() {
     setInterval(generateHeartbeat, 30000);
 }
 
+function typewriterEffect(element, text, speed = 50) {
+    element.textContent = '';
+    let i = 0;
+    const timer = setInterval(() => {
+        if (i < text.length) {
+            element.textContent += text.charAt(i);
+            i++;
+        } else {
+            clearInterval(timer);
+        }
+    }, speed);
+}
+
 function handleCommand(command) {
     let response;
     
@@ -277,7 +290,23 @@ function handleCommand(command) {
             response = `Command '${sanitizeInput(command)}' not recognized. Type 'help' for available commands.`;
     }
     
-    addToTerminalLogs(command, response);
+    addToTerminalLogsWithTypewriter(command, response);
+}
+
+function addToTerminalLogsWithTypewriter(command, response) {
+    const logEntry = { command, response, timestamp: new Date().toISOString() };
+    terminalLogs.push(logEntry);
+    
+    const terminalOutput = document.querySelector('.terminal-output');
+    if (terminalOutput) {
+        const newLine = document.createElement('div');
+        newLine.innerHTML = `<span style="color: #00ff41;">[${command.toUpperCase()}]</span> `;
+        const responseSpan = document.createElement('span');
+        newLine.appendChild(responseSpan);
+        terminalOutput.appendChild(newLine);
+        
+        typewriterEffect(responseSpan, response, 30);
+    }
 }
 
 function processCommand(event) {
@@ -329,7 +358,7 @@ STATUS: Investigating upstream service`;
                     output.textContent = '[SYSTEM_FATAL] HIKARI CORE DELETED. REBOOT REQUIRED.';
                 }, 100);
             }, 3000);
-        } else if (command === 'override') {
+        } else if (command === 'override' || command === 'overide') {
             document.documentElement.style.setProperty('--primary-color', '#ff0000');
             output.textContent = 'OVERRIDE ACTIVATED: Emergency Red mode engaged';
         } else if (command === 'resume') {
