@@ -611,15 +611,41 @@ hr {
     
     body {
         padding-top: 60px;
+        padding-bottom: 60px;
     }
     
-    /* Reduce effects intensity on mobile */
+    /* Mobile NOC Status HUD fixes */
+    .noc-status-hud {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        background: rgba(0, 20, 0, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-top: 1px solid #00ff00;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        z-index: 1001;
+        font-size: 11px;
+        box-sizing: border-box;
+    }
+    
+    /* Force animations on mobile */
+    .system-header::after {
+        animation: headerScanline 4s linear infinite;
+    }
+    
     body::after {
-        opacity: 0.5;
+        animation: scanlines 8s linear infinite;
+        opacity: 0.3;
     }
     
     body::before {
-        opacity: 0.3;
+        animation: matrixRain 20s linear infinite;
+        opacity: 0.2;
     }
     
     .content::before {

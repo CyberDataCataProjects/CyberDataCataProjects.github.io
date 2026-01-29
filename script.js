@@ -233,6 +233,41 @@ function isMobileDevice() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
 }
 
+// Force animations and NOC status on mobile
+function initializeMobileFeatures() {
+    if (isMobileDevice()) {
+        // Ensure NOC status HUD starts
+        setTimeout(() => {
+            startNOCStatusHUD();
+        }, 1000);
+        
+        // Force enable animations
+        document.body.style.setProperty('--mobile-animations', 'enabled');
+        
+        // Ensure proper scrolling
+        document.body.style.overflowY = 'auto';
+        document.body.style.webkitOverflowScrolling = 'touch';
+    }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    initializeMobileFeatures();
+    startNOCStatusHUD();
+    startHikariLiveMonitoring();
+    startHeartbeatMonitoring();
+    updateClock();
+});
+
+// Fallback initialization
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeMobileFeatures);
+} else {
+    initializeMobileFeatures();
+}
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+}
+
 function applyMobileFixes() {
     if (isMobileDevice()) {
         document.body.classList.add('mobile-device');
