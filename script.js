@@ -20,47 +20,36 @@ const systemLogs = [
 ];
 
 function startFooterTypewriter() {
-    // Wait for DOM to be ready, then find the footer element
-    setTimeout(() => {
-        const footerElement = document.querySelector('.system-footer-scroller .footer-scroll');
-        if (!footerElement) {
-            console.log('Footer element not found');
-            return;
-        }
+    const footerElement = document.querySelector('.system-footer-scroller .footer-scroll');
+    if (!footerElement) return;
+    
+    let currentMessageIndex = 0;
+    
+    function typeMessage() {
+        const message = systemLogs[currentMessageIndex];
+        let charIndex = 0;
         
-        let currentMessageIndex = 0;
-        let isTyping = false;
+        footerElement.textContent = '';
         
-        function typeMessage() {
-            if (isTyping) return;
-            
-            const message = systemLogs[currentMessageIndex];
-            let charIndex = 0;
-            isTyping = true;
-            
-            footerElement.textContent = '';
-            
-            function typeChar() {
-                if (charIndex < message.length) {
-                    footerElement.textContent = message.substring(0, charIndex + 1) + '_';
-                    charIndex++;
-                    setTimeout(typeChar, 30);
-                } else {
-                    footerElement.textContent = message + '_';
-                    setTimeout(() => {
-                        footerElement.textContent = '';
-                        currentMessageIndex = (currentMessageIndex + 1) % systemLogs.length;
-                        isTyping = false;
-                        setTimeout(typeMessage, 100);
-                    }, 1500);
-                }
+        function typeChar() {
+            if (charIndex < message.length) {
+                footerElement.textContent = message.substring(0, charIndex + 1) + '_';
+                charIndex++;
+                setTimeout(typeChar, 30);
+            } else {
+                footerElement.textContent = message + '_';
+                setTimeout(() => {
+                    footerElement.textContent = '';
+                    currentMessageIndex = (currentMessageIndex + 1) % systemLogs.length;
+                    setTimeout(typeMessage, 100);
+                }, 1500);
             }
-            
-            typeChar();
         }
         
-        typeMessage();
-    }, 1000);
+        typeChar();
+    }
+    
+    typeMessage();
 }
 
 function sanitizeInput(input) {
