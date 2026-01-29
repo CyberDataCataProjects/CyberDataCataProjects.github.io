@@ -460,18 +460,17 @@ h3 {
 }
 @media (min-width: 2000px) {
     .wide-layout {
-        display: flex;
-        gap: 40px;
-        max-width: 1600px;
+        display: block;
+        max-width: 100%;
         margin: 40px auto;
     }
     .arsenal-section {
-        flex: 1;
-        margin-top: 0;
+        margin-top: 40px;
+        margin-bottom: 40px;
     }
     .cert-section {
-        flex: 1;
-        margin-top: 0;
+        margin-top: 40px;
+        margin-bottom: 40px;
     }
 }
 hr {
