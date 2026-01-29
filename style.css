@@ -17,7 +17,7 @@ body {
     background: #0b0e14;
     color: #ffffff;
     font-family: 'Courier New', monospace;
-    font-size: 14px;
+    font-size: clamp(12px, 2.5vw, 14px);
     font-weight: 600;
     text-align: center;
     padding: 10px;
@@ -40,7 +40,7 @@ body {
 h1 {
     color: #00ff41;
     text-shadow: 0 0 10px #00ff41;
-    font-size: 18px;
+    font-size: clamp(16px, 4vw, 18px);
     margin: 10px 0;
     display: block;
 }
@@ -48,14 +48,14 @@ h1 {
 h2 {
     color: #00ff41;
     text-shadow: 0 0 8px #00ff41;
-    font-size: 16px;
+    font-size: clamp(14px, 3.5vw, 16px);
     margin: 15px 0 10px 0;
 }
 
 h3 {
     color: #00ff41;
     text-shadow: 0 0 8px #00ff41;
-    font-size: 14px;
+    font-size: clamp(12px, 3vw, 14px);
     margin: 10px 0 5px 0;
 }
 
@@ -193,7 +193,7 @@ p {
     border: 1px solid rgba(0, 255, 65, 0.4);
     padding: 10px;
     border-radius: 4px;
-    font-size: 12px;
+    font-size: clamp(10px, 2.5vw, 12px);
     color: #ffffff;
     text-align: center;
     transition: all 0.3s ease;
@@ -233,7 +233,7 @@ p {
     justify-content: center;
     transition: all 0.3s ease;
     cursor: pointer;
-    font-size: 12px;
+    font-size: clamp(10px, 2.5vw, 12px);
     color: #ffffff;
 }
 
@@ -615,6 +615,33 @@ hr {
     font-size: 11px;
     margin: 2px 0;
     text-align: left;
+}
+
+/* Mobile Optimization */
+@media (max-width: 767px) {
+    .dashboard-grid {
+        display: block;
+    }
+    
+    .cert-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+    }
+    
+    .arsenal-items {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+    }
+    
+    .arsenal-skill, .cert-item {
+        font-size: clamp(10px, 2.5vw, 11px);
+        padding: 8px;
+        min-height: 35px;
+    }
+    
+    .arsenal-category h3 {
+        font-size: clamp(11px, 3vw, 12px);
+    }
 }
 
 /* Touch and Accessibility Improvements */
