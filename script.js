@@ -216,34 +216,163 @@ function handleHikariCommand(input) {
     }
 }
 
-generateHikariLogs.lastIndex = -1;
-function generateHikariLogs() {
-    const hikariLogs = [
-        { text: '[INFO] Monitoring packet flow... No anomalies detected.', type: 'intel' },
-        { text: '[OK] Azure Cloud nodes responding. Connectivity nominal.', type: 'success' },
-        { text: '[WARN] Latency spike detected in external uplink... Stabilized.', type: 'error' },
-        { text: '[INFO] Running heuristic analysis on latest project logs...', type: 'intel' },
-        { text: '[OK] Integrity check: [TECHNICAL_ARSENAL] secured.', type: 'success' },
-        { text: '[INFO] Wireshark deep packet inspection active... Analyzing traffic patterns.', type: 'intel' },
-        { text: '[OK] Credential validation: Splunk Core User status confirmed.', type: 'success' },
-        { text: '[INFO] HIKARI logic gates operating at 98.4% efficiency.', type: 'intel' },
-        { text: '[OK] GitHub repository sync complete. All source code validated.', type: 'success' },
-        { text: '[INFO] Environment check: Kali Linux sub-systems active.', type: 'intel' },
-        { text: '[WARN] Firewall rule update required... Applying security patches.', type: 'error' },
-        { text: '[OK] Nmap network scan complete... 47 hosts discovered and catalogued.', type: 'success' },
-        { text: '[INFO] Airodump-ng wireless audit running... BSSID enumeration in progress.', type: 'intel' },
-        { text: '[OK] Maltego OSINT collection successful... Intelligence gathered.', type: 'success' },
-        { text: '[INFO] SpiderFoot reconnaissance active... Target enumeration running.', type: 'intel' },
-        { text: '[WARN] Suspicious DNS queries detected... Investigating potential threats.', type: 'error' },
-        { text: '[OK] Penetration testing suite loaded... All tools operational.', type: 'success' },
-        { text: '[INFO] Network topology mapping complete... Infrastructure documented.', type: 'intel' },
-        { text: '[OK] Intrusion detection system active... Monitoring for anomalies.', type: 'success' },
-        { text: '[SYSTEM] Heartbeat pulse sent. Operator Jesel Kalogris online.', type: 'system' }
-    ];
+// Global variables
+let terminalLogs = [];
+let latencyData = [];
+let latencyChart;
+
+// Initialize system on page load
+document.addEventListener('DOMContentLoaded', function() {
+    updateClock();
+    startNOCStatusHUD();
+    startLatencyMonitoring();
+    initializeTerminal();
+});
+
+// Terminal command processing
+function processCommand(event) {
+    if (event.key === 'Enter') {
+        const input = event.target.value.trim().toLowerCase();
+        const response = handleHikariCommand(input);
+        addToTerminalLogs(input, response);
+        event.target.value = '';
+    }
+}
+
+// Core command processing
+function processCoreCommand(event) {
+    if (event.key === 'Enter') {
+        const input = event.target.value.trim().toLowerCase();
+        const output = document.getElementById('core-output');
+        
+        switch(input) {
+            case 'help':
+                output.innerHTML = 'Available commands: status, scan, validate, monitor, self-destruct';
+                break;
+            case 'status':
+                output.innerHTML = 'HIKARI Core v1.0 - All systems operational. NOC monitoring active.';
+                break;
+            case 'scan':
+                output.innerHTML = 'Scanning network topology... 47 nodes discovered. Security assessment complete.';
+                break;
+            case 'validate':
+                output.innerHTML = 'Credential validation: [Azure: ✓] [Cisco: ✓] [Google: ✓] [Splunk: ✓]';
+                break;
+            case 'monitor':
+                output.innerHTML = 'Network latency: 12ms avg | Packet loss: 0% | Uptime: 99.97%';
+                break;
+            case 'self-destruct':
+                output.innerHTML = 'ERROR: Insufficient privileges. Contact system administrator.';
+                break;
+            default:
+                output.innerHTML = 'Unknown command. Type "help" for available commands.';
+        }
+        event.target.value = '';
+    }
+}
+
+// Initialize terminal
+function initializeTerminal() {
+    const terminalInput = document.querySelector('.terminal-command');
+    const coreInput = document.querySelector('.core-command');
     
-    let randomIndex;
-    do {
-        randomIndex = Math.floor(Math.random() * hikariLogs.length);
+    if (terminalInput) {
+        terminalInput.addEventListener('keypress', processCommand);
+    }
+    if (coreInput) {
+        coreInput.addEventListener('keypress', processCoreCommand);
+    }
+}
+
+// Subnet calculator
+function calculateSubnet() {
+    const ipInput = document.getElementById('ip-input');
+    const cidrInput = document.getElementById('cidr-input');
+    const output = document.getElementById('calc-output');
+    
+    if (!ipInput || !cidrInput || !output) return;
+    
+    const ip = ipInput.value.trim();
+    const cidr = parseInt(cidrInput.value.trim());
+    
+    if (!isValidIP(ip) || cidr < 0 || cidr > 32) {
+        output.innerHTML = 'Invalid IP address or CIDR notation.';
+        return;
+    }
+    
+    const result = calculateSubnetInfo(ip, cidr);
+    output.innerHTML = `
+        Network: ${result.network}<br>
+        Broadcast: ${result.broadcast}<br>
+        Subnet Mask: ${result.mask}<br>
+        Host Range: ${result.firstHost} - ${result.lastHost}<br>
+        Total Hosts: ${result.totalHosts}
+    `;
+}
+
+function isValidIP(ip) {
+    const parts = ip.split('.');
+    return parts.length === 4 && parts.every(part => {
+        const num = parseInt(part);
+        return num >= 0 && num <= 255;
+    });
+}
+
+function calculateSubnetInfo(ip, cidr) {
+    const ipParts = ip.split('.').map(Number);
+    const mask = (0xFFFFFFFF << (32 - cidr)) >>> 0;
+    const ipInt = (ipParts[0] << 24) + (ipParts[1] << 16) + (ipParts[2] << 8) + ipParts[3];
+    const networkInt = (ipInt & mask) >>> 0;
+    const broadcastInt = (networkInt | (0xFFFFFFFF >>> cidr)) >>> 0;
+    
+    return {
+        network: intToIP(networkInt),
+        broadcast: intToIP(broadcastInt),
+        mask: intToIP(mask),
+        firstHost: intToIP(networkInt + 1),
+        lastHost: intToIP(broadcastInt - 1),
+        totalHosts: Math.pow(2, 32 - cidr) - 2
+    };
+}
+
+function intToIP(int) {
+    return [(int >>> 24) & 255, (int >>> 16) & 255, (int >>> 8) & 255, int & 255].join('.');
+}
+
+// Latency monitoring
+function startLatencyMonitoring() {
+    const latencyLine = document.querySelector('.latency-line');
+    if (!latencyLine) return;
+    
+    setInterval(() => {
+        const latency = Math.floor(Math.random() * 16) + 8; // 8-24ms
+        latencyData.push(latency);
+        if (latencyData.length > 50) latencyData.shift();
+        
+        updateLatencyDisplay();
+    }, 2000);
+}
+
+function updateLatencyDisplay() {
+    const stats = document.querySelector('.latency-stats');
+    if (!stats || latencyData.length === 0) return;
+    
+    const min = Math.min(...latencyData);
+    const max = Math.max(...latencyData);
+    const avg = Math.round(latencyData.reduce((a, b) => a + b) / latencyData.length);
+    const jitter = Math.round((max - min) / 2);
+    
+    stats.innerHTML = `
+        <span>Min: ${min}ms</span>
+        <span>Avg: ${avg}ms</span>
+        <span>Max: ${max}ms</span>
+        <span>Jitter: ${jitter}ms</span>
+    `;
+    
+    // Add flicker effect
+    stats.classList.add('flicker');
+    setTimeout(() => stats.classList.remove('flicker'), 200);
+}x = Math.floor(Math.random() * hikariLogs.length);
     } while (randomIndex === generateHikariLogs.lastIndex && hikariLogs.length > 1);
     
     generateHikariLogs.lastIndex = randomIndex;
