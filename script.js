@@ -206,22 +206,53 @@ const commandRegistry = {
     status: () => 'AI Core: Offline (Handshake Error 503) | Logic Engine: Active',
     help: () => 'Available commands: status, whoami, clear, scan, help, self-destruct, override, resume, monitor, validate, signal',
     'self-destruct': (terminalOutput) => {
-        const countdownDiv = document.createElement('div');
-        countdownDiv.textContent = '[!] CRITICAL: INITIATING SELF-DESTRUCT SEQUENCE... 3... 2... 1...';
-        countdownDiv.style.color = '#ff0000';
-        terminalOutput.appendChild(countdownDiv);
+        const warningDiv = document.createElement('div');
+        warningDiv.textContent = '[!] CRITICAL: INITIATING SELF-DESTRUCT SEQUENCE...';
+        warningDiv.style.color = '#ff0000';
+        warningDiv.style.fontSize = '1.2em';
+        warningDiv.style.fontWeight = 'bold';
+        terminalOutput.appendChild(warningDiv);
         
         document.body.classList.add('screen-vibrate');
+        document.documentElement.style.setProperty('--primary-color', '#ff0000');
+        
+        setTimeout(() => {
+            const countdownDiv = document.createElement('div');
+            countdownDiv.textContent = '[WARNING] 5... 4... 3... 2... 1...';
+            countdownDiv.style.color = '#ff0000';
+            countdownDiv.style.fontSize = '1.5em';
+            countdownDiv.style.textShadow = '0 0 20px #ff0000';
+            terminalOutput.appendChild(countdownDiv);
+            
+            document.body.classList.add('critical-meltdown');
+        }, 1000);
+        
+        setTimeout(() => {
+            const explosionDiv = document.createElement('div');
+            explosionDiv.textContent = '[CRITICAL] SYSTEM MELTDOWN IMMINENT!!!';
+            explosionDiv.style.color = '#ffffff';
+            explosionDiv.style.fontSize = '2em';
+            explosionDiv.style.textShadow = '0 0 30px #ff0000';
+            explosionDiv.style.animation = 'blink 0.1s infinite';
+            terminalOutput.appendChild(explosionDiv);
+            
+            document.body.classList.remove('screen-vibrate');
+            document.body.classList.add('system-explosion');
+        }, 3000);
         
         setTimeout(() => {
             terminalLogs = [];
-            document.body.classList.remove('screen-vibrate');
             terminalOutput.innerHTML = '';
-            const wipeDiv = document.createElement('div');
-            wipeDiv.textContent = '[SYSTEM_WIPE] ALL LOGS PURGED.';
-            wipeDiv.style.color = '#ff0000';
-            terminalOutput.appendChild(wipeDiv);
-        }, 3000);
+            document.body.classList.remove('critical-meltdown', 'system-explosion');
+            document.documentElement.style.setProperty('--primary-color', '#00ff41');
+            
+            const fatalDiv = document.createElement('div');
+            fatalDiv.textContent = '[SYSTEM_FATAL] HIKARI CORE DELETED. REBOOT REQUIRED.';
+            fatalDiv.style.color = '#ff0000';
+            fatalDiv.style.fontSize = '1.1em';
+            fatalDiv.style.textShadow = '0 0 15px #ff0000';
+            terminalOutput.appendChild(fatalDiv);
+        }, 4000);
         return null;
     },
     override: () => {
@@ -345,14 +376,33 @@ function processCoreCommand(event) {
         report: () => `ERROR REPORT #QA-2024-503\nISSUE: OpenAI 503 Handshake Error\nSEVERITY: High\nSTEPS TO REPRODUCE:\n1. Initialize OpenAI API connection\n2. Attempt authentication handshake\n3. Service returns HTTP 503 error\nEXPECTED: Successful API handshake\nACTUAL: Service unavailable error\nSTATUS: Investigating upstream service`,
         'self-destruct': () => {
             output.textContent = '[!] CRITICAL: INITIATING SELF-DESTRUCT SEQUENCE...';
-            document.body.classList.add('system-glitch');
+            document.body.classList.add('screen-vibrate');
+            document.documentElement.style.setProperty('--primary-color', '#ff0000');
+            
+            setTimeout(() => {
+                output.textContent = '[WARNING] SYSTEM MELTDOWN IN PROGRESS... 5... 4... 3...';
+                document.body.classList.add('critical-meltdown');
+            }, 1000);
+            
+            setTimeout(() => {
+                output.textContent = '[CRITICAL] CORE BREACH!!! TOTAL SYSTEM FAILURE!!!';
+                output.style.fontSize = '1.5em';
+                output.style.textShadow = '0 0 30px #ff0000';
+                document.body.classList.add('system-explosion');
+            }, 2500);
+            
             setTimeout(() => {
                 output.textContent = '';
-                document.body.classList.remove('system-glitch');
+                document.body.classList.remove('screen-vibrate', 'critical-meltdown', 'system-explosion');
+                document.documentElement.style.setProperty('--primary-color', '#00ff41');
+                output.style.fontSize = '1em';
+                output.style.textShadow = 'none';
                 setTimeout(() => {
                     output.textContent = '[SYSTEM_FATAL] HIKARI CORE DELETED. REBOOT REQUIRED.';
-                }, 100);
-            }, 3000);
+                    output.style.color = '#ff0000';
+                    output.style.textShadow = '0 0 15px #ff0000';
+                }, 200);
+            }, 4000);
             return null;
         },
         override: () => {
