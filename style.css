@@ -165,7 +165,7 @@ h3 {
 }
 .arsenal-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 15px;
     margin-top: 20px;
 }
@@ -555,11 +555,12 @@ body::after {
     margin-right: auto;
     box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
 }
-.ai-log-entry {
-    color: #ffffff;
-    margin: 8px 0;
-    font-family: 'Courier New', monospace;
-    font-size: 1rem;
+.bio-row span:last-child,
+.terminal-window,
+.log-content,
+.ai-log-entry,
+.calc-output {
+    color: #ffffff !important;
     font-weight: 600;
 }
 .ai-log-entry::before {

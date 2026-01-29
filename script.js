@@ -224,21 +224,17 @@ function startHeartbeatMonitoring() {
 // Command registry for consistent handling
 const commandRegistry = {
     scan: () => 'Running integrity check on GitHub repositories...',
-    status: () => `OPERATOR STATUS SUMMARY:
+    status: () => `AMD RYZEN 9 NODE HEALTH:
 ┌─────────────────────────────────────────┐
-│ CERTIFICATIONS: 16+ Validated          │
-│ • AI Development: Amazon Q & Copilot   │
-│ • Azure: Cost Mgmt & Deployment Tools  │
-│ • Security: Google Cyber & Splunk Core │
-│ • QA: Leeds Testing & Jira Management  │
-├─────────────────────────────────────────┤
-│ HARDWARE CONFIGURATION:                 │
-│ • CPU: AMD Ryzen 9 7900X (12-Core)     │
-│ • GPU: NVIDIA GeForce RTX Architecture │
-│ • Display: 49" Ultrawide Tactical Suite│
-├─────────────────────────────────────────┤
-│ SYSTEM STATUS: All nodes operational    │
-│ AI Core: Offline (503) | Logic: Active │
+│ CPU: AMD Ryzen 9 7900X (12-Core)       │
+│ Cores: 12/12 Active | Threads: 24/24   │
+│ Clock: 4.7GHz Boost | Temp: 42°C       │
+│ Memory: 32GB DDR5-5600 | Usage: 68%    │
+│ GPU: NVIDIA RTX Architecture Active     │
+│ Storage: NVMe SSD | Health: Optimal    │
+│ Network: Gigabit Ethernet | Latency: 12ms│
+│ Uptime: 72h 14m | Load Avg: 1.2        │
+│ Status: All systems operational         │
 └─────────────────────────────────────────┘`,
     help: () => 'Available commands: status, whoami, clear, scan, help, self-destruct, override, resume, monitor, validate, signal, audit, osi-check, osi-diag, osi-scan, map, ping [target]',
     'self-destruct': (terminalOutput) => {
