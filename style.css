@@ -347,10 +347,29 @@ h3 { color: #00ff41; }
     color: var(--primary-color) !important;
     border-color: var(--primary-color) !important;
 }
-.emergency-mode .hikari-core,
-.emergency-mode .hikari-terminal {
-    background: var(--primary-glow) !important;
-    box-shadow: 0 0 20px var(--primary-glow) !important;
+.log-error {
+    color: #ff0000 !important;
+    text-shadow: 0 0 10px #ff0000;
+}
+.log-intel {
+    color: #00d4ff !important;
+}
+.log-success {
+    color: #00ff41 !important;
+}
+.log-system {
+    color: #00ff41 !important;
+}
+
+.glitch-effect {
+    animation: glitch-container 0.3s ease-in-out infinite;
+}
+@keyframes glitch-container {
+    0%, 100% { transform: translate(0); filter: hue-rotate(0deg); }
+    20% { transform: translate(-2px, 2px); filter: hue-rotate(90deg); }
+    40% { transform: translate(-2px, -2px); filter: hue-rotate(180deg); }
+    60% { transform: translate(2px, 2px); filter: hue-rotate(270deg); }
+    80% { transform: translate(2px, -2px); filter: hue-rotate(360deg); }
 }
 .hikari-core {
     margin-top: 40px;
