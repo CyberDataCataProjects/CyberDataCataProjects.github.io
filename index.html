@@ -21,15 +21,16 @@
     <script src="script.js"></script>
 </head>
 <body>
-<div class="scanline"></div>
-<div class="app-container">
-<div class="system-clock" id="clock"></div>
-<div class="external-uplinks">
-    <h3 style="color: #00ff41; font-size: 0.9em; margin: 0 0 10px 0; text-align: center;">[ EXTERNAL_UPLINKS ]</h3>
-    <a href="https://www.linkedin.com/in/jesel-kalogris-7617bb25a/" target="_blank" rel="noopener noreferrer" onclick="initiateLinkedIn(event)" class="uplink-btn">LINKEDIN_SIGNAL</a>
-    <a href="#" onclick="initiateEmail(event)" class="uplink-btn">DIRECT_EMAIL</a>
-    <div id="uplink-message" class="uplink-message">ESTABLISHING SECURE UPLINK...</div>
+<div class="system-header">
+    <div class="external-uplinks">
+        <a href="https://www.linkedin.com/in/jesel-kalogris-7617bb25a/" target="_blank" rel="noopener noreferrer" onclick="initiateLinkedIn(event)" class="uplink-btn">LINKEDIN</a>
+        <span class="uplink-separator">|</span>
+        <a href="#" onclick="initiateEmail(event)" class="uplink-btn">EMAIL</a>
+        <div id="uplink-message" class="uplink-message">ESTABLISHING SECURE UPLINK...</div>
+    </div>
+    <div class="system-clock" id="clock"></div>
 </div>
+<div class="scanline"></div>
 <div class="content">
     <h1>Jesel Kalogris <span class="status-dot"></span> <span style="font-size: 0.6em; color: #ffffff;">Status: Online</span></h1>
     <p>Welcome to CyberDataCataProjects</p>
