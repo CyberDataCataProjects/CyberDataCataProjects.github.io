@@ -240,7 +240,7 @@ const commandRegistry = {
 │ SYSTEM STATUS: All nodes operational    │
 │ AI Core: Offline (503) | Logic: Active │
 └─────────────────────────────────────────┘`,
-    help: () => 'Available commands: status, whoami, clear, scan, help, self-destruct, override, resume, monitor, validate, signal, audit, osi-check, osi-diag, map, ping',
+    help: () => 'Available commands: status, whoami, clear, scan, help, self-destruct, override, resume, monitor, validate, signal, audit, osi-check, osi-diag, osi-scan, map, ping',
     'self-destruct': (terminalOutput) => {
         const warningDiv = document.createElement('div');
         warningDiv.textContent = '[!] CRITICAL: INITIATING SELF-DESTRUCT SEQUENCE...';
@@ -490,6 +490,16 @@ const commandRegistry = {
         }, 800);
         return null;
     },
+    'osi-scan': () => `OSI LAYER STATUS CHECK:
+[L1] PHYSICAL: Fiber Uplink OK
+[L2] DATA LINK: MAC Filtering ACTIVE
+[L3] NETWORK: IPv4/IPv6 Routing OPERATIONAL
+[L4] TRANSPORT: TCP/UDP Sessions ESTABLISHED
+[L5] SESSION: SSL/TLS Handshakes SECURED
+[L6] PRESENTATION: Data Encryption ENABLED
+[L7] APPLICATION: DNS Services OPERATIONAL
+
+ALL LAYERS: NOMINAL`,
     map: () => `ENTERPRISE NETWORK TOPOLOGY MAP:
 
     [INTERNET]
