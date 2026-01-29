@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jesel Kalogris | Portfolio</title>
     
     <!-- Open Graph Meta Tags -->
@@ -16,109 +18,13 @@
     <meta name="twitter:image" content="./portfolio-screenshot.png">
     
     <link rel="stylesheet" href="style.css">
-    <script>
-        function updateClock() {
-            const now = new Date();
-            const utc = now.toISOString().slice(0, 19).replace('T', ' ');
-            document.getElementById('clock').innerHTML = 'System Time (UTC)<br>' + utc;
-        }
-        setInterval(updateClock, 1000);
-        
-        function toggleFolder(id) {
-            const files = document.getElementById(id);
-            files.style.display = files.style.display === 'block' ? 'none' : 'block';
-        }
-        
-        function showTerminal(id) {
-            const terminal = document.getElementById(id);
-            terminal.style.display = terminal.style.display === 'block' ? 'none' : 'block';
-        }
-        
-        function showLog(id) {
-            const log = document.getElementById(id);
-            log.style.display = log.style.display === 'block' ? 'none' : 'block';
-        }
-        
-        function initiateEmail(event) {
-            event.preventDefault();
-            const message = document.getElementById('uplink-message');
-            message.style.display = 'block';
-            setTimeout(() => {
-                message.style.display = 'none';
-                window.location.href = 'mailto:cyberdatacat@gmail.com';
-            }, 1000);
-        }
-        
-        function processCommand(event) {
-            if (event.key === 'Enter') {
-                const input = event.target;
-                const command = input.value.toLowerCase().trim();
-                const output = document.getElementById('terminal-output');
-                
-                if (command === 'status') {
-                    output.innerHTML = 'AI Core: Offline (Handshake Error 503) | Logic Engine: Active';
-                } else if (command === 'scan') {
-                    output.innerHTML = 'Searching for vulnerabilities...';
-                    setTimeout(() => {
-                        output.innerHTML = 'Searching for vulnerabilities... Found 0 in local environment.';
-                    }, 1500);
-                } else if (command === 'clear') {
-                    output.innerHTML = '';
-                } else if (command !== '') {
-                    output.innerHTML = `Command '${command}' not recognized. Try 'status' or 'scan'.`;
-                }
-                
-                input.value = '';
-            }
-        }
-        
-        function processCoreCommand(event) {
-            if (event.key === 'Enter') {
-                const input = event.target;
-                const command = input.value.toLowerCase().trim();
-                const output = document.getElementById('core-output');
-                
-                if (command === 'status') {
-                    output.innerHTML = 'AI_HANDSHAKE: [REFACTORING] | LOGIC_CORE: [ACTIVE] | MONITORING: [24/7]';
-                } else if (command === 'scan') {
-                    output.innerHTML = 'Analyzing Network Traffic...';
-                    setTimeout(() => {
-                        output.innerHTML = 'Status: Secure. 0 Anomalies found.';
-                    }, 3000);
-                } else if (command === 'report') {
-                    output.innerHTML = `BUG REPORT #QA-2024-001
-ISSUE: API Handshake Timeout
-SEVERITY: Medium
-STEPS TO REPRODUCE:
-1. Initialize connection to external API
-2. Attempt authentication handshake
-3. Timeout occurs after 30s
-EXPECTED: Successful handshake within 10s
-ACTUAL: Connection timeout
-STATUS: Under Investigation`;
-                } else if (command === 'help') {
-                    output.innerHTML = `Available Commands:
-status - Check system status
-scan - Analyze network security
-report - Generate sample QA bug report
-help - Show this help menu
-clear - Clear terminal output`;
-                } else if (command === 'clear') {
-                    output.innerHTML = '';
-                } else if (command !== '') {
-                    output.innerHTML = `Command '${command}' not recognized. Type 'help' for available commands.`;
-                }
-                
-                input.value = '';
-            }
-        }
-    </script>
+    <script src="script.js"></script>
 </head>
-<body onload="updateClock()">
+<body>
 <div class="system-clock" id="clock"></div>
 <div class="external-uplinks">
     <h3 style="color: #00ff41; font-size: 0.9em; margin: 0 0 10px 0; text-align: center;">[ EXTERNAL_UPLINKS ]</h3>
-    <a href="https://www.linkedin.com/in/jesel-kalogris-7617bb25a/" target="_blank" class="uplink-btn">LINKEDIN_SIGNAL</a>
+    <a href="https://www.linkedin.com/in/jesel-kalogris-7617bb25a/" target="_blank" rel="noopener noreferrer" class="uplink-btn">LINKEDIN_SIGNAL</a>
     <a href="#" onclick="initiateEmail(event)" class="uplink-btn">DIRECT_EMAIL</a>
     <div id="uplink-message" class="uplink-message">ESTABLISHING SECURE UPLINK...</div>
 </div>
@@ -285,6 +191,129 @@ clear - Clear terminal output`;
             > PACKET_ANALYSIS_LOGS
         </div>
         <div id="packet-files" class="files">
+            <div class="file" onclick="showTerminal('wireshark-terminal')">
+                📄 suspicious_traffic.pcap
+            </div>
+            <div id="wireshark-terminal" class="terminal-window">
+                <strong>[TRAFFIC ANALYSIS]</strong><br>
+                Deep packet inspection on 49-inch ultrawide display:<br>
+                - Analyzed 2.3GB of network traffic over 4-hour period<br>
+                - Identified potential data exfiltration attempts<br>
+                - Documented anomalous DNS queries to suspicious domains<br>
+                - Created visual network flow diagrams for incident response
+                <div class="download-btn">Download Report</div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="hikari-core">
+        <h2>[ HIKARI_CORE_v1.0 ]</h2>
+        <div class="core-input">
+            <span class="core-prompt">Operator@Hikari:~$</span>
+            <input type="text" class="core-command" onkeypress="processCoreCommand(event)" placeholder="Type 'help' for commands...">
+        </div>
+        <div id="core-output" class="core-output"></div>
+    </section>
+    
+    <section class="hikari-terminal">
+        <h2>[ HIKARI_LOGIC_TERMINAL ]</h2>
+        <div class="terminal-input">
+            <span class="terminal-prompt">User@Hikari:~$</span>
+            <input type="text" class="terminal-command" onkeypress="processCommand(event)" placeholder="Type 'status' or 'scan'...">
+        </div>
+        <div id="terminal-output" class="terminal-output"></div>
+    </section>
+</div>
+
+<div class="terminal-footer">
+    <div class="terminal-scroll">
+        [OK] nmap scan complete... [OK] tcpdump capturing on eth0... [OK] airodump-ng tracking BSSID... [OK] wireshark analyzing packets... [OK] maltego OSINT gathering... [OK] spiderfoot reconnaissance active... [OK] kali linux terminal ready... [OK] sudo privileges validated...
+    </div>
+</div>
+</body>
+</html>"packet-files" class="files">
+            <div class="file" onclick="showTerminal('wireshark-terminal')">
+                📄 suspicious_traffic.pcap
+            </div>
+            <div id="wireshark-terminal" class="terminal-window">
+                <strong>[TRAFFIC ANALYSIS]</strong><br>
+                Deep packet inspection on 49-inch ultrawide display:<br>
+                - Analyzed 2.3GB of network traffic over 4-hour period<br>
+                - Identified potential data exfiltration attempts<br>
+                - Documented anomalous DNS queries to suspicious domains<br>
+                - Created visual network flow diagrams for incident response
+                <div class="download-btn">Download Report</div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="hikari-core">
+        <h2>[ HIKARI_CORE_v1.0 ]</h2>
+        <div class="core-input">
+            <span class="core-prompt">Operator@Hikari:~$</span>
+            <input type="text" class="core-command" onkeypress="processCoreCommand(event)" placeholder="Type 'help' for commands...">
+        </div>
+        <div id="core-output" class="core-output"></div>
+    </section>
+    
+    <section class="hikari-terminal">
+        <h2>[ HIKARI_LOGIC_TERMINAL ]</h2>
+        <div class="terminal-input">
+            <span class="terminal-prompt">User@Hikari:~$</span>
+            <input type="text" class="terminal-command" onkeypress="processCommand(event)" placeholder="Type 'status' or 'scan'...">
+        </div>
+        <div id="terminal-output" class="terminal-output"></div>
+    </section>
+</div>
+
+<div class="terminal-footer">
+    <div class="terminal-scroll">
+        [OK] nmap scan complete... [OK] tcpdump capturing on eth0... [OK] airodump-ng tracking BSSID... [OK] wireshark analyzing packets... [OK] maltego OSINT gathering... [OK] spiderfoot reconnaissance active... [OK] kali linux terminal ready... [OK] sudo privileges validated...
+    </div>
+</div>
+</body>
+</html>"packet-files" class="files">
+            <div class="file" onclick="showTerminal('wireshark-terminal')">
+                📄 suspicious_traffic.pcap
+            </div>
+            <div id="wireshark-terminal" class="terminal-window">
+                <strong>[TRAFFIC ANALYSIS]</strong><br>
+                Deep packet inspection on 49-inch ultrawide display:<br>
+                - Analyzed 2.3GB of network traffic over 4-hour period<br>
+                - Identified potential data exfiltration attempts<br>
+                - Documented anomalous DNS queries to suspicious domains<br>
+                - Created visual network flow diagrams for incident response
+                <div class="download-btn">Download Report</div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="hikari-core">
+        <h2>[ HIKARI_CORE_v1.0 ]</h2>
+        <div class="core-input">
+            <span class="core-prompt">Operator@Hikari:~$</span>
+            <input type="text" class="core-command" onkeypress="processCoreCommand(event)" placeholder="Type 'help' for commands...">
+        </div>
+        <div id="core-output" class="core-output"></div>
+    </section>
+    
+    <section class="hikari-terminal">
+        <h2>[ HIKARI_LOGIC_TERMINAL ]</h2>
+        <div class="terminal-input">
+            <span class="terminal-prompt">User@Hikari:~$</span>
+            <input type="text" class="terminal-command" onkeypress="processCommand(event)" placeholder="Type 'status' or 'scan'...">
+        </div>
+        <div id="terminal-output" class="terminal-output"></div>
+    </section>
+</div>
+
+<div class="terminal-footer">
+    <div class="terminal-scroll">
+        [OK] nmap scan complete... [OK] tcpdump capturing on eth0... [OK] airodump-ng tracking BSSID... [OK] wireshark analyzing packets... [OK] maltego OSINT gathering... [OK] spiderfoot reconnaissance active... [OK] kali linux terminal ready... [OK] sudo privileges validated...
+    </div>
+</div>
+</body>
+</html>"packet-files" class="files">
             <div class="file" onclick="showTerminal('wireshark-terminal')">
                 📄 suspicious_traffic.pcap
             </div>
