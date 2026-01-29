@@ -261,7 +261,7 @@ function handleCommand(command) {
             break;
         case 'help':
         case 'commands':
-            response = 'Available commands: status, whoami, clear, scan, help, monitor, validate, signal, linkedin, purge, self-destruct, override';
+            response = 'Available commands: status, whoami, clear, scan, help, monitor, validate, signal, linkedin, purge, self-destruct, override, resume';
             break;
         case 'status':
             response = 'AI Core: Offline (Handshake Error 503) | Logic Engine: Active';
@@ -269,9 +269,7 @@ function handleCommand(command) {
         case 'self-destruct':
             addToTerminalLogs(command, '[!] CRITICAL: INITIATING SELF-DESTRUCT SEQUENCE...', 'error');
             addToTerminalLogs(command, '[!] WARNING: 3... 2... 1...', 'error');
-            
             document.body.classList.add('system-glitch');
-            
             setTimeout(() => {
                 terminalLogs = [];
                 updateTerminalDisplay();
@@ -281,11 +279,11 @@ function handleCommand(command) {
             return;
         case 'override':
             document.documentElement.style.setProperty('--primary-color', '#ff0000');
-            addToTerminalLogs(command, 'OVERRIDE ACTIVATED: Emergency mode engaged', 'error');
-            setTimeout(() => {
-                document.documentElement.style.setProperty('--primary-color', '#00ff41');
-            }, 5000);
+            addToTerminalLogs(command, 'OVERRIDE ACTIVATED: Emergency Red mode engaged', 'error');
             return;
+        case 'resume':
+            response = '[ACCESSING_ARCHIVES] Resume link found: https://drive.google.com/file/d/your-cv-link-here';
+            break;
         case 'signal':
         case 'linkedin':
             addToTerminalLogs(command, 'Establishing secure uplink to Operator profile...');
