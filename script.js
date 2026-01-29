@@ -155,58 +155,121 @@ function startHeartbeatMonitoring() {
 const commandRegistry = {
     scan: () => 'Running integrity check on GitHub repositories...',
     status: () => 'AI Core: Offline (Handshake Error 503) | Logic Engine: Active',
-    whoami: () => 'I am HIKARI, your Adaptive Tactical Interface. Current Mission: Portfolio Security and QA Validation.',
-    help: () => 'Available commands: status, whoami, clear, scan, help',
-    monitor: () => `SYSTEM STATUS REPORT:
-[✓] Connectivity Layer: ACTIVE
-[✓] Security Layer: ACTIVE
-[✓] Portfolio Interface: OPERATIONAL
-[✓] Terminal Systems: ONLINE
-[!] Background Monitoring: ENABLED`,
-    validate: () => `CREDENTIAL VALIDATION SUITE:
-[TESTING] Azure Certifications... PASS
-[TESTING] Google Cybersecurity... PASS
-[TESTING] Cisco Networking... PASS
-[TESTING] QA Validation Skills... PASS
-[RESULT] All 12+ certifications verified and active`
+    help: () => 'Available commands: status, whoami, clear, scan, help, self-destruct, override, resume, monitor, validate, signal',
+    'self-destruct': (terminalOutput) => {
+        const countdownDiv = document.createElement('div');
+        countdownDiv.textContent = '[!] CRITICAL: INITIATING SELF-DESTRUCT SEQUENCE... 3... 2... 1...';
+        countdownDiv.style.color = '#ff0000';
+        terminalOutput.appendChild(countdownDiv);
+        
+        document.body.classList.add('screen-vibrate');
+        
+        setTimeout(() => {
+            terminalLogs = [];
+            document.body.classList.remove('screen-vibrate');
+            terminalOutput.innerHTML = '';
+            const wipeDiv = document.createElement('div');
+            wipeDiv.textContent = '[SYSTEM_WIPE] ALL LOGS PURGED.';
+            wipeDiv.style.color = '#ff0000';
+            terminalOutput.appendChild(wipeDiv);
+        }, 3000);
+        return null;
+    },
+    override: () => {
+        document.documentElement.style.setProperty('--primary-color', '#ff0000');
+        return '[!] ALERT: SECURITY PROTOCOLS BYPASSED. EMERGENCY MODE ACTIVE.';
+    },
+    resume: () => '[ACCESSING_ARCHIVES] Resume link located: https://drive.google.com/file/d/your-cv-link-here',
+    monitor: () => `LIVE NETWORK STATISTICS:
+┌─────────────────────────────┐
+│ Latency: 12ms               │
+│ Packet Loss: 0%             │
+│ Firewall: Active            │
+│ Bandwidth: 1.2 Gbps         │
+│ Connections: 47 Active      │
+│ Threat Level: Minimal       │
+└─────────────────────────────┘`,
+    validate: (terminalOutput) => {
+        const scanDiv = document.createElement('div');
+        scanDiv.textContent = 'Scanning credentials';
+        scanDiv.style.color = '#00d4ff';
+        terminalOutput.appendChild(scanDiv);
+        
+        let dots = 0;
+        const scanInterval = setInterval(() => {
+            dots = (dots + 1) % 4;
+            scanDiv.textContent = 'Scanning credentials' + '.'.repeat(dots);
+        }, 200);
+        
+        setTimeout(() => {
+            clearInterval(scanInterval);
+            scanDiv.textContent = '[OK] Credentials for Operator Jesel Kalogris fully validated.';
+            scanDiv.style.color = '#00ff41';
+        }, 2000);
+        return null;
+    },
+    whoami: () => `HIKARI HEURISTIC ARCHITECTURE:
+┌─────────────────────────────────────────┐
+│ DESIGNATION: Adaptive Tactical Interface│
+│ CORE_ENGINE: Neural Logic Processing    │
+│ MEMORY_BANKS: 12+ Certification Modules │
+│ SPECIALIZATION: NOC Operations & QA     │
+│ THREAT_ANALYSIS: Real-time Monitoring   │
+│ UPLINK_STATUS: Secure Channel Active    │
+│ OPERATOR: Jesel Kalogris               │
+└─────────────────────────────────────────┘`,
+    signal: (terminalOutput) => {
+        const linkDiv = document.createElement('div');
+        linkDiv.innerHTML = 'Establishing secure uplink... <a href="https://www.linkedin.com/in/jesel-kalogris-7617bb25a/" target="_blank" rel="noopener noreferrer" style="color: #00ff41; text-decoration: underline;">[LINKEDIN_SIGNAL]</a>';
+        linkDiv.style.color = '#00ff41';
+        terminalOutput.appendChild(linkDiv);
+        return null;
+    }
 };
 
 function handleCommand(command) {
     const sanitizedCommand = sanitizeInput(command);
+    const terminalOutput = document.querySelector('.terminal-output');
     
     if (command === 'clear') {
         terminalLogs = [];
-        updateTerminalDisplay();
+        if (terminalOutput) terminalOutput.innerHTML = '';
         return;
     }
     
-    const response = commandRegistry[command] || (() => `Command '${sanitizedCommand}' not recognized. Type 'help' for available commands.`);
-    addToTerminalLogsWithTypewriter(sanitizedCommand, response());
-}
-
-function addToTerminalLogsWithTypewriter(command, response) {
-    const terminalOutput = document.querySelector('.terminal-output');
     if (!terminalOutput) return;
     
-    const newLine = document.createElement('div');
+    const commandDiv = document.createElement('div');
     const commandSpan = document.createElement('span');
     commandSpan.style.color = '#00ff41';
-    commandSpan.textContent = `[${command.toUpperCase()}] `;
+    commandSpan.textContent = `User@Hikari:~$ ${sanitizedCommand}`;
+    commandDiv.appendChild(commandSpan);
+    terminalOutput.appendChild(commandDiv);
     
-    const responseSpan = document.createElement('span');
-    newLine.appendChild(commandSpan);
-    newLine.appendChild(responseSpan);
-    terminalOutput.appendChild(newLine);
+    const handler = commandRegistry[command];
+    if (handler) {
+        const result = handler(terminalOutput);
+        if (result !== null && result !== undefined) {
+            const responseDiv = document.createElement('div');
+            responseDiv.style.color = '#00ff41';
+            responseDiv.style.whiteSpace = 'pre-line';
+            responseDiv.textContent = result;
+            terminalOutput.appendChild(responseDiv);
+        }
+    } else {
+        const errorDiv = document.createElement('div');
+        errorDiv.style.color = '#ff0000';
+        errorDiv.textContent = `Command '${sanitizedCommand}' not recognized. Type 'help' for available commands.`;
+        terminalOutput.appendChild(errorDiv);
+    }
     
-    // Limit DOM elements to prevent memory issues
+    // Limit DOM elements
     const children = terminalOutput.children;
-    if (children.length > 50) {
-        for (let i = 0; i < children.length - 50; i++) {
+    if (children.length > 100) {
+        for (let i = 0; i < children.length - 100; i++) {
             terminalOutput.removeChild(children[i]);
         }
     }
-    
-    typewriterEffect(responseSpan, response, 30);
 }
 
 function processCoreCommand(event) {
