@@ -552,6 +552,17 @@ hr {
     50% { opacity: 0.8; }
 }
 
+@keyframes latencyPulse {
+    0%, 100% { 
+        height: 60%;
+        box-shadow: 0 0 10px #00ff41;
+    }
+    50% { 
+        height: 80%;
+        box-shadow: 0 0 20px #00ff41;
+    }
+}
+
 .status-dot {
     animation: flicker 2s infinite;
 }
@@ -646,43 +657,56 @@ hr {
         animation: crtFlicker 0.2s ease-in-out infinite alternate;
     }
     
-    /* Mobile CRT scanlines - less intensive */
+    /* Force all animations on mobile */
     body::before {
-        background-size: 100% 6px;
-        opacity: 0.5;
-    }
-    
-    /* Mobile NOC Status HUD fixes */
-    .noc-status-hud {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 50px;
-        background: rgba(0, 20, 0, 0.95);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-top: 1px solid #00ff00;
-        display: flex;
-        align-items: center;
-        padding: 0 10px;
-        z-index: 1001;
-        font-size: 11px;
-        box-sizing: border-box;
-    }
-    
-    /* Force animations on mobile */
-    .system-header::after {
-        animation: headerScanline 4s linear infinite;
+        display: block !important;
+        animation: matrixRain 20s linear infinite !important;
+        opacity: 0.8 !important;
     }
     
     body::after {
-        animation: scanlines 8s linear infinite;
-        opacity: 0.3;
+        display: block !important;
+        animation: scanline 3s linear infinite !important;
+        opacity: 0.6 !important;
+    }
+    
+    .system-header::after {
+        display: block !important;
+        animation: headerScanline 4s linear infinite !important;
     }
     
     .content::before {
-        display: none;
+        display: block !important;
+        animation: floatingParticles 15s linear infinite !important;
+        opacity: 0.4 !important;
+    }
+    
+    /* Mobile NOC Status HUD - Force visibility */
+    .noc-status-hud {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 50px !important;
+        background: rgba(0, 20, 0, 0.95) !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        border-top: 1px solid #00ff00 !important;
+        display: flex !important;
+        align-items: center !important;
+        padding: 0 10px !important;
+        z-index: 1001 !important;
+        font-size: 11px !important;
+        box-sizing: border-box !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    .noc-status-text {
+        color: #00ff00 !important;
+        white-space: nowrap !important;
+        display: block !important;
+        visibility: visible !important;
     }
 }
 
