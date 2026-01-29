@@ -267,9 +267,17 @@ function handleCommand(command) {
             response = 'AI Core: Offline (Handshake Error 503) | Logic Engine: Active';
             break;
         case 'self-destruct':
-            terminalLogs = [];
-            updateTerminalDisplay();
-            addToTerminalLogs(command, '[!] CRITICAL: SYSTEM PURGE INITIATED', 'error');
+            addToTerminalLogs(command, '[!] CRITICAL: INITIATING SELF-DESTRUCT SEQUENCE...', 'error');
+            addToTerminalLogs(command, '[!] WARNING: 3... 2... 1...', 'error');
+            
+            document.body.classList.add('system-glitch');
+            
+            setTimeout(() => {
+                terminalLogs = [];
+                updateTerminalDisplay();
+                document.body.classList.remove('system-glitch');
+                addToTerminalLogs('SYSTEM', '[SYSTEM_FATAL] HIKARI CORE DELETED. REBOOT REQUIRED.', 'error');
+            }, 3000);
             return;
         case 'override':
             document.documentElement.style.setProperty('--primary-color', '#ff0000');
