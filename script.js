@@ -124,6 +124,21 @@ function startHikariLiveMonitoring() {
 let isBooting = true;
 let bootLines = [];
 
+function triggerSelfDestruct() {
+    // Display critical message
+    addToTerminalLogs('self-destruct', '[!] CRITICAL: INITIATING SYSTEM PURGE...', 'error');
+    
+    // Switch to emergency red theme
+    document.body.classList.add('emergency-mode');
+    
+    // Wait 2 seconds then clear logs and revert
+    setTimeout(() => {
+        terminalLogs = [];
+        updateTerminalDisplay();
+        document.body.classList.remove('emergency-mode');
+    }, 2000);
+}
+
 function triggerOverrideSequence() {
     // Add override message with error type
     addToTerminalLogs('override', 'PROTOCOL BREAK: Manual Override Accepted. Accessing Restricted QA Logs...', 'error');
@@ -245,7 +260,7 @@ function handleCommand(command) {
             response = handleHikariCommand(command);
             break;
         case 'help':
-            response = 'Available commands: status, whoami, clear, scan, help, monitor, validate, signal, linkedin, purge, self-destruct, override';
+            response = 'Available commands: status, whoami, clear, scan, help, monitor, validate, signal, linkedin, purge, self-destruct - Initiate system purge, override';
             break;
         case 'status':
             response = 'AI Core: Offline (Handshake Error 503) | Logic Engine: Active';
@@ -279,10 +294,12 @@ function handleCommand(command) {
             }
             return;
         case 'purge':
-        case 'self-destruct':
             terminalLogs = [];
             addToTerminalLogs(command, '[!] SYSTEM PURGE COMPLETE. REBOOTING HIKARI...', 'error');
             break;
+        case 'self-destruct':
+            triggerSelfDestruct();
+            return;
         case 'override':
             triggerOverrideSequence();
             return;
