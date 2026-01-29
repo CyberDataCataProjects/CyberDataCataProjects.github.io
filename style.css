@@ -561,3 +561,27 @@ hr {
         filter: invert(1) hue-rotate(90deg); 
     }
 }
+
+.scanline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00ff41, transparent);
+    opacity: 0.05;
+    z-index: 1000;
+    animation: scanlineMove 4s linear infinite;
+}
+@keyframes scanlineMove {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(100vh); }
+}
+
+.app-container {
+    animation: crtFlicker 0.15s ease-in-out infinite alternate;
+}
+@keyframes crtFlicker {
+    0% { filter: brightness(1); }
+    100% { filter: brightness(1.02); }
+}
