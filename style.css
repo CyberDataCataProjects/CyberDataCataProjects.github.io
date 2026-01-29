@@ -313,13 +313,44 @@ h3 { color: #00ff41; }
 .identity-line {
     color: #00ff41;
     opacity: 0;
-    font-size: 0.75em;
+    font-size: 0.7em;
     font-family: 'Courier New', monospace;
-    margin: 3px 0;
+    margin: 2px 0;
     text-align: left;
 }
 .identity-line.booting {
-    opacity: 0.7;
+    opacity: 0.6;
+}
+
+.screen-shake {
+    animation: shake 0.5s ease-in-out infinite;
+}
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.emergency-mode {
+    --primary-color: #ff0000;
+    --primary-glow: rgba(255, 0, 0, 0.1);
+}
+.emergency-mode .hikari-core,
+.emergency-mode .hikari-terminal,
+.emergency-mode .core-prompt,
+.emergency-mode .terminal-prompt,
+.emergency-mode .core-command,
+.emergency-mode .terminal-command,
+.emergency-mode .core-output,
+.emergency-mode .terminal-output,
+.emergency-mode .identity-line {
+    color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+.emergency-mode .hikari-core,
+.emergency-mode .hikari-terminal {
+    background: var(--primary-glow) !important;
+    box-shadow: 0 0 20px var(--primary-glow) !important;
 }
 .hikari-core {
     margin-top: 40px;
