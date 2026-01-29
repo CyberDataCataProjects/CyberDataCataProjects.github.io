@@ -480,8 +480,7 @@ VLAN SEGMENTATION:
 • VLAN 10: Management
 • VLAN 20: Production
 • VLAN 30: Guest Network
-• VLAN 99: Native (Unused)`, return null;
-    }
+• VLAN 99: Native (Unused)`
 };
 
 function handleCommand(command) {
