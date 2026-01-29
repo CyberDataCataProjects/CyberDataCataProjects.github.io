@@ -20,41 +20,47 @@ const systemLogs = [
 ];
 
 function startFooterTypewriter() {
-    const footerElement = document.querySelector('.footer-scroll');
-    if (!footerElement) return;
-    
-    let currentMessageIndex = 0;
-    let isTyping = false;
-    
-    function typeMessage() {
-        if (isTyping) return;
-        
-        const message = systemLogs[currentMessageIndex];
-        let charIndex = 0;
-        isTyping = true;
-        
-        footerElement.textContent = '';
-        
-        function typeChar() {
-            if (charIndex < message.length) {
-                footerElement.textContent = message.substring(0, charIndex + 1) + '_';
-                charIndex++;
-                setTimeout(typeChar, 30);
-            } else {
-                footerElement.textContent = message + '_';
-                setTimeout(() => {
-                    footerElement.textContent = '';
-                    currentMessageIndex = (currentMessageIndex + 1) % systemLogs.length;
-                    isTyping = false;
-                    setTimeout(typeMessage, 100);
-                }, 1500);
-            }
+    // Wait for DOM to be ready, then find the footer element
+    setTimeout(() => {
+        const footerElement = document.querySelector('.system-footer-scroller .footer-scroll');
+        if (!footerElement) {
+            console.log('Footer element not found');
+            return;
         }
         
-        typeChar();
-    }
-    
-    typeMessage();
+        let currentMessageIndex = 0;
+        let isTyping = false;
+        
+        function typeMessage() {
+            if (isTyping) return;
+            
+            const message = systemLogs[currentMessageIndex];
+            let charIndex = 0;
+            isTyping = true;
+            
+            footerElement.textContent = '';
+            
+            function typeChar() {
+                if (charIndex < message.length) {
+                    footerElement.textContent = message.substring(0, charIndex + 1) + '_';
+                    charIndex++;
+                    setTimeout(typeChar, 30);
+                } else {
+                    footerElement.textContent = message + '_';
+                    setTimeout(() => {
+                        footerElement.textContent = '';
+                        currentMessageIndex = (currentMessageIndex + 1) % systemLogs.length;
+                        isTyping = false;
+                        setTimeout(typeMessage, 100);
+                    }, 1500);
+                }
+            }
+            
+            typeChar();
+        }
+        
+        typeMessage();
+    }, 1000);
 }
 
 function sanitizeInput(input) {
