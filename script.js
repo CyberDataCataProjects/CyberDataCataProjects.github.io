@@ -240,7 +240,7 @@ const commandRegistry = {
 │ SYSTEM STATUS: All nodes operational    │
 │ AI Core: Offline (503) | Logic: Active │
 └─────────────────────────────────────────┘`,
-    help: () => 'Available commands: status, whoami, clear, scan, help, self-destruct, override, resume, monitor, validate, signal, audit, osi-check, osi-diag',
+    help: () => 'Available commands: status, whoami, clear, scan, help, self-destruct, override, resume, monitor, validate, signal, audit, osi-check, osi-diag, map',
     'self-destruct': (terminalOutput) => {
         const warningDiv = document.createElement('div');
         warningDiv.textContent = '[!] CRITICAL: INITIATING SELF-DESTRUCT SEQUENCE...';
@@ -454,6 +454,33 @@ const commandRegistry = {
             }
         }, 400);
         return null;
+    },
+    map: () => `ENTERPRISE NETWORK TOPOLOGY MAP:
+
+    [INTERNET]
+         |
+    [FIREWALL]
+         |
+   [CORE_SWITCH]
+    /    |    \
+[SW1]  [SW2]  [SW3]
+  |      |      |
+[PC1]  [SRV]  [PC2]
+
+LEGEND:
+┌─────────────────────────┐
+│ FIREWALL: ASA 5506-X    │
+│ CORE: Catalyst 9300     │
+│ ACCESS: 2960-X Series   │
+│ SERVERS: ESXi Cluster   │
+│ WORKSTATIONS: 47 Nodes  │
+└─────────────────────────┘
+
+VLAN SEGMENTATION:
+• VLAN 10: Management
+• VLAN 20: Production
+• VLAN 30: Guest Network
+• VLAN 99: Native (Unused)`, return null;
     }
 };
 
@@ -663,3 +690,38 @@ window.onload = function() {
     startBootLineSequence();
     startFooterTypewriter();
 };
+function calculateSubnet() {
+    const ipInput = document.getElementById('ip-input').value;
+    const cidrInput = parseInt(document.getElementById('cidr-input').value);
+    const output = document.getElementById('calc-output');
+    
+    if (!ipInput || isNaN(cidrInput) || cidrInput < 0 || cidrInput > 32) {
+        output.textContent = 'ERROR: Invalid IP address or CIDR notation';
+        return;
+    }
+    
+    const ipParts = ipInput.split('.').map(part => parseInt(part));
+    if (ipParts.length !== 4 || ipParts.some(part => isNaN(part) || part < 0 || part > 255)) {
+        output.textContent = 'ERROR: Invalid IP address format';
+        return;
+    }
+    
+    const ip = (ipParts[0] << 24) + (ipParts[1] << 16) + (ipParts[2] << 8) + ipParts[3];
+    const mask = (0xFFFFFFFF << (32 - cidrInput)) >>> 0;
+    const network = (ip & mask) >>> 0;
+    const broadcast = (network | (0xFFFFFFFF >>> cidrInput)) >>> 0;
+    const firstHost = network + 1;
+    const lastHost = broadcast - 1;
+    
+    const toIP = (num) => [(num >>> 24) & 0xFF, (num >>> 16) & 0xFF, (num >>> 8) & 0xFF, num & 0xFF].join('.');
+    
+    output.textContent = `SUBNET CALCULATION RESULTS:
+┌─────────────────────────────────────────┐
+│ Network Address: ${toIP(network).padEnd(15)} │
+│ Broadcast Address: ${toIP(broadcast).padEnd(13)} │
+│ First Host: ${toIP(firstHost).padEnd(20)} │
+│ Last Host: ${toIP(lastHost).padEnd(21)} │
+│ Total Hosts: ${(broadcast - network - 1).toString().padEnd(18)} │
+│ Subnet Mask: ${toIP(mask).padEnd(18)} │
+└─────────────────────────────────────────┘`;
+}
