@@ -250,24 +250,6 @@ function initializeMobileFeatures() {
     }
 }
 
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', function() {
-    initializeMobileFeatures();
-    startNOCStatusHUD();
-    startHikariLiveMonitoring();
-    startHeartbeatMonitoring();
-    updateClock();
-});
-
-// Fallback initialization
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeMobileFeatures);
-} else {
-    initializeMobileFeatures();
-}
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
-}
-
 function applyMobileFixes() {
     if (isMobileDevice()) {
         document.body.classList.add('mobile-device');
@@ -292,12 +274,6 @@ function applyMobileFixes() {
         `;
         document.head.appendChild(style);
     }
-}
-
-// Apply mobile fixes immediately
-document.addEventListener('DOMContentLoaded', applyMobileFixes);
-if (document.readyState === 'loading') {
-    applyMobileFixes();
 }
 
 // Command registry for consistent handling
@@ -840,13 +816,23 @@ function processCommand(event) {
 }
 
 // Initialize application when page loads
-window.onload = function() {
-    updateClock();
-    startHeartbeatMonitoring();
+function initializeApplication() {
+    initializeMobileFeatures();
+    applyMobileFixes();
+    startNOCStatusHUD();
     startHikariLiveMonitoring();
+    startHeartbeatMonitoring();
     startBootLineSequence();
-    startFooterTypewriter();
-};
+    updateClock();
+}
+
+// Single initialization point
+document.addEventListener('DOMContentLoaded', initializeApplication);
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeApplication);
+} else {
+    initializeApplication();
+}
 function calculateSubnet() {
     const ipInput = document.getElementById('ip-input').value;
     const cidrInput = parseInt(document.getElementById('cidr-input').value);
