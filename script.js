@@ -224,8 +224,23 @@ function startHeartbeatMonitoring() {
 // Command registry for consistent handling
 const commandRegistry = {
     scan: () => 'Running integrity check on GitHub repositories...',
-    status: () => 'AI Core: Offline (Handshake Error 503) | Logic Engine: Active',
-    help: () => 'Available commands: status, whoami, clear, scan, help, self-destruct, override, resume, monitor, validate, signal',
+    status: () => `OPERATOR STATUS SUMMARY:
+┌─────────────────────────────────────────┐
+│ CERTIFICATIONS: 16+ Validated          │
+│ • AI Development: Amazon Q & Copilot   │
+│ • Azure: Cost Mgmt & Deployment Tools  │
+│ • Security: Google Cyber & Splunk Core │
+│ • QA: Leeds Testing & Jira Management  │
+├─────────────────────────────────────────┤
+│ HARDWARE CONFIGURATION:                 │
+│ • CPU: AMD Ryzen 9 7900X (12-Core)     │
+│ • GPU: NVIDIA GeForce RTX Architecture │
+│ • Display: 49" Ultrawide Tactical Suite│
+├─────────────────────────────────────────┤
+│ SYSTEM STATUS: All nodes operational    │
+│ AI Core: Offline (503) | Logic: Active │
+└─────────────────────────────────────────┘`,
+    help: () => 'Available commands: status, whoami, clear, scan, help, self-destruct, override, resume, monitor, validate, signal, audit, osi-check',
     'self-destruct': (terminalOutput) => {
         const warningDiv = document.createElement('div');
         warningDiv.textContent = '[!] CRITICAL: INITIATING SELF-DESTRUCT SEQUENCE...';
@@ -325,6 +340,87 @@ const commandRegistry = {
         linkDiv.innerHTML = 'Establishing secure uplink... <a href="https://www.linkedin.com/in/jesel-kalogris-7617bb25a/" target="_blank" rel="noopener noreferrer" style="color: #00ff41; text-decoration: underline;">[LINKEDIN_SIGNAL]</a>';
         linkDiv.style.color = '#00ff41';
         terminalOutput.appendChild(linkDiv);
+        return null;
+    },
+    audit: (terminalOutput) => {
+        const auditDiv = document.createElement('div');
+        auditDiv.textContent = 'INITIATING CERTIFICATION AUDIT...';
+        auditDiv.style.color = '#00d4ff';
+        terminalOutput.appendChild(auditDiv);
+        
+        const certs = [
+            'Amazon Q Developer: Advanced AI Coding',
+            'GitHub Copilot: AI-Powered Development', 
+            'Azure: Cost Management & Cloud Services',
+            'Azure: Management & Deployment Tools',
+            'Azure Fundamentals (AZ-900)',
+            'Microsoft Security, Compliance & Identity',
+            'Google Cybersecurity Professional V2',
+            'Splunk: Core Certified User (Intro)',
+            'Cisco: Introduction to Cybersecurity',
+            'Network Security: Connect & Protect',
+            'U. Leeds: Software Testing & Validation',
+            'Cisco: Networking Basics',
+            'Jira Management (Coursera)',
+            'Cisco: IT Customer Support',
+            'Introduction to Git & GitHub',
+            'Introduction to DevOps (Microsoft)'
+        ];
+        
+        let index = 0;
+        const auditInterval = setInterval(() => {
+            if (index < certs.length) {
+                const certDiv = document.createElement('div');
+                certDiv.textContent = `[OK] ${certs[index]}`;
+                certDiv.style.color = '#00ff41';
+                certDiv.style.marginLeft = '20px';
+                terminalOutput.appendChild(certDiv);
+                index++;
+            } else {
+                clearInterval(auditInterval);
+                const summaryDiv = document.createElement('div');
+                summaryDiv.textContent = `\nAUDIT COMPLETE: ${certs.length} certifications validated. All credentials verified.`;
+                summaryDiv.style.color = '#00d4ff';
+                summaryDiv.style.fontWeight = 'bold';
+                terminalOutput.appendChild(summaryDiv);
+            }
+        }, 150);
+        return null;
+    },
+    'osi-check': (terminalOutput) => {
+        const initDiv = document.createElement('div');
+        initDiv.textContent = 'INITIATING OSI MODEL DIAGNOSTIC...';
+        initDiv.style.color = '#00d4ff';
+        terminalOutput.appendChild(initDiv);
+        
+        const osiLayers = [
+            '[L1] PHYSICAL: Fiber/Copper Link... OK',
+            '[L2] DATA LINK: MAC Filtering... ACTIVE', 
+            '[L3] NETWORK: IPv6 Routing Table... VALIDATED',
+            '[L4] TRANSPORT: TCP/UDP Sessions... ESTABLISHED',
+            '[L5] SESSION: SSL/TLS Handshakes... SECURED',
+            '[L6] PRESENTATION: Data Encryption... ENABLED',
+            '[L7] APPLICATION: DNS Services... OPERATIONAL'
+        ];
+        
+        let layerIndex = 0;
+        const osiInterval = setInterval(() => {
+            if (layerIndex < osiLayers.length) {
+                const layerDiv = document.createElement('div');
+                layerDiv.textContent = osiLayers[layerIndex];
+                layerDiv.style.color = '#00ff41';
+                layerDiv.style.marginLeft = '10px';
+                terminalOutput.appendChild(layerDiv);
+                layerIndex++;
+            } else {
+                clearInterval(osiInterval);
+                const completeDiv = document.createElement('div');
+                completeDiv.textContent = '\nOSI DIAGNOSTIC COMPLETE: All 7 layers operational.';
+                completeDiv.style.color = '#00d4ff';
+                completeDiv.style.fontWeight = 'bold';
+                terminalOutput.appendChild(completeDiv);
+            }
+        }, 500);
         return null;
     }
 };
