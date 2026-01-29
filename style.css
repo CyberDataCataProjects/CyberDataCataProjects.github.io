@@ -229,12 +229,12 @@ h3 { color: #00ff41; }
 }
 
 .system-footer-scroller .footer-scroll {
-    animation: scroll 20s linear infinite;
     white-space: nowrap;
     line-height: 35px;
     color: #00ff41;
     font-size: 0.8em;
     opacity: 0.8;
+    font-family: 'Courier New', monospace;
 }
 
 /* Add bottom padding to prevent content overlap */
