@@ -240,7 +240,7 @@ const commandRegistry = {
 │ SYSTEM STATUS: All nodes operational    │
 │ AI Core: Offline (503) | Logic: Active │
 └─────────────────────────────────────────┘`,
-    help: () => 'Available commands: status, whoami, clear, scan, help, self-destruct, override, resume, monitor, validate, signal, audit, osi-check, osi-diag, map',
+    help: () => 'Available commands: status, whoami, clear, scan, help, self-destruct, override, resume, monitor, validate, signal, audit, osi-check, osi-diag, map, ping',
     'self-destruct': (terminalOutput) => {
         const warningDiv = document.createElement('div');
         warningDiv.textContent = '[!] CRITICAL: INITIATING SELF-DESTRUCT SEQUENCE...';
@@ -455,6 +455,41 @@ const commandRegistry = {
         }, 400);
         return null;
     },
+    ping: (terminalOutput) => {
+        const args = handleCommand.lastCommand ? handleCommand.lastCommand.split(' ') : [];
+        const target = args[1] || '8.8.8.8';
+        
+        const pingDiv = document.createElement('div');
+        pingDiv.textContent = `PING ${target} (${target}): 56 data bytes`;
+        pingDiv.style.color = '#00d4ff';
+        terminalOutput.appendChild(pingDiv);
+        
+        const replies = [
+            `64 bytes from ${target}: icmp_seq=1 ttl=64 time=12.4 ms`,
+            `64 bytes from ${target}: icmp_seq=2 ttl=64 time=11.8 ms`,
+            `64 bytes from ${target}: icmp_seq=3 ttl=64 time=13.2 ms`,
+            `64 bytes from ${target}: icmp_seq=4 ttl=64 time=12.1 ms`
+        ];
+        
+        let replyIndex = 0;
+        const pingInterval = setInterval(() => {
+            if (replyIndex < replies.length) {
+                const replyDiv = document.createElement('div');
+                replyDiv.textContent = replies[replyIndex];
+                replyDiv.style.color = '#00ff41';
+                replyDiv.style.marginLeft = '10px';
+                terminalOutput.appendChild(replyDiv);
+                replyIndex++;
+            } else {
+                clearInterval(pingInterval);
+                const statsDiv = document.createElement('div');
+                statsDiv.textContent = `\n--- ${target} ping statistics ---\n4 packets transmitted, 4 received, 0% packet loss\nround-trip min/avg/max/stddev = 11.8/12.4/13.2/0.6 ms`;
+                statsDiv.style.color = '#00d4ff';
+                terminalOutput.appendChild(statsDiv);
+            }
+        }, 800);
+        return null;
+    },
     map: () => `ENTERPRISE NETWORK TOPOLOGY MAP:
 
     [INTERNET]
@@ -486,6 +521,9 @@ VLAN SEGMENTATION:
 function handleCommand(command) {
     const sanitizedCommand = sanitizeInput(command);
     const terminalOutput = document.querySelector('.terminal-output');
+    
+    // Store command for ping parameter parsing
+    handleCommand.lastCommand = command;
     
     if (command === 'clear') {
         terminalLogs = [];
