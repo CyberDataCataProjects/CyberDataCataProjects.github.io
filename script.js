@@ -50,25 +50,89 @@ function sanitizeInput(input) {
     });
 }
 
+let terminalLogs = [];
+
+function addToTerminalLogs(command, response) {
+    terminalLogs.push({ command, response });
+    updateTerminalDisplay();
+}
+
+function updateTerminalDisplay() {
+    const output = document.getElementById('terminal-output');
+    if (!output) return;
+    
+    output.innerHTML = terminalLogs.map(log => 
+        `<div>User@Hikari:~$ ${sanitizeInput(log.command)}</div><div>${log.response}</div>`
+    ).join('');
+}
+
+function typewriterEffect(text, elementId, callback) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    
+    let i = 0;
+    element.textContent = '';
+    
+    function type() {
+        if (i < text.length) {
+            element.textContent += text.charAt(i);
+            i++;
+            setTimeout(type, 50);
+        } else if (callback) {
+            callback();
+        }
+    }
+    type();
+}
+
+function handleCommand(command) {
+    let response;
+    
+    switch(command) {
+        case 'scan':
+            response = '[OK] Port scan initiated...';
+            break;
+        case 'help':
+            response = 'Available commands: status, whoami, clear, scan, help';
+            break;
+        case 'status':
+            response = 'AI Core: Offline (Handshake Error 503) | Logic Engine: Active';
+            break;
+        case 'whoami':
+            addToTerminalLogs(command, '');
+            const responseText = 'I am HIKARI, your Adaptive Tactical Interface. Current Mission: Portfolio Security and QA Validation.';
+            const lastLogIndex = terminalLogs.length - 1;
+            const responseElement = document.createElement('div');
+            responseElement.id = 'typewriter-response';
+            
+            updateTerminalDisplay();
+            const output = document.getElementById('terminal-output');
+            if (output) {
+                output.appendChild(responseElement);
+                typewriterEffect(responseText, 'typewriter-response', () => {
+                    terminalLogs[lastLogIndex].response = responseText;
+                    updateTerminalDisplay();
+                });
+            }
+            return;
+        case 'clear':
+            terminalLogs = [];
+            updateTerminalDisplay();
+            return;
+        default:
+            response = `Command '${sanitizeInput(command)}' not recognized. Type 'help' for available commands.`;
+    }
+    
+    addToTerminalLogs(command, response);
+}
+
 function processCommand(event) {
     if (event.key === 'Enter') {
         const input = event.target;
         const command = input.value.toLowerCase().trim();
-        const output = document.getElementById('terminal-output');
         
-        if (!output) return;
-        
-        if (command === 'status') {
-            output.textContent = 'AI Core: Offline (Handshake Error 503) | Logic Engine: Active';
-        } else if (command === 'scan') {
-            output.textContent = 'Searching for vulnerabilities...';
-            setTimeout(() => {
-                if (output) output.textContent = 'Searching for vulnerabilities... Found 0 in local environment.';
-            }, 1500);
-        } else if (command === 'clear') {
-            output.textContent = '';
-        } else if (command !== '') {
-            output.textContent = `Command '${sanitizeInput(command)}' not recognized. Try 'status' or 'scan'.`;
+        if (command !== '') {
+            handleCommand(command);
         }
         
         input.value = '';
