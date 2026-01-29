@@ -166,20 +166,36 @@ function handleHikariCommand(input) {
 
 function generateHikariLogs() {
     const hikariLogs = [
-        { text: '[OK] Integrity check: [TECHNICAL_ARSENAL] secured.', type: 'success' },
         { text: '[INFO] Monitoring packet flow... No anomalies detected.', type: 'intel' },
-        { text: '[OK] Credential validation: Splunk Core User status confirmed.', type: 'success' },
+        { text: '[OK] Azure Cloud nodes responding. Connectivity nominal.', type: 'success' },
         { text: '[WARN] Latency spike detected in external uplink... Stabilized.', type: 'error' },
+        { text: '[INFO] Running heuristic analysis on latest project logs...', type: 'intel' },
+        { text: '[OK] Integrity check: [TECHNICAL_ARSENAL] secured.', type: 'success' },
+        { text: '[INFO] Wireshark deep packet inspection active... Analyzing traffic patterns.', type: 'intel' },
+        { text: '[OK] Credential validation: Splunk Core User status confirmed.', type: 'success' },
         { text: '[INFO] HIKARI logic gates operating at 98.4% efficiency.', type: 'intel' },
         { text: '[OK] GitHub repository sync complete. All source code validated.', type: 'success' },
         { text: '[INFO] Environment check: Kali Linux sub-systems active.', type: 'intel' },
-        { text: '[OK] Azure Cloud nodes responding. Connectivity nominal.', type: 'success' },
-        { text: '[INFO] Running heuristic analysis on latest project logs...', type: 'intel' },
+        { text: '[WARN] Firewall rule update required... Applying security patches.', type: 'error' },
+        { text: '[OK] Nmap network scan complete... 47 hosts discovered and catalogued.', type: 'success' },
+        { text: '[INFO] Airodump-ng wireless audit running... BSSID enumeration in progress.', type: 'intel' },
+        { text: '[OK] Maltego OSINT collection successful... Intelligence gathered.', type: 'success' },
+        { text: '[INFO] SpiderFoot reconnaissance active... Target enumeration running.', type: 'intel' },
+        { text: '[WARN] Suspicious DNS queries detected... Investigating potential threats.', type: 'error' },
+        { text: '[OK] Penetration testing suite loaded... All tools operational.', type: 'success' },
+        { text: '[INFO] Network topology mapping complete... Infrastructure documented.', type: 'intel' },
+        { text: '[OK] Intrusion detection system active... Monitoring for anomalies.', type: 'success' },
         { text: '[SYSTEM] Heartbeat pulse sent. Operator Jesel Kalogris online.', type: 'system' }
     ];
     
-    const randomLog = hikariLogs[Math.floor(Math.random() * hikariLogs.length)];
-    addToTerminalLogs('HIKARI_SYSTEM', randomLog.text, randomLog.type);
+    let randomIndex;
+    do {
+        randomIndex = Math.floor(Math.random() * hikariLogs.length);
+    } while (randomIndex === generateHikariLogs.lastIndex && hikariLogs.length > 1);
+    
+    generateHikariLogs.lastIndex = randomIndex;
+    const selectedLog = hikariLogs[randomIndex];
+    addToTerminalLogs('HIKARI_SYSTEM', selectedLog.text, selectedLog.type);
 }
 
 function startHikariLiveMonitoring() {
