@@ -54,7 +54,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     position: relative;
-    animation: crtFlicker 0.15s ease-in-out infinite alternate;
+    animation: crtFlicker 3s ease-in-out infinite;
 }
 
 /* CRT Horizontal Scanlines Overlay */
@@ -76,11 +76,11 @@ body::before {
 
 /* CRT Flicker Animation */
 @keyframes crtFlicker {
-    0% { 
+    0%, 96%, 100% { 
         opacity: 1;
         filter: brightness(1) contrast(1);
     }
-    100% { 
+    97%, 99% { 
         opacity: 0.98;
         filter: brightness(1.02) contrast(1.01);
     }
@@ -146,10 +146,10 @@ h1, hr, p {
     gap: 15px;
 }
 
-/* Headers */
+/* Headers with Phosphor Glow */
 h1 {
     color: #00ff41;
-    text-shadow: 0 0 10px #00ff41;
+    text-shadow: 0 0 10px #00ff41, 0 0 5px #00ff41;
     font-size: clamp(16px, 4vw, 18px);
     margin: 10px 0;
     display: block;
@@ -157,14 +157,14 @@ h1 {
 
 h2 {
     color: #00ff41;
-    text-shadow: 0 0 8px #00ff41;
+    text-shadow: 0 0 8px #00ff41, 0 0 5px #00ff41;
     font-size: clamp(14px, 3.5vw, 16px);
     margin: 15px 0 10px 0;
 }
 
 h3 {
     color: #00ff41;
-    text-shadow: 0 0 8px #00ff41;
+    text-shadow: 0 0 8px #00ff41, 0 0 5px #00ff41;
     font-size: clamp(12px, 3vw, 14px);
     margin: 10px 0 5px 0;
 }
@@ -283,7 +283,7 @@ p {
     position: static;
 }
 
-/* Sections - Glassmorphism Effect with Contained Scanlines */
+/* Sections - Glassmorphism Effect with CRT Glow */
 .bio-section, .section, .arsenal-section, .cert-section,
 .hikari-core, .hikari-terminal, .project-section,
 .ai-logic-subsystem, .subnet-calculator {
@@ -296,7 +296,7 @@ p {
     -webkit-backdrop-filter: blur(10px);
     width: 100%;
     max-width: 100%;
-    box-shadow: 0 0 10px rgba(0, 255, 65, 0.1);
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.1), 0 0 20px rgba(0, 255, 65, 0.05);
     height: auto;
     min-height: auto;
     position: relative;
