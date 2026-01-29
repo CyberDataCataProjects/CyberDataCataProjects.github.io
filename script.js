@@ -120,6 +120,8 @@ function startHikariLiveMonitoring() {
     setInterval(generateHikariLogs, 15000);
 }
 
+let isBooting = true;
+
 function startHikariBootSequence() {
     const identityText = [
         '[ IDENTITY_ANALYSIS ]',
@@ -148,12 +150,30 @@ function startHikariBootSequence() {
                         setTimeout(typeChar, 30);
                     } else {
                         lineIndex++;
-                        setTimeout(typeNextLine, 200);
+                        if (lineIndex < identityText.length) {
+                            setTimeout(typeNextLine, 500);
+                        } else {
+                            // Boot sequence complete
+                            setTimeout(() => {
+                                isBooting = false;
+                                const coreInput = document.querySelector('.core-input');
+                                if (coreInput) {
+                                    coreInput.style.display = 'flex';
+                                    coreInput.style.opacity = '1';
+                                }
+                            }, 500);
+                        }
                     }
                 }
                 typeChar();
             }
         }
+    }
+    
+    // Hide input initially
+    const coreInput = document.querySelector('.core-input');
+    if (coreInput) {
+        coreInput.style.display = 'none';
     }
     
     setTimeout(typeNextLine, 1000);
