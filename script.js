@@ -120,6 +120,45 @@ function startHikariLiveMonitoring() {
     setInterval(generateHikariLogs, 15000);
 }
 
+function startHikariBootSequence() {
+    const identityText = [
+        '[ IDENTITY_ANALYSIS ]',
+        'NAME: HIKARI',
+        'DESIGNATION: Heuristic Interactive Knowledge & Analysis Response Interface',
+        'ROLE: Adaptive QA Intelligence & NOC Monitor',
+        'MISSION: Oversee system integrity and validate technical credentials'
+    ];
+    
+    let lineIndex = 0;
+    
+    function typeNextLine() {
+        if (lineIndex < identityText.length) {
+            const currentLine = identityText[lineIndex];
+            const lineElement = document.getElementById(`identity-line-${lineIndex + 1}`);
+            
+            if (lineElement) {
+                let charIndex = 0;
+                lineElement.style.opacity = '0.7';
+                lineElement.textContent = '';
+                
+                function typeChar() {
+                    if (charIndex < currentLine.length) {
+                        lineElement.textContent += currentLine.charAt(charIndex);
+                        charIndex++;
+                        setTimeout(typeChar, 30);
+                    } else {
+                        lineIndex++;
+                        setTimeout(typeNextLine, 200);
+                    }
+                }
+                typeChar();
+            }
+        }
+    }
+    
+    setTimeout(typeNextLine, 1000);
+}
+
 function hikariProcess(input) {
     const hikariResponse = handleHikariCommand(input);
     if (hikariResponse !== 'Unknown command. Type help for system protocols.') {
@@ -276,4 +315,5 @@ window.onload = function() {
     updateClock();
     startHeartbeatMonitoring();
     startHikariLiveMonitoring();
+    startHikariBootSequence();
 };
