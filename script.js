@@ -1142,3 +1142,242 @@ if (document.readyState === 'complete') {
 } else {
     initializeApplication();
 }
+    const graph = document.querySelector('.latency-graph');
+    if (!graph) return;
+    
+    const line = document.createElement('div');
+    line.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 2px;
+        height: 60%;
+        background: #00ff41;
+        box-shadow: 0 0 10px #00ff41;
+        animation: latencyPulse 2s ease-in-out infinite;
+    `;
+    
+    graph.style.position = 'relative';
+    graph.appendChild(line);
+    
+    let position = 0;
+    const moveInterval = setInterval(() => {
+        position += 2;
+        line.style.left = position + 'px';
+        if (position >= graph.offsetWidth) {
+            position = -2;
+        }
+    }, 100);
+}
+
+// Command processing functions
+function processCommand(event) {
+    if (event.key === 'Enter') {
+        const input = event.target;
+        const command = sanitizeInput(input.value.toLowerCase().trim());
+        
+        if (command !== '') {
+            handleCommand(command);
+        }
+        
+        input.value = '';
+    }
+}
+
+function handleCommand(command) {
+    const sanitizedCommand = sanitizeInput(command);
+    const terminalOutput = document.querySelector('.terminal-output');
+    
+    if (command === 'clear') {
+        terminalLogs = [];
+        if (terminalOutput) terminalOutput.innerHTML = '';
+        return;
+    }
+    
+    if (!terminalOutput) return;
+    
+    const commandDiv = document.createElement('div');
+    const commandSpan = document.createElement('span');
+    commandSpan.style.color = '#00ff41';
+    commandSpan.textContent = `User@Hikari:~$ ${sanitizedCommand}`;
+    commandDiv.appendChild(commandSpan);
+    terminalOutput.appendChild(commandDiv);
+    
+    let response = '';
+    switch(command) {
+        case 'status':
+            response = `AMD RYZEN 9 NODE HEALTH:
+┌─────────────────────────────────────────┐
+│ CPU: AMD Ryzen 9 7900X (12-Core)       │
+│ Cores: 12/12 Active | Threads: 24/24   │
+│ Clock: 4.7GHz Boost | Temp: 42°C       │
+│ Memory: 32GB DDR5-5600 | Usage: 68%    │
+│ GPU: NVIDIA RTX Architecture Active     │
+│ Storage: NVMe SSD | Health: Optimal    │
+│ Network: Gigabit Ethernet | Latency: 12ms│
+│ Uptime: 72h 14m | Load Avg: 1.2        │
+│ Status: All systems operational         │
+└─────────────────────────────────────────┘`;
+            break;
+        case 'scan':
+            response = 'Running integrity check on GitHub repositories...';
+            break;
+        case 'monitor':
+            response = 'NOC Heartbeat: All systems nominal. Latency: 14ms.';
+            break;
+        case 'validate':
+            response = 'Auditing credentials... [Splunk: Validated] [Cisco: Validated].';
+            break;
+        case 'help':
+            response = 'Available commands: status, scan, monitor, validate, help, clear';
+            break;
+        default:
+            response = `Command '${sanitizeHTML(sanitizedCommand)}' not recognized. Type 'help' for available commands.`;
+    }
+    
+    if (response) {
+        const responseDiv = document.createElement('div');
+        responseDiv.style.color = '#00ff41';
+        responseDiv.style.whiteSpace = 'pre-line';
+        responseDiv.textContent = response;
+        terminalOutput.appendChild(responseDiv);
+    }
+}
+
+function processCoreCommand(event) {
+    if (event.key !== 'Enter') return;
+    
+    const input = event.target;
+    const command = sanitizeInput(input.value.toLowerCase().trim());
+    const output = document.getElementById('core-output');
+    
+    if (!output || !command) {
+        input.value = '';
+        return;
+    }
+    
+    const coreCommands = {
+        status: () => 'AI_HANDSHAKE: [REFACTORING] | LOGIC_CORE: [ACTIVE]',
+        scan: () => {
+            output.textContent = 'Analyzing system integrity...';
+            setTimeout(() => {
+                output.textContent = 'System Integrity: Optimal.';
+            }, 2000);
+            return null;
+        },
+        help: () => 'Available Commands: status, scan, help, clear',
+        clear: () => {
+            output.textContent = '';
+            return null;
+        }
+    };
+    
+    const handler = coreCommands[command];
+    if (handler) {
+        const result = handler();
+        if (result !== null) {
+            output.textContent = result;
+        }
+    } else {
+        output.textContent = `Command '${command}' not recognized. Type 'help' for available commands.`;
+    }
+    
+    input.value = '';
+}
+
+function calculateSubnet() {
+    const ipInput = document.getElementById('ip-input').value;
+    const cidrInput = parseInt(document.getElementById('cidr-input').value);
+    const output = document.getElementById('calc-output');
+    
+    if (!ipInput || isNaN(cidrInput) || cidrInput < 0 || cidrInput > 32) {
+        output.textContent = 'ERROR: Invalid IP address or CIDR notation';
+        return;
+    }
+    
+    const ipParts = ipInput.split('.').map(part => parseInt(part));
+    if (ipParts.length !== 4 || ipParts.some(part => isNaN(part) || part < 0 || part > 255)) {
+        output.textContent = 'ERROR: Invalid IP address format';
+        return;
+    }
+    
+    const ip = (ipParts[0] << 24) + (ipParts[1] << 16) + (ipParts[2] << 8) + ipParts[3];
+    const mask = (0xFFFFFFFF << (32 - cidrInput)) >>> 0;
+    const network = (ip & mask) >>> 0;
+    const broadcast = (network | (0xFFFFFFFF >>> cidrInput)) >>> 0;
+    const firstHost = network + 1;
+    const lastHost = broadcast - 1;
+    
+    const toIP = (num) => [(num >>> 24) & 0xFF, (num >>> 16) & 0xFF, (num >>> 8) & 0xFF, num & 0xFF].join('.');
+    
+    output.textContent = `SUBNET CALCULATION RESULTS:
+┌─────────────────────────────────────────┐
+│ Network Address: ${toIP(network).padEnd(15)} │
+│ Broadcast Address: ${toIP(broadcast).padEnd(13)} │
+│ First Host: ${toIP(firstHost).padEnd(20)} │
+│ Last Host: ${toIP(lastHost).padEnd(21)} │
+│ Total Hosts: ${(broadcast - network - 1).toString().padEnd(18)} │
+│ Subnet Mask: ${toIP(mask).padEnd(18)} │
+└─────────────────────────────────────────┘`;
+}
+
+// Network monitoring and mobile functions
+function updateNetworkLatency() {
+    const stats = document.querySelector('.latency-stats');
+    if (!stats) return;
+    
+    const spans = stats.querySelectorAll('span');
+    if (spans.length < 4) return;
+    
+    const min = Math.floor(Math.random() * 8) + 5;
+    const max = Math.floor(Math.random() * 10) + 25;
+    const avg = Math.floor(Math.random() * (max - min - 2)) + min + 1;
+    const jitter = Math.floor(Math.random() * 4) + 1;
+    
+    spans.forEach(span => {
+        span.classList.add('flicker');
+        setTimeout(() => span.classList.remove('flicker'), 150);
+    });
+    
+    spans[0].textContent = `Min: ${min}ms`;
+    spans[1].textContent = `Avg: ${avg}ms`;
+    spans[2].textContent = `Max: ${max}ms`;
+    spans[3].textContent = `Jitter: ${jitter}ms`;
+}
+
+function startNetworkMonitoring() {
+    updateNetworkLatency();
+    setInterval(updateNetworkLatency, 900);
+}
+
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+}
+
+function initializeMobileFeatures() {
+    if (isMobileDevice()) {
+        document.body.classList.add('mobile-device');
+        const nocHud = document.getElementById('noc-status-hud');
+        if (nocHud) {
+            nocHud.style.display = 'flex';
+            nocHud.style.visibility = 'visible';
+            nocHud.style.opacity = '1';
+        }
+        setTimeout(() => startNOCStatusHUD(), 500);
+    }
+}
+
+function initializeApplication() {
+    initializeMobileFeatures();
+    startNOCStatusHUD();
+    startHikariLiveMonitoring();
+    startHeartbeatMonitoring();
+    animateLatencyGraph();
+    startNetworkMonitoring();
+    updateClock();
+}
+
+document.addEventListener('DOMContentLoaded', initializeApplication);
+if (document.readyState === 'complete') {
+    initializeApplication();
+}
