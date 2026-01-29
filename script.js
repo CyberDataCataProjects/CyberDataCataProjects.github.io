@@ -26,7 +26,11 @@ function initiateEmail(event) {
         message.style.display = 'block';
         setTimeout(() => {
             message.style.display = 'none';
-            window.location.href = 'mailto:cyberdatacat@gmail.com';
+            if (event.target.textContent === 'LINKEDIN_SIGNAL') {
+                window.open('https://www.linkedin.com/in/jesel-kalogris-7617bb25a/', '_blank');
+            } else {
+                window.location.href = 'mailto:cyberdatacat@gmail.com';
+            }
         }, 1000);
     }
 }
