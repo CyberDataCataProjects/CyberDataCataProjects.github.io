@@ -430,6 +430,11 @@ body {
     60% { transform: translate(2px, 2px); filter: hue-rotate(270deg); }
     80% { transform: translate(2px, -2px); filter: hue-rotate(360deg); }
 }
+
+body {
+    color: #ffffff;
+    font-weight: 600;
+}
 .hikari-core {
     margin-top: 40px;
     border: 1px solid #00ff41;
@@ -464,7 +469,8 @@ body {
     flex: 1;
 }
 .core-output {
-    color: #00ff41;
+    color: #ffffff;
+    font-weight: 600;
     margin: 15px 0;
     text-align: left;
     min-height: 20px;
@@ -502,7 +508,8 @@ body {
     flex: 1;
 }
 .terminal-output {
-    color: #00ff41;
+    color: #ffffff;
+    font-weight: 600;
     margin: 10px 0;
     text-align: left;
     min-height: 20px;
@@ -703,7 +710,7 @@ body::after {
     margin: 8px 0;
     font-family: 'Courier New', monospace;
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .ai-log-entry::before {
@@ -770,7 +777,7 @@ body::after {
     white-space: pre-line;
     font-family: 'Courier New', monospace;
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
     background: rgba(0, 0, 0, 0.3);
     padding: 10px;
     border: 1px solid rgba(0, 255, 65, 0.3);
