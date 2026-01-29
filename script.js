@@ -259,6 +259,31 @@ function animateLatencyGraph() {
     }, 100);
 }
 
+// Live network latency monitoring
+function updateNetworkLatency() {
+    const stats = document.querySelector('.latency-stats');
+    if (!stats) return;
+    
+    const spans = stats.querySelectorAll('span');
+    if (spans.length < 4) return;
+    
+    // Generate realistic fluctuating values
+    const min = Math.floor(Math.random() * 8) + 5;  // 5-12ms
+    const max = Math.floor(Math.random() * 15) + 20; // 20-34ms
+    const avg = Math.floor((min + max) / 2 + (Math.random() * 6 - 3)); // Between min/max with variance
+    const jitter = Math.floor(Math.random() * 4) + 1; // 1-4ms
+    
+    spans[0].textContent = `Min: ${min}ms`;
+    spans[1].textContent = `Avg: ${avg}ms`;
+    spans[2].textContent = `Max: ${max}ms`;
+    spans[3].textContent = `Jitter: ${jitter}ms`;
+}
+
+function startNetworkMonitoring() {
+    updateNetworkLatency(); // Initial update
+    setInterval(updateNetworkLatency, 1500);
+}
+
 // Mobile detection and layout fixes
 function isMobileDevice() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
@@ -879,6 +904,7 @@ function initializeApplication() {
     startHeartbeatMonitoring();
     startBootLineSequence();
     animateLatencyGraph();
+    startNetworkMonitoring();
     updateClock();
 }
 
