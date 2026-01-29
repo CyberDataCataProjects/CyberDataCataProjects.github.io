@@ -86,29 +86,30 @@ body::before {
     }
 }
 
-/* CRT Vertical Scanline Effect */
+/* CRT Moving Scanlines Effect */
 body::after {
     content: '';
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 200%;
     background: repeating-linear-gradient(
         0deg,
         transparent,
         transparent 2px,
-        rgba(0, 255, 65, 0.05) 2px,
-        rgba(0, 255, 65, 0.05) 3px
+        rgba(0, 255, 65, 0.03) 2px,
+        rgba(0, 255, 65, 0.03) 4px
     );
     pointer-events: none;
     z-index: 9999;
-    animation: scanline 3s linear infinite;
+    animation: movingScanlines 8s linear infinite;
+    opacity: 0.4;
 }
 
-@keyframes scanline {
-    0% { top: -100%; }
-    100% { top: 100%; }
+@keyframes movingScanlines {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(0%); }
 }
 
 .content {
