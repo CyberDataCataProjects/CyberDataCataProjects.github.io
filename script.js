@@ -2,6 +2,52 @@
 let terminalLogs = [];
 let hikariMonitorInterval = null;
 let heartbeatInterval = null;
+let footerTypewriterInterval = null;
+let currentFooterMessageIndex = 0;
+
+// System logs for footer typewriter
+const systemLogs = [
+    '[SYSTEM] nmap scan complete... vulnerability assessment active',
+    '[SYSTEM] tcpdump capturing on eth0... packet analysis running',
+    '[SYSTEM] airodump-ng tracking BSSID... wireless audit in progress',
+    '[SYSTEM] wireshark analyzing packets... deep inspection enabled',
+    '[SYSTEM] maltego OSINT gathering... intelligence collection active',
+    '[SYSTEM] spiderfoot reconnaissance active... target enumeration running',
+    '[SYSTEM] kali linux terminal ready... penetration testing suite loaded',
+    '[SYSTEM] sudo privileges validated... administrative access confirmed',
+    '[SYSTEM] network topology mapped... infrastructure analysis complete',
+    '[SYSTEM] firewall rules updated... security perimeter reinforced'
+];
+
+function startFooterTypewriter() {
+    const footerElement = document.querySelector('.footer-scroll');
+    if (!footerElement) return;
+    
+    function typeMessage() {
+        const message = systemLogs[currentFooterMessageIndex];
+        let charIndex = 0;
+        
+        footerElement.textContent = '';
+        
+        function typeChar() {
+            if (charIndex < message.length) {
+                footerElement.textContent = message.substring(0, charIndex + 1) + '_';
+                charIndex++;
+                setTimeout(typeChar, 50);
+            } else {
+                footerElement.textContent = message;
+                setTimeout(() => {
+                    currentFooterMessageIndex = (currentFooterMessageIndex + 1) % systemLogs.length;
+                    typeMessage();
+                }, 2000);
+            }
+        }
+        
+        typeChar();
+    }
+    
+    typeMessage();
+}
 
 function sanitizeInput(input) {
     return input.replace(/[<>&"']/g, function(match) {
@@ -412,4 +458,5 @@ window.onload = function() {
     startHeartbeatMonitoring();
     startHikariLiveMonitoring();
     startBootLineSequence();
+    startFooterTypewriter();
 };
