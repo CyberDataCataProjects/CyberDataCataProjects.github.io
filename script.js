@@ -358,8 +358,11 @@ STATUS: Investigating upstream service`;
             output.textContent = '[!] CRITICAL: INITIATING SELF-DESTRUCT SEQUENCE...';
             document.body.classList.add('system-glitch');
             setTimeout(() => {
-                output.textContent = '[SYSTEM_FATAL] HIKARI CORE DELETED. REBOOT REQUIRED.';
+                output.textContent = '';
                 document.body.classList.remove('system-glitch');
+                setTimeout(() => {
+                    output.textContent = '[SYSTEM_FATAL] HIKARI CORE DELETED. REBOOT REQUIRED.';
+                }, 100);
             }, 3000);
         } else if (command === 'override') {
             document.documentElement.style.setProperty('--primary-color', '#ff0000');
