@@ -3,6 +3,11 @@ let terminalLogs = [];
 let hikariMonitorInterval = null;
 let heartbeatInterval = null;
 
+// Global variables
+let terminalLogs = [];
+let hikariMonitorInterval = null;
+let heartbeatInterval = null;
+
 // System logs for footer typewriter
 const systemLogs = [
     '[SYSTEM] nmap scan complete... vulnerability assessment active',
@@ -157,6 +162,47 @@ function typewriterEffect(element, text, speed = 50) {
     return timer;
 }
 
+// Boot line sequence for HIKARI identity
+function startBootLineSequence() {
+    const lines = [
+        '[ IDENTITY_ANALYSIS ]',
+        'NAME: HIKARI',
+        'DESIGNATION: Heuristic Interactive Knowledge Interface',
+        'MISSION: QA Validation & NOC Monitoring'
+    ];
+    
+    let index = 0;
+    
+    function addNextLine() {
+        if (index < lines.length) {
+            const lineElement = document.getElementById(`identity-line-${index + 1}`);
+            if (lineElement) {
+                typewriterEffect(lineElement, lines[index], 50);
+                lineElement.style.opacity = '0.6';
+            }
+            index++;
+            if (index < lines.length) {
+                setTimeout(addNextLine, 600);
+            } else {
+                setTimeout(() => {
+                    const coreInput = document.querySelector('.core-input');
+                    if (coreInput) {
+                        coreInput.style.display = 'flex';
+                        coreInput.style.opacity = '1';
+                    }
+                }, 600);
+            }
+        }
+    }
+    
+    const coreInput = document.querySelector('.core-input');
+    if (coreInput) {
+        coreInput.style.display = 'none';
+    }
+    
+    setTimeout(addNextLine, 1000);
+}
+
 function handleHikariCommand(input) {
     switch(input) {
         case 'scan':
@@ -245,11 +291,10 @@ function setupHikariTerminal() {
             terminalOutput.appendChild(commandDiv);
             
             // Process command
-            if (command === 'status') {
-                const statusDiv = document.createElement('div');
-                statusDiv.style.color = '#00ff41';
-                statusDiv.style.whiteSpace = 'pre-line';
-                statusDiv.textContent = `SYSTEM DIAGNOSTIC LOG:
+            let response = '';
+            switch(command) {
+                case 'status':
+                    response = `SYSTEM DIAGNOSTIC LOG:
 ┌─────────────────────────────────────────┐
 │ CPU: AMD Ryzen 9 7900X - OPERATIONAL   │
 │ Memory: 32GB DDR5 - 68% UTILIZATION    │
@@ -258,22 +303,42 @@ function setupHikariTerminal() {
 │ Uptime: 72h 14m - STABLE               │
 │ Threat Level: MINIMAL                   │
 └─────────────────────────────────────────┘`;
-                terminalOutput.appendChild(statusDiv);
-            } else if (command === 'scan') {
-                const scanDiv = document.createElement('div');
-                scanDiv.style.color = '#00ff41';
-                scanDiv.textContent = 'Initiating network scan... Updating latency metrics...';
-                terminalOutput.appendChild(scanDiv);
-                
-                // Trigger latency update animation
-                for (let i = 0; i < 5; i++) {
-                    setTimeout(() => updateNetworkLatency(), i * 300);
-                }
-            } else {
-                const errorDiv = document.createElement('div');
-                errorDiv.style.color = '#ff0000';
-                errorDiv.textContent = `Command '${command}' not recognized. Try 'status' or 'scan'.`;
-                terminalOutput.appendChild(errorDiv);
+                    break;
+                case 'scan':
+                    response = 'Initiating network scan... Updating latency metrics...';
+                    // Trigger latency update animation
+                    for (let i = 0; i < 5; i++) {
+                        setTimeout(() => updateNetworkLatency(), i * 300);
+                    }
+                    break;
+                case 'self-destruct':
+                    response = '[!] CRITICAL: INITIATING SELF-DESTRUCT SEQUENCE...';
+                    document.body.classList.add('screen-vibrate');
+                    setTimeout(() => {
+                        const warningDiv = document.createElement('div');
+                        warningDiv.style.color = '#ff0000';
+                        warningDiv.style.fontSize = '1.2em';
+                        warningDiv.textContent = '[WARNING] 5... 4... 3... 2... 1...';
+                        terminalOutput.appendChild(warningDiv);
+                    }, 1000);
+                    break;
+                case 'help':
+                    response = 'Available commands: status, scan, self-destruct, help, clear';
+                    break;
+                case 'clear':
+                    terminalOutput.innerHTML = '';
+                    event.target.value = '';
+                    return;
+                default:
+                    response = `Command '${command}' not recognized. Try 'help' for available commands.`;
+            }
+            
+            if (response) {
+                const responseDiv = document.createElement('div');
+                responseDiv.style.color = command === 'self-destruct' ? '#ff0000' : '#00ff41';
+                responseDiv.style.whiteSpace = 'pre-line';
+                responseDiv.textContent = response;
+                terminalOutput.appendChild(responseDiv);
             }
             
             // Clear input and scroll to bottom
@@ -1515,6 +1580,186 @@ function initializeApplication() {
     startNOCStatusHUD();
     startHikariLiveMonitoring();
     startHeartbeatMonitoring();
+    animateLatencyGraph();
+    startNetworkMonitoring();
+    setupHikariTerminal();
+    updateClock();
+}
+
+document.addEventListener('DOMContentLoaded', initializeApplication);
+if (document.readyState === 'complete') {
+    initializeApplication();
+}
+ {
+    const terminalInput = document.querySelector('.hikari-terminal .terminal-command');
+    const terminalOutput = document.getElementById('terminal-output');
+    
+    if (!terminalInput || !terminalOutput) return;
+    
+    terminalInput.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            const command = event.target.value.toLowerCase().trim();
+            
+            // Display command with typewriter effect
+            const commandDiv = document.createElement('div');
+            const commandSpan = document.createElement('span');
+            commandSpan.style.color = '#00ff41';
+            commandDiv.appendChild(commandSpan);
+            terminalOutput.appendChild(commandDiv);
+            
+            // Typewriter effect for command
+            typewriterEffect(commandSpan, `User@Hikari:~$ ${command}`, 30);
+            
+            // Process command after typewriter completes
+            setTimeout(() => {
+                let response = '';
+                let responseColor = '#00ff41';
+                
+                switch(command) {
+                    case 'status':
+                        response = `SYSTEM DIAGNOSTIC LOG:
+┌─────────────────────────────────────────┐
+│ CPU: AMD Ryzen 9 7900X - OPERATIONAL   │
+│ Memory: 32GB DDR5 - 68% UTILIZATION    │
+│ Network: GIGABIT - ACTIVE               │
+│ Security: IDS/IPS - MONITORING          │
+│ Uptime: 72h 14m - STABLE               │
+│ Threat Level: MINIMAL                   │
+└─────────────────────────────────────────┘`;
+                        break;
+                    case 'scan':
+                        response = 'Initiating network scan... Updating latency metrics...';
+                        // Trigger latency update animation
+                        for (let i = 0; i < 5; i++) {
+                            setTimeout(() => updateNetworkLatency(), i * 300);
+                        }
+                        break;
+                    case 'self-destruct':
+                        response = '[!] CRITICAL: INITIATING SELF-DESTRUCT SEQUENCE...';
+                        responseColor = '#ff0000';
+                        document.body.classList.add('screen-vibrate');
+                        setTimeout(() => {
+                            const warningDiv = document.createElement('div');
+                            warningDiv.style.color = '#ff0000';
+                            warningDiv.style.fontSize = '1.2em';
+                            terminalOutput.appendChild(warningDiv);
+                            typewriterEffect(warningDiv, '[WARNING] 5... 4... 3... 2... 1...', 100);
+                        }, 1000);
+                        break;
+                    case 'help':
+                        response = 'Available commands: status, scan, self-destruct, help, clear';
+                        break;
+                    case 'clear':
+                        terminalOutput.innerHTML = '';
+                        event.target.value = '';
+                        return;
+                    default:
+                        response = `Command '${command}' not recognized. Try 'help' for available commands.`;
+                        responseColor = '#ff0000';
+                }
+                
+                if (response) {
+                    const responseDiv = document.createElement('div');
+                    responseDiv.style.color = responseColor;
+                    responseDiv.style.whiteSpace = 'pre-line';
+                    terminalOutput.appendChild(responseDiv);
+                    
+                    // Typewriter effect for response
+                    typewriterEffect(responseDiv, response, 20);
+                }
+                
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            }, command.length * 30 + 100);
+            
+            // Clear input
+            event.target.value = '';
+        }
+    });
+}
+
+// Complete latency graph animation
+function animateLatencyGraph() {
+    const graph = document.querySelector('.latency-graph');
+    if (!graph) return;
+    
+    const line = document.createElement('div');
+    line.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 2px;
+        height: 60%;
+        background: #00ff41;
+        box-shadow: 0 0 10px #00ff41;
+        animation: latencyPulse 2s ease-in-out infinite;
+    `;
+    
+    graph.style.position = 'relative';
+    graph.appendChild(line);
+    
+    let position = 0;
+    const moveInterval = setInterval(() => {
+        position += 2;
+        line.style.left = position + 'px';
+        if (position >= graph.offsetWidth) {
+            position = -2;
+        }
+    }, 100);
+}
+
+// Network monitoring with flicker animation
+function updateNetworkLatency() {
+    const stats = document.querySelector('.latency-stats');
+    if (!stats) return;
+    
+    const spans = stats.querySelectorAll('span');
+    if (spans.length < 4) return;
+    
+    const min = Math.floor(Math.random() * 8) + 5;
+    const max = Math.floor(Math.random() * 10) + 25;
+    const avg = Math.floor(Math.random() * (max - min - 2)) + min + 1;
+    const jitter = Math.floor(Math.random() * 4) + 1;
+    
+    spans.forEach(span => {
+        span.classList.add('flicker');
+        setTimeout(() => span.classList.remove('flicker'), 150);
+    });
+    
+    spans[0].textContent = `Min: ${min}ms`;
+    spans[1].textContent = `Avg: ${avg}ms`;
+    spans[2].textContent = `Max: ${max}ms`;
+    spans[3].textContent = `Jitter: ${jitter}ms`;
+}
+
+function startNetworkMonitoring() {
+    updateNetworkLatency();
+    setInterval(updateNetworkLatency, 900);
+}
+
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+}
+
+function initializeMobileFeatures() {
+    if (isMobileDevice()) {
+        document.body.classList.add('mobile-device');
+        const nocHud = document.getElementById('noc-status-hud');
+        if (nocHud) {
+            nocHud.style.display = 'flex';
+            nocHud.style.visibility = 'visible';
+            nocHud.style.opacity = '1';
+        }
+        setTimeout(() => startNOCStatusHUD(), 500);
+    }
+}
+
+// Initialize application with all animations
+function initializeApplication() {
+    initializeMobileFeatures();
+    startNOCStatusHUD();
+    startHikariLiveMonitoring();
+    startHeartbeatMonitoring();
+    startBootLineSequence();
     animateLatencyGraph();
     startNetworkMonitoring();
     setupHikariTerminal();
