@@ -1,22 +1,23 @@
-/* Critical Mobile Fix - Force proper rendering */
-html {
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
+/* Mobile-First Responsive Design */
+* {
+    box-sizing: border-box;
 }
 
 body {
     background: #0b0e14;
     color: #ffffff;
     font-family: 'Courier New', monospace;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 600;
     text-align: center;
-    padding: 50px;
+    padding: 10px;
     margin: 0;
     position: relative;
     overflow-x: hidden;
-    padding-bottom: 40px;
+    padding-bottom: 60px;
     min-width: 320px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 body::before {
     content: '';
@@ -35,9 +36,174 @@ body::before {
     pointer-events: none;
     z-index: 1;
 }
+/* Responsive Container Styles */
 .content {
     position: relative;
     z-index: 2;
+    width: 100%;
+    max-width: 100%;
+}
+
+.system-clock {
+    position: static;
+    text-align: center;
+    color: #00ff41;
+    font-size: 0.8em;
+    margin: 10px 0;
+    z-index: 10;
+}
+
+.external-uplinks {
+    position: static;
+    margin: 20px auto;
+    border: 1px solid #00ff41;
+    padding: 15px;
+    background: rgba(0, 255, 65, 0.05);
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+    z-index: 10;
+    width: 100%;
+    max-width: 300px;
+}
+
+/* Section Responsive Styles */
+.bio-section, .section, .arsenal-section, .cert-section,
+.hikari-core, .hikari-terminal, .project-section,
+.ai-logic-subsystem, .subnet-calculator {
+    margin: 20px auto;
+    border: 1px solid #00ff41;
+    padding: 15px;
+    border-radius: 5px;
+    background: rgba(0, 255, 65, 0.05);
+    width: 100%;
+    max-width: 100%;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+    box-sizing: border-box;
+}
+
+/* Grid Responsive Styles */
+.arsenal-grid, .cert-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.arsenal-item, .cert-item {
+    border: 1px solid #00ff41;
+    padding: 10px;
+    background: rgba(0, 255, 65, 0.1);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-align: left;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+}
+
+/* Bio Row Responsive */
+.bio-row {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+    text-align: left;
+}
+
+.bio-row span:first-child {
+    color: #00ff41;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Terminal Responsive Styles */
+.terminal-input, .core-input {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+    gap: 5px;
+}
+
+.terminal-command, .core-command, .calc-field {
+    background: transparent;
+    border: 1px solid #00ff41;
+    color: #00ff41;
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    padding: 12px;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Calculator Responsive */
+.calc-input-row {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+    gap: 8px;
+}
+
+.calc-prompt {
+    color: #00ff41;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.calc-button {
+    background: rgba(0, 255, 65, 0.1);
+    border: 1px solid #00ff41;
+    color: #00ff41;
+    font-family: 'Courier New', monospace;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 44px;
+}
+
+/* Button Styles */
+.uplink-btn, .download-btn {
+    display: block;
+    color: #00ff41;
+    text-decoration: none;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #00ff41;
+    background: rgba(0, 255, 65, 0.1);
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* NOC Status HUD Mobile */
+.noc-status-hud {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: rgba(0, 20, 0, 0.9);
+    border-top: 1px solid #00ff00;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    z-index: 99999;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8em;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 h1 { 
     color: #00ff41; 
@@ -511,178 +677,24 @@ body {
     box-sizing: border-box;
 }
 
-/* Mobile-specific animations */
-@media (max-width: 768px) {
-    .system-glitch, .critical-meltdown {
-        animation: none;
-    }
-    
-    .scanline {
-        display: none;
-    }
-    
-    body::before, body::after {
-        display: none;
-    }
-}
-/* LinkedIn Mobile App Critical Fixes */
-@media (max-width: 768px) {
-    body {
-        padding: 5px !important;
-        font-size: 0.85rem !important;
-        margin: 0 !important;
-    }
-    
-    .content {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
-    h1 {
-        font-size: 1.2rem !important;
-        margin: 10px 0 !important;
-        flex-direction: column !important;
-        gap: 5px !important;
-    }
-    
-    .system-clock {
-        position: static !important;
-        text-align: center !important;
-        margin: 10px auto !important;
-        font-size: 0.7em !important;
-        width: 100% !important;
-        right: auto !important;
-        top: auto !important;
-    }
-    
-    .external-uplinks {
-        position: static !important;
-        margin: 10px auto !important;
-        width: 90% !important;
-        max-width: 280px !important;
-        min-width: auto !important;
-        right: auto !important;
-        top: auto !important;
-    }
-    
-    .bio-section, .section, .arsenal-section, .cert-section,
-    .hikari-core, .hikari-terminal, .project-section,
-    .ai-logic-subsystem, .subnet-calculator {
-        width: 95% !important;
-        max-width: 95% !important;
-        margin: 15px auto !important;
-        padding: 10px !important;
-        box-sizing: border-box !important;
-    }
-    
-    .bio-row {
-        flex-direction: column !important;
-        text-align: left !important;
-        margin: 8px 0 !important;
-    }
-    
-    .bio-row span:first-child {
-        min-width: auto !important;
-        margin-bottom: 3px !important;
-        display: block !important;
-        font-weight: bold !important;
-    }
-    
-    .arsenal-grid, .cert-grid {
-        grid-template-columns: 1fr !important;
-        gap: 8px !important;
-        margin-top: 15px !important;
-    }
-    
-    .arsenal-item, .cert-item {
-        padding: 8px !important;
-        text-align: left !important;
-        font-size: 0.8rem !important;
-        margin: 0 !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-    }
-    
-    .calc-input-row {
-        flex-direction: column !important;
-        align-items: stretch !important;
-        gap: 8px !important;
-        margin: 10px 0 !important;
-    }
-    
-    .calc-prompt {
-        min-width: auto !important;
-        text-align: left !important;
-        margin-bottom: 5px !important;
-    }
-    
-    .calc-field, .calc-button {
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 10px !important;
-        box-sizing: border-box !important;
-    }
-    
-    .terminal-input {
-        flex-direction: column !important;
-        gap: 5px !important;
-        margin: 10px 0 !important;
-    }
-    
-    .terminal-prompt {
-        margin: 0 0 5px 0 !important;
-    }
-    
-    .terminal-command, .core-command {
-        width: 100% !important;
-        padding: 10px !important;
-        box-sizing: border-box !important;
-    }
-    
-    .noc-status-hud {
-        padding: 0 5px !important;
-        font-size: 0.7em !important;
-        height: 35px !important;
-    }
-    
-    .uplink-btn {
-        font-size: 0.7em !important;
-        padding: 8px !important;
-        margin: 3px 0 !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-    }
-    
-    .wide-layout {
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
-    /* Hide problematic elements on mobile */
+/* Mobile Performance Optimizations */
+@media (max-width: 600px) {
     .scanline,
     body::before,
     body::after {
-        display: none !important;
+        display: none;
     }
     
-    /* Simplify animations */
     .system-glitch,
-    .critical-meltdown {
-        animation: none !important;
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        padding: 5px;
-        font-size: 0.8rem;
+    .critical-meltdown,
+    .app-container {
+        animation: none;
     }
     
     h1 {
         font-size: 1.3rem;
+        flex-direction: column;
+        gap: 8px;
     }
     
     h2 {
@@ -693,35 +705,129 @@ body {
         font-size: 1rem;
     }
     
-    .bio-section, .section, .arsenal-section, .cert-section,
+    .folder, .file {
+        padding: 12px;
+        margin: 8px 0;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .terminal-window, .log-content {
+        font-size: 0.9rem;
+        line-height: 1.4;
+        padding: 12px;
+    }
+    
+    .latency-stats {
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+        font-size: 0.8em;
+    }
+}
+/* Desktop Media Queries */
+@media (min-width: 600px) {
+    body {
+        padding: 30px;
+        font-size: 1.1rem;
+    }
+    
+    .system-clock {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        text-align: right;
+        margin: 0;
+    }
+    
+    .external-uplinks {
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        width: auto;
+        min-width: 200px;
+        max-width: 250px;
+    }
+    
+    .bio-section, .section {
+        max-width: 700px;
+    }
+    
+    .arsenal-section, .cert-section {
+        max-width: 1200px;
+        width: 95%;
+    }
+    
     .hikari-core, .hikari-terminal, .project-section,
     .ai-logic-subsystem, .subnet-calculator {
-        padding: 10px;
-        margin: 15px auto;
+        max-width: 800px;
     }
     
-    .uplink-btn {
-        font-size: 0.75em;
-        padding: 6px 8px;
+    .bio-row {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
     }
     
-    .arsenal-item, .cert-item {
-        padding: 8px;
-        font-size: 0.85em;
+    .bio-row span:first-child {
+        min-width: 160px;
+        margin-bottom: 0;
+    }
+    
+    .terminal-input, .core-input {
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .calc-input-row {
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .calc-prompt {
+        min-width: 120px;
+        margin-bottom: 0;
+    }
+    
+    .calc-field {
+        flex: 1;
+        margin-right: 10px;
+    }
+    
+    .calc-button {
+        width: auto;
+        padding: 8px 15px;
     }
 }
 
-@media (min-width: 769px) and (max-width: 1024px) {
+@media (min-width: 768px) {
     .arsenal-grid, .cert-grid {
         grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .bio-section, .section, .arsenal-section, .cert-section,
-    .hikari-core, .hikari-terminal, .project-section,
-    .ai-logic-subsystem, .subnet-calculator {
-        max-width: 90%;
+        gap: 15px;
     }
 }
+
+@media (min-width: 1024px) {
+    .arsenal-grid, .cert-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
+
+@media (min-width: 2000px) {
+    body {
+        padding: 50px;
+    }
+    
+    .wide-layout {
+        display: block;
+        max-width: 100%;
+        margin: 40px auto;
+    }
+}
+
 
 @media (min-width: 2000px) {
     .wide-layout {
