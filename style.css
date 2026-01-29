@@ -13,7 +13,7 @@ html {
     height: 100%;
 }
 
-/* Animated Background Effects */
+/* Animated Background Effects - Matrix Rain */
 body::before {
     content: '';
     position: fixed;
@@ -45,7 +45,7 @@ body {
     font-size: clamp(12px, 2.5vw, 14px);
     font-weight: 600;
     text-align: center;
-    padding: 80px 10px 10px 10px;
+    padding: 80px 10px 60px 10px;
     margin: 0;
     min-height: 100vh;
     overflow-x: hidden;
@@ -58,7 +58,7 @@ body {
 }
 
 /* CRT Horizontal Scanlines Overlay */
-body::before {
+body::after {
     content: '';
     position: fixed;
     top: 0;
@@ -112,55 +112,71 @@ body::after {
     100% { transform: translateY(0%); }
 }
 
-/* Main Content - CSS Grid Dashboard */
+/* Main Content - Original Layout */
 .content {
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-areas: 
-        "header"
-        "dashboard";
-    gap: 20px;
+    position: relative;
+    z-index: 2;
 }
 
 /* Header Section */
 .header-section {
-    grid-area: header;
     width: 100%;
+    margin-bottom: 30px;
 }
 
-/* Dashboard Grid - 2 Column Layout */
+/* Dashboard Grid - Original 2 Column */
 .dashboard-grid {
-    grid-area: dashboard;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-areas: 
-        "arsenal certifications";
     gap: 20px;
-    height: 600px;
+    align-items: start;
+    margin: 20px 0;
 }
 
-/* Left Column - Technical Arsenal */
+/* Left Column */
 .left-column {
-    grid-area: arsenal;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    height: 100%;
-    overflow: hidden;
 }
 
-/* Right Column - Certifications */
+/* Right Column */
 .right-column {
-    grid-area: certifications;
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+/* Floating Particles Effect */
+.content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
-    overflow: hidden;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, rgba(0, 255, 65, 0.3), transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(0, 255, 65, 0.2), transparent),
+        radial-gradient(1px 1px at 90px 40px, rgba(0, 255, 65, 0.4), transparent),
+        radial-gradient(1px 1px at 130px 80px, rgba(0, 255, 65, 0.2), transparent);
+    background-repeat: repeat;
+    background-size: 200px 100px;
+    animation: floatingParticles 15s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes floatingParticles {
+    0% { transform: translateY(0px) translateX(0px); }
+    25% { transform: translateY(-20px) translateX(10px); }
+    50% { transform: translateY(-40px) translateX(-5px); }
+    75% { transform: translateY(-20px) translateX(-10px); }
+    100% { transform: translateY(0px) translateX(0px); }
 }
 
 /* Headers with Phosphor Glow */
@@ -300,55 +316,89 @@ p {
     position: static;
 }
 
-/* Sections - Fixed Frame with Scrollable Content */
+/* Sections - Original Glassmorphism with Scanlines */
 .bio-section, .section, .arsenal-section, .cert-section,
 .hikari-core, .hikari-terminal, .project-section,
 .ai-logic-subsystem, .subnet-calculator {
+    margin: 15px auto;
     border: 1px solid #00ff41;
     padding: 12px;
     border-radius: 5px;
     background: rgba(0, 20, 0, 0.6);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    width: 100%;
+    max-width: 100%;
     box-shadow: 0 0 10px rgba(0, 255, 65, 0.1), 0 0 20px rgba(0, 255, 65, 0.05);
     position: relative;
     overflow: hidden;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
 }
 
-/* Arsenal Section - Fixed Frame */
-.arsenal-section {
-    grid-area: arsenal;
-    height: 100%;
-    overflow: hidden;
+/* Moving Scanlines Effect on Sections */
+.arsenal-section::after,
+.cert-section::after,
+.hikari-terminal::after,
+.hikari-core::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 255, 65, 0.015) 2px,
+        rgba(0, 255, 65, 0.015) 4px
+    );
+    pointer-events: none;
+    z-index: 1;
+    animation: containerScanlines 10s linear infinite;
+    opacity: 0.8;
 }
 
-/* Certification Section - Fixed Frame */
-.cert-section {
-    grid-area: certifications;
-    height: 100%;
-    overflow: hidden;
+@keyframes containerScanlines {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(0%); }
 }
 
-/* Arsenal Categories - Scrollable Content */
+/* Arsenal and Cert Sections - Scrollable */
+.arsenal-section, .cert-section {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Arsenal Categories - Original Grid */
 .arsenal-categories {
-    flex: 1;
-    overflow-y: auto;
-    padding-right: 5px;
+    display: block;
     margin-top: 15px;
 }
 
-/* Certification Categories - Scrollable Content */
+.arsenal-category {
+    margin-bottom: 20px;
+}
+
+.arsenal-items {
+    display: inline-grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+    width: 100%;
+}
+
+/* Certification Categories */
 .cert-categories {
-    flex: 1;
-    overflow-y: auto;
-    padding-right: 5px;
-    margin-top: 15px;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    margin-top: 15px;
+}
+
+.cert-grid {
+    display: inline-grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+    width: 100%;
 }
 
 /* Remove global scanline effect */
@@ -666,55 +716,99 @@ p {
     justify-content: center;
 }
 
-/* NOC Status HUD */
+/* NOC Status HUD - Fixed Bottom Bar */
 .noc-status-hud {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 40px;
-    background: rgba(0, 20, 0, 0.9);
+    height: 50px;
+    background: rgba(0, 20, 0, 0.95);
     border-top: 1px solid #00ff00;
     display: flex;
     align-items: center;
-    padding: 0 10px;
+    padding: 0 15px;
     z-index: 1000;
     font-family: 'Courier New', monospace;
     font-size: 11px;
-    overflow: hidden;
+    box-sizing: border-box;
+    min-height: 50px;
+    max-height: 50px;
 }
 
 .noc-status-text {
     color: #00ff00;
     white-space: nowrap;
-}
-
-/* Remove conflicting dashboard styles */
-.wide-layout {
-    display: none;
-}
-
-/* Arsenal Categories Layout */
-.arsenal-categories {
+    overflow: hidden;
+    width: calc(100% - 20px);
+    height: 20px;
+    line-height: 20px;
     display: block;
 }
 
-.arsenal-category {
-    margin-bottom: 20px;
+.noc-cursor {
+    color: #00ff00;
+    animation: blink 1s infinite;
+    margin-left: 5px;
 }
 
-.arsenal-category h3 {
-    color: #00ff41;
-    font-size: 14px;
-    margin: 0 0 12px 0;
-    text-align: left;
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
 }
 
-.arsenal-items {
-    display: inline-grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 8px;
-    width: 100%;
+/* Anime-style Glitch Effects */
+@keyframes glitchShift {
+    0%, 100% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+}
+
+.arsenal-skill:hover, .cert-item:hover {
+    border-color: #00ff41;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+    background: rgba(0, 255, 65, 0.1);
+    animation: glitchShift 0.3s ease-in-out;
+}
+
+/* Status dot animation */
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: #00ff41;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 5px;
+    animation: flicker 2s infinite;
+}
+
+@keyframes flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+/* Live Data Flicker Effect */
+.flicker {
+    animation: dataFlicker 0.2s ease-in-out;
+}
+
+@keyframes dataFlicker {
+    0% { opacity: 1; color: #00ff41; }
+    50% { opacity: 0.6; color: #ffffff; }
+    100% { opacity: 1; color: #00ff41; }
+}
+
+@keyframes latencyPulse {
+    0%, 100% { 
+        height: 60%;
+        box-shadow: 0 0 10px #00ff41;
+    }
+    50% { 
+        height: 80%;
+        box-shadow: 0 0 20px #00ff41;
+    }
 }
 
 /* Utility Classes */
@@ -806,30 +900,54 @@ hr {
     100% { transform: translateY(0px) translateX(0px); }
 }
 
-/* Mobile Optimization */
+/* Mobile Optimization - Force Animations */
 @media (max-width: 767px) {
-    .content {
-        grid-template-columns: 1fr;
-        grid-template-areas: 
-            "header"
-            "dashboard";
-    }
-    
     .dashboard-grid {
-        grid-template-columns: 1fr;
-        grid-template-areas: 
-            "arsenal"
-            "certifications";
-        height: auto;
+        display: block;
     }
     
     .left-column, .right-column {
-        height: 400px;
+        gap: 15px;
     }
     
     .arsenal-section, .cert-section {
         height: 400px;
+        margin: 15px 0;
     }
+    
+    body {
+        padding-top: 60px;
+        padding-bottom: 60px;
+        animation: crtFlicker 0.2s ease-in-out infinite alternate !important;
+    }
+    
+    /* Force all animations on mobile */
+    body::before {
+        display: block !important;
+        animation: matrixRain 20s linear infinite !important;
+        opacity: 0.8 !important;
+    }
+    
+    body::after {
+        display: block !important;
+        animation: scanline 3s linear infinite !important;
+        opacity: 0.6 !important;
+    }
+    
+    .content::before {
+        display: block !important;
+        animation: floatingParticles 15s linear infinite !important;
+        opacity: 0.4 !important;
+    }
+    
+    .arsenal-section::after,
+    .cert-section::after,
+    .hikari-terminal::after,
+    .hikari-core::after {
+        display: block !important;
+        animation: containerScanlines 10s linear infinite !important;
+    }
+}
     
     .cert-grid {
         grid-template-columns: repeat(2, 1fr);
