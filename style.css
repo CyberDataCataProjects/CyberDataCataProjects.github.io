@@ -706,7 +706,7 @@ body::after {
 }
 
 .ai-log-entry::before {
-    content: '> ';
+    content: '';
     color: #00ff41;
 }
 .subnet-calculator {
