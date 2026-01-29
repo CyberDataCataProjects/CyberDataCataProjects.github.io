@@ -19,9 +19,10 @@ const systemLogs = [
     '[SYSTEM] vulnerability scanner running... security assessment in progress'
 ];
 
-function startFooterTypewriter() {
-    const footerElement = document.querySelector('.system-footer-scroller .footer-scroll');
-    if (!footerElement) return;
+// NOC Status HUD System
+function startNOCStatusHUD() {
+    const statusText = document.getElementById('noc-status-text');
+    if (!statusText) return;
     
     let currentMessageIndex = 0;
     
@@ -29,20 +30,19 @@ function startFooterTypewriter() {
         const message = systemLogs[currentMessageIndex];
         let charIndex = 0;
         
-        footerElement.textContent = '';
+        statusText.textContent = '';
         
         function typeChar() {
             if (charIndex < message.length) {
-                footerElement.textContent = message.substring(0, charIndex + 1) + '_';
+                statusText.textContent = message.substring(0, charIndex + 1);
                 charIndex++;
                 setTimeout(typeChar, 30);
             } else {
-                footerElement.textContent = message + '_';
                 setTimeout(() => {
-                    footerElement.textContent = '';
+                    statusText.textContent = '';
                     currentMessageIndex = (currentMessageIndex + 1) % systemLogs.length;
                     setTimeout(typeMessage, 100);
-                }, 1500);
+                }, 2000);
             }
         }
         
@@ -50,6 +50,11 @@ function startFooterTypewriter() {
     }
     
     typeMessage();
+}
+
+function startFooterTypewriter() {
+    // Legacy function - now handled by NOC Status HUD
+    startNOCStatusHUD();
 }
 
 function sanitizeInput(input) {
@@ -292,8 +297,9 @@ const commandRegistry = {
 ┌─────────────────────────────────────────┐
 │ DESIGNATION: Adaptive Tactical Interface│
 │ CORE_ENGINE: Neural Logic Processing    │
-│ MEMORY_BANKS: 12+ Certification Modules │
+│ MEMORY_BANKS: 16+ Certification Modules │
 │ SPECIALIZATION: NOC Operations & QA     │
+│ AI_INTEGRATION: Amazon Q & GitHub Copilot│
 │ THREAT_ANALYSIS: Real-time Monitoring   │
 │ UPLINK_STATUS: Secure Channel Active    │
 │ OPERATOR: Jesel Kalogris               │
