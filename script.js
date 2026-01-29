@@ -240,7 +240,7 @@ const commandRegistry = {
 │ SYSTEM STATUS: All nodes operational    │
 │ AI Core: Offline (503) | Logic: Active │
 └─────────────────────────────────────────┘`,
-    help: () => 'Available commands: status, whoami, clear, scan, help, self-destruct, override, resume, monitor, validate, signal, audit, osi-check, osi-diag, osi-scan, map, ping',
+    help: () => 'Available commands: status, whoami, clear, scan, help, self-destruct, override, resume, monitor, validate, signal, audit, osi-check, osi-diag, osi-scan, map, ping [target]',
     'self-destruct': (terminalOutput) => {
         const warningDiv = document.createElement('div');
         warningDiv.textContent = '[!] CRITICAL: INITIATING SELF-DESTRUCT SEQUENCE...';
@@ -464,12 +464,10 @@ const commandRegistry = {
         pingDiv.style.color = '#00d4ff';
         terminalOutput.appendChild(pingDiv);
         
-        const replies = [
-            `64 bytes from ${target}: icmp_seq=1 ttl=64 time=12.4 ms`,
-            `64 bytes from ${target}: icmp_seq=2 ttl=64 time=11.8 ms`,
-            `64 bytes from ${target}: icmp_seq=3 ttl=64 time=13.2 ms`,
-            `64 bytes from ${target}: icmp_seq=4 ttl=64 time=12.1 ms`
-        ];
+        const latencies = [12.4, 11.8, 13.2, 12.1];
+        const replies = latencies.map((latency, i) => 
+            `64 bytes from ${target}: icmp_seq=${i+1} ttl=64 time=${latency} ms`
+        );
         
         let replyIndex = 0;
         const pingInterval = setInterval(() => {
@@ -482,24 +480,53 @@ const commandRegistry = {
                 replyIndex++;
             } else {
                 clearInterval(pingInterval);
+                const avgLatency = (latencies.reduce((a, b) => a + b, 0) / latencies.length).toFixed(1);
+                const minLatency = Math.min(...latencies).toFixed(1);
+                const maxLatency = Math.max(...latencies).toFixed(1);
                 const statsDiv = document.createElement('div');
-                statsDiv.textContent = `\n--- ${target} ping statistics ---\n4 packets transmitted, 4 received, 0% packet loss\nround-trip min/avg/max/stddev = 11.8/12.4/13.2/0.6 ms`;
+                statsDiv.textContent = `\n--- ${target} ping statistics ---\n4 packets transmitted, 4 received, 0% packet loss\nround-trip min/avg/max = ${minLatency}/${avgLatency}/${maxLatency} ms`;
                 statsDiv.style.color = '#00d4ff';
                 terminalOutput.appendChild(statsDiv);
             }
         }, 800);
         return null;
     },
-    'osi-scan': () => `OSI LAYER STATUS CHECK:
-[L1] PHYSICAL: Fiber Uplink OK
-[L2] DATA LINK: MAC Filtering ACTIVE
-[L3] NETWORK: IPv4/IPv6 Routing OPERATIONAL
-[L4] TRANSPORT: TCP/UDP Sessions ESTABLISHED
-[L5] SESSION: SSL/TLS Handshakes SECURED
-[L6] PRESENTATION: Data Encryption ENABLED
-[L7] APPLICATION: DNS Services OPERATIONAL
-
-ALL LAYERS: NOMINAL`,
+    'osi-scan': (terminalOutput) => {
+        const initDiv = document.createElement('div');
+        initDiv.textContent = 'INITIATING OSI MODEL DIAGNOSTIC SCAN...';
+        initDiv.style.color = '#00d4ff';
+        terminalOutput.appendChild(initDiv);
+        
+        const osiLayers = [
+            '[L1] PHYSICAL: CAT6 Connected',
+            '[L2] DATA LINK: Ethernet Frame Processing OK', 
+            '[L3] NETWORK: IPv4/IPv6 Routing Operational',
+            '[L4] TRANSPORT: TCP/UDP Sessions Active',
+            '[L5] SESSION: SSL/TLS Handshakes Secured',
+            '[L6] PRESENTATION: Data Encryption Enabled',
+            '[L7] APPLICATION: DNS/HTTP Services Online'
+        ];
+        
+        let layerIndex = 0;
+        const osiInterval = setInterval(() => {
+            if (layerIndex < osiLayers.length) {
+                const layerDiv = document.createElement('div');
+                layerDiv.textContent = osiLayers[layerIndex];
+                layerDiv.style.color = '#00ff41';
+                layerDiv.style.marginLeft = '15px';
+                terminalOutput.appendChild(layerDiv);
+                layerIndex++;
+            } else {
+                clearInterval(osiInterval);
+                const completeDiv = document.createElement('div');
+                completeDiv.textContent = '\nOSI SCAN COMPLETE: All 7 layers operational.';
+                completeDiv.style.color = '#00d4ff';
+                completeDiv.style.fontWeight = 'bold';
+                terminalOutput.appendChild(completeDiv);
+            }
+        }, 400);
+        return null;
+    },
     map: () => `ENTERPRISE NETWORK TOPOLOGY MAP:
 
     [INTERNET]
