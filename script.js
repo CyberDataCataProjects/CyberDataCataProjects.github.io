@@ -256,6 +256,32 @@ function animateLatencyGraph() {
             position = -2;
         }
     }, 100);
+}const graph = document.querySelector('.latency-graph');
+    if (!graph) return;
+    
+    const line = document.createElement('div');
+    line.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 2px;
+        height: 60%;
+        background: #00ff41;
+        box-shadow: 0 0 10px #00ff41;
+        animation: latencyPulse 2s ease-in-out infinite;
+    `;
+    
+    graph.style.position = 'relative';
+    graph.appendChild(line);
+    
+    let position = 0;
+    const moveInterval = setInterval(() => {
+        position += 2;
+        line.style.left = position + 'px';
+        if (position >= graph.offsetWidth) {
+            position = -2;
+        }
+    }, 100);
 }
 
 // Live network latency monitoring with realistic NOC values
@@ -1025,4 +1051,94 @@ function calculateSubnet() {
 │ Total Hosts: ${(broadcast - network - 1).toString().padEnd(18)} │
 │ Subnet Mask: ${toIP(mask).padEnd(18)} │
 └─────────────────────────────────────────┘`;
+}
+
+// Live network latency monitoring with realistic NOC values
+function updateNetworkLatency() {
+    const stats = document.querySelector('.latency-stats');
+    if (!stats) return;
+    
+    const spans = stats.querySelectorAll('span');
+    if (spans.length < 4) return;
+    
+    // Generate realistic NOC ranges (5-35ms)
+    const min = Math.floor(Math.random() * 8) + 5;   // 5-12ms
+    const max = Math.floor(Math.random() * 10) + 25; // 25-34ms
+    const avg = Math.floor(Math.random() * (max - min - 2)) + min + 1; // Between min+1 and max-1
+    const jitter = Math.floor(Math.random() * 4) + 1; // 1-4ms
+    
+    // Add flicker effect
+    spans.forEach(span => {
+        span.classList.add('flicker');
+        setTimeout(() => span.classList.remove('flicker'), 150);
+    });
+    
+    spans[0].textContent = `Min: ${min}ms`;
+    spans[1].textContent = `Avg: ${avg}ms`;
+    spans[2].textContent = `Max: ${max}ms`;
+    spans[3].textContent = `Jitter: ${jitter}ms`;
+}
+
+function startNetworkMonitoring() {
+    updateNetworkLatency();
+    setInterval(updateNetworkLatency, 900);
+}
+
+// Mobile detection and layout fixes
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+}
+
+function initializeMobileFeatures() {
+    if (isMobileDevice()) {
+        document.body.style.setProperty('--mobile-animations', 'enabled');
+        document.body.style.overflowY = 'auto';
+        document.body.style.webkitOverflowScrolling = 'touch';
+        
+        const nocHud = document.getElementById('noc-status-hud');
+        if (nocHud) {
+            nocHud.style.display = 'flex';
+            nocHud.style.visibility = 'visible';
+            nocHud.style.opacity = '1';
+        }
+        
+        setTimeout(() => {
+            startNOCStatusHUD();
+        }, 500);
+        
+        document.body.classList.add('mobile-device');
+    }
+}
+
+function applyMobileFixes() {
+    if (isMobileDevice()) {
+        document.body.classList.add('mobile-device');
+        
+        let viewport = document.querySelector('meta[name=viewport]');
+        if (viewport) {
+            viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes');
+        }
+    }
+}
+
+// Initialize application when page loads
+function initializeApplication() {
+    initializeMobileFeatures();
+    applyMobileFixes();
+    startNOCStatusHUD();
+    startHikariLiveMonitoring();
+    startHeartbeatMonitoring();
+    animateLatencyGraph();
+    startNetworkMonitoring();
+    updateClock();
+}
+
+// Single initialization point
+document.addEventListener('DOMContentLoaded', initializeApplication);
+if (document.readyState === 'complete') {
+    initializeApplication();
+} else if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeApplication);
+} else {
+    initializeApplication();
 }
