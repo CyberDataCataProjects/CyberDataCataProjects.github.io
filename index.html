@@ -149,7 +149,7 @@
     <section class="project-section">
         <h2>[ PROJECT_EXPLORER ]</h2>
         
-        <div class="folder" onclick="showLog('homelab-log')">
+        <div class="folder" onclick="toggleElement('homelab-log')">
             > HOME_LAB_AUDITS
         </div>
         <div id="homelab-log" class="log-content">
@@ -162,7 +162,7 @@
             ============================
         </div>
         <div id="homelab-files" class="files">
-            <div class="file" onclick="showTerminal('airodump-terminal')">
+            <div class="file" onclick="toggleElement('airodump-terminal')">
                 📄 airodump_scan.log
             </div>
             <div id="airodump-terminal" class="terminal-window">
@@ -175,7 +175,7 @@
                 <div class="download-btn">Download Report</div>
             </div>
             
-            <div class="file" onclick="showTerminal('nmap-terminal')">
+            <div class="file" onclick="toggleElement('nmap-terminal')">
                 📄 nmap_network_scan.xml
             </div>
             <div id="nmap-terminal" class="terminal-window">
@@ -189,11 +189,11 @@
             </div>
         </div>
         
-        <div class="folder" onclick="toggleFolder('packet-files')">
+        <div class="folder" onclick="toggleElement('packet-files')">
             > PACKET_ANALYSIS_LOGS
         </div>
         <div id="packet-files" class="files">
-            <div class="file" onclick="showTerminal('wireshark-terminal')">
+            <div class="file" onclick="toggleElement('wireshark-terminal')">
                 📄 suspicious_traffic.pcap
             </div>
             <div id="wireshark-terminal" class="terminal-window">
