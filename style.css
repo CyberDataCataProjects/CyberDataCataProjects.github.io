@@ -143,53 +143,61 @@ p {
     position: static;
 }
 
-/* External Uplinks - Glassmorphism */
+/* External Uplinks - Floating Sidebar */
 .external-uplinks {
-    margin: 15px auto;
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     border: 1px solid #00ff41;
-    padding: 15px;
-    border-radius: 5px;
-    background: rgba(0, 20, 0, 0.6);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    width: calc(100% - 20px);
-    max-width: 320px;
-    box-sizing: border-box;
-    position: static;
+    padding: 15px 10px;
+    border-radius: 8px;
+    background: rgba(0, 20, 0, 0.8);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+    z-index: 1000;
+    width: 60px;
 }
 
 .external-uplinks h3 {
-    margin: 0 0 10px 0;
-    font-size: 14px;
-    text-align: center;
+    display: none;
 }
 
 .uplink-btn {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: #00ff41;
     text-decoration: none;
-    padding: 12px 15px;
-    margin: 8px 0;
-    border: 1px solid #00ff41;
+    padding: 12px 8px;
+    margin: 0;
+    border: 1px solid rgba(0, 255, 65, 0.6);
     background: rgba(0, 20, 0, 0.6);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     text-align: center;
     font-family: 'Courier New', monospace;
-    font-size: 13px;
-    border-radius: 3px;
-    min-height: 44px;
-    box-sizing: border-box;
+    font-size: 10px;
+    border-radius: 6px;
+    min-height: 40px;
     width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
 }
 
 .uplink-btn:hover {
     background: rgba(0, 255, 65, 0.2);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.4);
+    border-color: #00ff41;
+    transform: scale(1.05);
 }
 
 /* Sections - Glassmorphism Effect */
@@ -562,6 +570,19 @@ hr {
     
     .arsenal-category h3 {
         font-size: clamp(11px, 3vw, 12px);
+    }
+    
+    /* Mobile sidebar adjustments */
+    .external-uplinks {
+        right: 10px;
+        width: 50px;
+        padding: 10px 5px;
+    }
+    
+    .uplink-btn {
+        font-size: 8px;
+        padding: 8px 4px;
+        min-height: 35px;
     }
     
     /* Reduce effects intensity on mobile */
