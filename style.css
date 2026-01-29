@@ -91,29 +91,38 @@ p {
 .external-uplinks {
     margin: 15px auto;
     border: 1px solid #00ff41;
-    padding: 10px;
+    padding: 15px;
     border-radius: 5px;
     background: rgba(0, 255, 65, 0.05);
-    max-width: 280px;
-    width: 100%;
+    width: calc(100% - 20px);
+    max-width: 320px;
+    box-sizing: border-box;
+}
+
+.external-uplinks h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    text-align: center;
 }
 
 .uplink-btn {
     display: block;
     color: #00ff41;
     text-decoration: none;
-    padding: 10px;
-    margin: 5px 0;
+    padding: 12px 15px;
+    margin: 8px 0;
     border: 1px solid #00ff41;
     background: rgba(0, 255, 65, 0.1);
     text-align: center;
     font-family: 'Courier New', monospace;
-    font-size: 12px;
+    font-size: 13px;
     border-radius: 3px;
-    min-height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    min-height: 44px;
+    box-sizing: border-box;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .uplink-btn:hover {
