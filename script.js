@@ -64,6 +64,12 @@ function sanitizeInput(input) {
     });
 }
 
+function sanitizeHTML(html) {
+    const div = document.createElement('div');
+    div.textContent = html;
+    return div.innerHTML;
+}
+
 function updateClock() {
     const now = new Date();
     const utc = now.toISOString().slice(0, 19).replace('T', ' ');
@@ -164,6 +170,7 @@ function handleHikariCommand(input) {
     }
 }
 
+generateHikariLogs.lastIndex = -1;
 function generateHikariLogs() {
     const hikariLogs = [
         { text: '[INFO] Monitoring packet flow... No anomalies detected.', type: 'intel' },
@@ -333,7 +340,15 @@ const commandRegistry = {
 └─────────────────────────────────────────┘`,
     signal: (terminalOutput) => {
         const linkDiv = document.createElement('div');
-        linkDiv.innerHTML = 'Establishing secure uplink... <a href="https://www.linkedin.com/in/jesel-kalogris-7617bb25a/" target="_blank" rel="noopener noreferrer" style="color: #00ff41; text-decoration: underline;">[LINKEDIN_SIGNAL]</a>';
+        linkDiv.textContent = 'Establishing secure uplink... ';
+        const link = document.createElement('a');
+        link.href = 'https://www.linkedin.com/in/jesel-kalogris-7617bb25a/';
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.style.color = '#00ff41';
+        link.style.textDecoration = 'underline';
+        link.textContent = '[LINKEDIN_SIGNAL]';
+        linkDiv.appendChild(link);
         linkDiv.style.color = '#00ff41';
         terminalOutput.appendChild(linkDiv);
         return null;
@@ -586,16 +601,16 @@ function handleCommand(command) {
     } else {
         const errorDiv = document.createElement('div');
         errorDiv.style.color = '#ff0000';
-        errorDiv.textContent = `Command '${sanitizedCommand}' not recognized. Type 'help' for available commands.`;
+        errorDiv.textContent = `Command '${sanitizeHTML(sanitizedCommand)}' not recognized. Type 'help' for available commands.`;
         terminalOutput.appendChild(errorDiv);
     }
     
-    // Limit DOM elements
-    const children = terminalOutput.children;
+    // Limit DOM elements safely
+    const children = Array.from(terminalOutput.children);
     if (children.length > 100) {
-        for (let i = 0; i < children.length - 100; i++) {
-            terminalOutput.removeChild(children[i]);
-        }
+        children.slice(0, children.length - 100).forEach(child => {
+            terminalOutput.removeChild(child);
+        });
     }
 }
 
