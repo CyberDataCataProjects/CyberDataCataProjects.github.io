@@ -2,13 +2,11 @@
 let terminalLogs = [];
 let hikariMonitorInterval = null;
 let heartbeatInterval = null;
-let footerTypewriterInterval = null;
-let currentFooterMessageIndex = 0;
 
 // System logs for footer typewriter
 const systemLogs = [
     '[SYSTEM] nmap scan complete... vulnerability assessment active',
-    '[SYSTEM] tcpdump capturing on eth0... packet analysis running',
+    '[SYSTEM] tcpdump capturing on eth0... packet analysis running', 
     '[SYSTEM] airodump-ng tracking BSSID... wireless audit in progress',
     '[SYSTEM] wireshark analyzing packets... deep inspection enabled',
     '[SYSTEM] maltego OSINT gathering... intelligence collection active',
@@ -16,16 +14,24 @@ const systemLogs = [
     '[SYSTEM] kali linux terminal ready... penetration testing suite loaded',
     '[SYSTEM] sudo privileges validated... administrative access confirmed',
     '[SYSTEM] network topology mapped... infrastructure analysis complete',
-    '[SYSTEM] firewall rules updated... security perimeter reinforced'
+    '[SYSTEM] firewall rules updated... security perimeter reinforced',
+    '[SYSTEM] intrusion detection active... monitoring for anomalies',
+    '[SYSTEM] vulnerability scanner running... security assessment in progress'
 ];
 
 function startFooterTypewriter() {
     const footerElement = document.querySelector('.footer-scroll');
     if (!footerElement) return;
     
+    let currentMessageIndex = 0;
+    let isTyping = false;
+    
     function typeMessage() {
-        const message = systemLogs[currentFooterMessageIndex];
+        if (isTyping) return;
+        
+        const message = systemLogs[currentMessageIndex];
         let charIndex = 0;
+        isTyping = true;
         
         footerElement.textContent = '';
         
@@ -33,13 +39,15 @@ function startFooterTypewriter() {
             if (charIndex < message.length) {
                 footerElement.textContent = message.substring(0, charIndex + 1) + '_';
                 charIndex++;
-                setTimeout(typeChar, 50);
+                setTimeout(typeChar, 30);
             } else {
-                footerElement.textContent = message;
+                footerElement.textContent = message + '_';
                 setTimeout(() => {
-                    currentFooterMessageIndex = (currentFooterMessageIndex + 1) % systemLogs.length;
-                    typeMessage();
-                }, 2000);
+                    footerElement.textContent = '';
+                    currentMessageIndex = (currentMessageIndex + 1) % systemLogs.length;
+                    isTyping = false;
+                    setTimeout(typeMessage, 100);
+                }, 1500);
             }
         }
         
