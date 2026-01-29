@@ -270,10 +270,12 @@ function handleCommand(command) {
             addToTerminalLogs(command, '[!] CRITICAL: INITIATING SELF-DESTRUCT SEQUENCE...', 'error');
             addToTerminalLogs(command, '[!] WARNING: 3... 2... 1...', 'error');
             document.body.classList.add('system-glitch');
+            document.body.classList.add('screen-shake');
             setTimeout(() => {
                 terminalLogs = [];
                 updateTerminalDisplay();
                 document.body.classList.remove('system-glitch');
+                document.body.classList.remove('screen-shake');
                 addToTerminalLogs('SYSTEM', '[SYSTEM_FATAL] HIKARI CORE DELETED. REBOOT REQUIRED.', 'error');
             }, 3000);
             return;
