@@ -112,38 +112,40 @@ body::after {
     100% { transform: translateY(0%); }
 }
 
-/* Main Content Grid - 2-Column Tactical Dashboard */
+/* Main Content - Professional 2-Column Dashboard */
 .content {
     width: 100%;
-    max-width: 100%;
+    max-width: 1400px;
     margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header Section - Full Width */
+.header-section {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+/* Dashboard Grid - 2 Column Layout */
+.dashboard-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
-    grid-template-areas:
-        "header header"
-        "left-col right-col";
+    align-items: start;
 }
 
-/* Header spans both columns */
-h1, hr, p {
-    grid-area: header;
-}
-
-/* Left Column */
+/* Left Column Sections */
 .left-column {
-    grid-area: left-col;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
 }
 
-/* Right Column */
+/* Right Column Sections */
 .right-column {
-    grid-area: right-col;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
 }
 
 /* Headers with Phosphor Glow */
@@ -749,17 +751,11 @@ hr {
 
 /* Mobile Optimization */
 @media (max-width: 767px) {
-    .content {
+    .dashboard-grid {
         display: block;
-        gap: 15px;
     }
     
     .left-column, .right-column {
-        display: block;
-    }
-    
-    .dashboard-grid {
-        display: block;
         gap: 15px;
     }
     
