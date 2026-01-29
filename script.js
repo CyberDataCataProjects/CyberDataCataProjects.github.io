@@ -228,9 +228,60 @@ function startHeartbeatMonitoring() {
     heartbeatInterval = setInterval(generateHeartbeat, 30000);
 }
 
-// Latency graph animation
-function animateLatencyGraph() {
-    const graph = document.querySelector('.latency-graph');
+// HIKARI Terminal Command Handler
+function setupHikariTerminal() {
+    const terminalInput = document.querySelector('.hikari-terminal .terminal-command');
+    const terminalOutput = document.getElementById('terminal-output');
+    
+    if (!terminalInput || !terminalOutput) return;
+    
+    terminalInput.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            const command = event.target.value.toLowerCase().trim();
+            
+            // Display command
+            const commandDiv = document.createElement('div');
+            commandDiv.innerHTML = `<span style="color: #00ff41;">User@Hikari:~$ ${command}</span>`;
+            terminalOutput.appendChild(commandDiv);
+            
+            // Process command
+            if (command === 'status') {
+                const statusDiv = document.createElement('div');
+                statusDiv.style.color = '#00ff41';
+                statusDiv.style.whiteSpace = 'pre-line';
+                statusDiv.textContent = `SYSTEM DIAGNOSTIC LOG:
+┌─────────────────────────────────────────┐
+│ CPU: AMD Ryzen 9 7900X - OPERATIONAL   │
+│ Memory: 32GB DDR5 - 68% UTILIZATION    │
+│ Network: GIGABIT - ACTIVE               │
+│ Security: IDS/IPS - MONITORING          │
+│ Uptime: 72h 14m - STABLE               │
+│ Threat Level: MINIMAL                   │
+└─────────────────────────────────────────┘`;
+                terminalOutput.appendChild(statusDiv);
+            } else if (command === 'scan') {
+                const scanDiv = document.createElement('div');
+                scanDiv.style.color = '#00ff41';
+                scanDiv.textContent = 'Initiating network scan... Updating latency metrics...';
+                terminalOutput.appendChild(scanDiv);
+                
+                // Trigger latency update animation
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => updateNetworkLatency(), i * 300);
+                }
+            } else {
+                const errorDiv = document.createElement('div');
+                errorDiv.style.color = '#ff0000';
+                errorDiv.textContent = `Command '${command}' not recognized. Try 'status' or 'scan'.`;
+                terminalOutput.appendChild(errorDiv);
+            }
+            
+            // Clear input and scroll to bottom
+            event.target.value = '';
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+    });
+}const graph = document.querySelector('.latency-graph');
     if (!graph) return;
     
     const line = document.createElement('div');
@@ -1374,6 +1425,99 @@ function initializeApplication() {
     startHeartbeatMonitoring();
     animateLatencyGraph();
     startNetworkMonitoring();
+    updateClock();
+}
+
+document.addEventListener('DOMContentLoaded', initializeApplication);
+if (document.readyState === 'complete') {
+    initializeApplication();
+}
+// Complete latency graph animation
+function animateLatencyGraph() {
+    const graph = document.querySelector('.latency-graph');
+    if (!graph) return;
+    
+    const line = document.createElement('div');
+    line.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 2px;
+        height: 60%;
+        background: #00ff41;
+        box-shadow: 0 0 10px #00ff41;
+        animation: latencyPulse 2s ease-in-out infinite;
+    `;
+    
+    graph.style.position = 'relative';
+    graph.appendChild(line);
+    
+    let position = 0;
+    const moveInterval = setInterval(() => {
+        position += 2;
+        line.style.left = position + 'px';
+        if (position >= graph.offsetWidth) {
+            position = -2;
+        }
+    }, 100);
+}
+
+// Network monitoring
+function updateNetworkLatency() {
+    const stats = document.querySelector('.latency-stats');
+    if (!stats) return;
+    
+    const spans = stats.querySelectorAll('span');
+    if (spans.length < 4) return;
+    
+    const min = Math.floor(Math.random() * 8) + 5;
+    const max = Math.floor(Math.random() * 10) + 25;
+    const avg = Math.floor(Math.random() * (max - min - 2)) + min + 1;
+    const jitter = Math.floor(Math.random() * 4) + 1;
+    
+    spans.forEach(span => {
+        span.classList.add('flicker');
+        setTimeout(() => span.classList.remove('flicker'), 150);
+    });
+    
+    spans[0].textContent = `Min: ${min}ms`;
+    spans[1].textContent = `Avg: ${avg}ms`;
+    spans[2].textContent = `Max: ${max}ms`;
+    spans[3].textContent = `Jitter: ${jitter}ms`;
+}
+
+function startNetworkMonitoring() {
+    updateNetworkLatency();
+    setInterval(updateNetworkLatency, 900);
+}
+
+// Mobile detection
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+}
+
+function initializeMobileFeatures() {
+    if (isMobileDevice()) {
+        document.body.classList.add('mobile-device');
+        const nocHud = document.getElementById('noc-status-hud');
+        if (nocHud) {
+            nocHud.style.display = 'flex';
+            nocHud.style.visibility = 'visible';
+            nocHud.style.opacity = '1';
+        }
+        setTimeout(() => startNOCStatusHUD(), 500);
+    }
+}
+
+// Initialize application
+function initializeApplication() {
+    initializeMobileFeatures();
+    startNOCStatusHUD();
+    startHikariLiveMonitoring();
+    startHeartbeatMonitoring();
+    animateLatencyGraph();
+    startNetworkMonitoring();
+    setupHikariTerminal();
     updateClock();
 }
 
