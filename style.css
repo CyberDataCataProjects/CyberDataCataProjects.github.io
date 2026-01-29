@@ -430,30 +430,97 @@ p {
     100% { transform: translateY(0%); }
 }
 
-/* Terminal and Other Sections - Standalone */
-.hikari-terminal, .subnet-calculator, .ai-logic-subsystem {
-    margin: 15px auto;
-    width: 100%;
-    max-width: 800px;
-    height: auto;
-    min-height: 200px;
-}
-
-/* Terminal Output - Scrollable */
-.terminal-output, .core-output, .calc-output {
-    color: #ffffff;
-    margin: 10px 0;
-    text-align: left;
-    font-size: 13px;
-    line-height: 1.4;
+/* Project Elements */
+.folder, .file {
+    border: 1px solid #00ff41;
+    padding: 10px;
+    margin: 5px 0;
     background: rgba(0, 20, 0, 0.6);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-    padding: 8px;
-    border: 1px solid rgba(0, 255, 65, 0.3);
+    cursor: pointer;
+    text-align: left;
     border-radius: 3px;
-    max-height: 200px;
-    overflow-y: auto;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.folder:hover, .file:hover {
+    border-color: #00ff41;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+    background: rgba(0, 255, 65, 0.1);
+}
+
+.files {
+    display: none;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.terminal-window, .log-content {
+    display: none;
+    border: 1px solid #00ff41;
+    background: #000000;
+    padding: 10px;
+    margin-top: 5px;
+    font-size: 12px;
+    color: #ffffff;
+    text-align: left;
+    line-height: 1.4;
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+}
+
+.download-btn {
+    background: rgba(0, 20, 0, 0.6);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid #00ff41;
+    color: #00ff41;
+    padding: 8px;
+    cursor: pointer;
+    margin-top: 5px;
+    border-radius: 3px;
+    min-height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.download-btn:hover {
+    background: rgba(0, 255, 65, 0.2);
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.4);
+}
+
+/* AI Logic Subsystem */
+.ai-log-entry {
+    color: #ffffff;
+    margin: 5px 0;
+    padding: 5px;
+    text-align: left;
+    font-size: 13px;
+    border-left: 2px solid #00ff41;
+    padding-left: 10px;
+    background: rgba(0, 255, 65, 0.05);
+}
+
+/* System Identity */
+.system-identity {
+    margin: 10px 0;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0, 255, 65, 0.3);
+}
+
+.identity-line {
+    color: #00ff41;
+    font-size: 11px;
+    margin: 2px 0;
+    text-align: left;
+    opacity: 0;
+    transition: opacity 0.5s ease;
 }
 
 /* Custom Neon Green Scrollbar */
@@ -757,6 +824,57 @@ p {
     51%, 100% { opacity: 0; }
 }
 
+/* Terminal and Other Sections - Standalone */
+.hikari-terminal, .subnet-calculator, .ai-logic-subsystem, .project-section, .hikari-core {
+    margin: 15px auto;
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    min-height: 200px;
+}
+
+/* Terminal Output - Scrollable */
+.terminal-output, .core-output, .calc-output {
+    color: #ffffff;
+    margin: 10px 0;
+    text-align: left;
+    font-size: 13px;
+    line-height: 1.4;
+    background: rgba(0, 20, 0, 0.6);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    padding: 8px;
+    border: 1px solid rgba(0, 255, 65, 0.3);
+    border-radius: 3px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* Terminal Input Styling */
+.terminal-input, .core-input {
+    display: block;
+    margin: 10px 0;
+}
+
+.terminal-prompt, .core-prompt {
+    color: #00ff41;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.terminal-command, .core-command, .calc-field {
+    background: transparent;
+    border: 1px solid #00ff41;
+    color: #00ff41;
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    padding: 10px;
+    outline: none;
+    width: 100%;
+    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(0, 255, 65, 0.2);
+}
+
 /* Anime-style Glitch Effects */
 @keyframes glitchShift {
     0%, 100% { transform: translate(0); }
@@ -809,6 +927,39 @@ p {
         height: 80%;
         box-shadow: 0 0 20px #00ff41;
     }
+}
+
+/* Calculator Styling */
+.calc-input-row {
+    display: block;
+    margin: 8px 0;
+}
+
+.calc-prompt {
+    color: #00ff41;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.calc-button {
+    background: rgba(0, 20, 0, 0.6);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid #00ff41;
+    color: #00ff41;
+    font-family: 'Courier New', monospace;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 5px;
+    border-radius: 3px;
+    min-height: 40px;
+    transition: all 0.3s ease;
+}
+
+.calc-button:hover {
+    background: rgba(0, 255, 65, 0.2);
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.4);
 }
 
 /* Utility Classes */

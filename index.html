@@ -230,6 +230,127 @@
             </section>
         </div>
     </div>
+    
+    <section class="project-section">
+        <h2>[ PROJECT_EXPLORER ]</h2>
+        
+        <div class="folder" onclick="toggleElement('homelab-log')">
+            > LAB_INFRA_HARDENING_v1
+        </div>
+        <div id="homelab-log" class="log-content">
+            ===== TECHNICAL REPORT =====<br>
+            PROJECT: LAB_INFRA_HARDENING_v1<br>
+            DESCRIPTION: Configured an isolated Kali Linux environment secured by NordVPN and Proxy chains. Simulated an enterprise DMZ for safe vulnerability testing<br>
+            HARDWARE: AMD Ryzen 9 7900X (12-Core) processing node<br>
+            SECURITY_LAYERS: L7 Application (VPN/Proxy), L3 Network (CIDR Subnetting)<br>
+            STATUS: OPERATIONAL<br>
+            ============================
+        </div>
+        
+        <div class="folder" onclick="toggleElement('azure-monitoring-log')">
+            > AZURE_NODE_MONITORING
+        </div>
+        <div id="azure-monitoring-log" class="log-content">
+            ===== AZURE MONITORING REPORT =====<br>
+            REPORT_ID: AZ-MON-2024-001<br>
+            ACTIVITY: Enterprise Azure Infrastructure Health Monitoring<br>
+            TOOLS: Azure Monitor, Cost Management, Resource Health Dashboard<br>
+            SCOPE: 47 Virtual Machines, 12 Storage Accounts, 8 SQL Databases<br>
+            FINDINGS: Implemented real-time alerting for CPU >85%, Memory >90%, Disk I/O anomalies<br>
+            COST_OPTIMIZATION: Identified $2,400/month savings through rightsizing recommendations<br>
+            UPTIME: Achieved 99.97% availability through proactive monitoring and auto-scaling<br>
+            OSI_LAYERS: L3 (Network IP Routing), L4 (Transport Load Balancing), L7 (Application Health Checks)<br>
+            STATUS: OPERATIONAL - 24/7 NOC monitoring established<br>
+            =====================================
+        </div>
+        
+        <div class="folder" onclick="toggleElement('homelab-files')">
+            > HOMELAB_FILES
+        </div>
+        <div id="homelab-files" class="files">
+            <div class="file" onclick="toggleElement('airodump-terminal')">
+                📄 airodump_scan.log
+            </div>
+            <div id="airodump-terminal" class="terminal-window">
+                <strong>[WIRELESS AUDIT REPORT]</strong><br>
+                Using Alfa AWUS036ACS adapter with Ryzen 9 7900X processing power:<br>
+                - Captured 47 wireless networks in 2.4GHz/5GHz bands<br>
+                - Identified WEP vulnerabilities in 3 legacy networks<br>
+                - Documented WPS-enabled access points for penetration testing<br>
+                - Generated comprehensive BSSID mapping for security assessment
+                <div class="download-btn">Download Report</div>
+            </div>
+            
+            <div class="file" onclick="toggleElement('nmap-terminal')">
+                📄 nmap_network_scan.xml
+            </div>
+            <div id="nmap-terminal" class="terminal-window">
+                <strong>[NETWORK RECONNAISSANCE]</strong><br>
+                Multi-threaded Nmap scan utilizing 12-core Ryzen architecture:<br>
+                - Scanned 254 hosts across multiple subnets<br>
+                - Identified 23 open services requiring security review<br>
+                - Detected outdated SSH versions on 5 critical servers<br>
+                - Mapped network topology for vulnerability assessment
+                <div class="download-btn">Download Report</div>
+            </div>
+            
+            <div class="file" onclick="toggleElement('azure-terminal')">
+                📄 azure_node_monitoring.json
+            </div>
+            <div id="azure-terminal" class="terminal-window">
+                <strong>[AZURE CLOUD MONITORING]</strong><br>
+                Leveraging Azure Management & Deployment Tools certification:<br>
+                - Configured Azure Monitor for 24/7 cloud resource health tracking<br>
+                - Implemented cost management alerts using Azure Cost Management expertise<br>
+                - Deployed automated scaling policies for optimal resource utilization<br>
+                - Established security compliance monitoring across all Azure nodes<br>
+                - Generated real-time dashboards for NOC-level cloud infrastructure oversight
+                <div class="download-btn">Download Report</div>
+            </div>
+        </div>
+        
+        <div class="folder" onclick="toggleElement('packet-files')">
+            > PACKET_ANALYSIS_LOGS
+        </div>
+        <div id="packet-files" class="files">
+            <div class="file" onclick="toggleElement('wireshark-terminal')">
+                📄 suspicious_traffic.pcap
+            </div>
+            <div id="wireshark-terminal" class="terminal-window">
+                <strong>[TRAFFIC ANALYSIS]</strong><br>
+                Utilized Wireshark to monitor TCP/UDP traffic on my Ryzen 9 node. Successfully identified and resolved a Layer-4 congestion issue by optimizing packet window sizes.<br>
+                - Analyzed 2.3GB of network traffic over 4-hour period<br>
+                - Identified potential data exfiltration attempts<br>
+                - Documented anomalous DNS queries to suspicious domains<br>
+                - Created visual network flow diagrams for incident response
+                <div class="download-btn">Download Report</div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="ai-logic-subsystem">
+        <h2>[ AI_LOGIC_SUBSYSTEM ]</h2>
+        <div class="ai-log-entry">Amazon Q Developer: Rapid JavaScript function generation and terminal command logic optimization</div>
+        <div class="ai-log-entry">GitHub Copilot: HTML structure suggestions and cybersecurity-themed styling assistance</div>
+        <div class="ai-log-entry">AI-assisted debugging: Terminal interfaces and real-time system monitoring functions</div>
+        <div class="ai-log-entry">Development efficiency: 70% faster cycle with AI-optimized code quality</div>
+    </section>
+    
+    <section class="hikari-core">
+        <h2>[ HIKARI_CORE_v1.0 ]</h2>
+        <div class="system-identity" id="system-identity">
+            <div class="identity-line" id="identity-line-1">[ SYSTEM_IDENTITY ]</div>
+            <div class="identity-line" id="identity-line-2">NAME: HIKARI</div>
+            <div class="identity-line" id="identity-line-3">DESIGNATION: Heuristic Interactive Knowledge & Analysis Response Interface</div>
+            <div class="identity-line" id="identity-line-4">ROLE: Adaptive QA Intelligence & NOC Monitor</div>
+            <div class="identity-line" id="identity-line-5">MISSION: Oversee system integrity, validate credentials, monitor network health</div>
+        </div>
+        <div class="core-input">
+            <span class="core-prompt">Operator@Hikari:~$</span>
+            <input type="text" class="core-command" onkeypress="processCoreCommand(event)" placeholder="Type 'help' for commands...">
+        </div>
+        <div id="core-output" class="core-output"></div>
+    </section>
 </div>
 
 </div>
