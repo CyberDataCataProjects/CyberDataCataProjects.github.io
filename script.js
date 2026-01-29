@@ -228,6 +228,37 @@ function startHeartbeatMonitoring() {
     heartbeatInterval = setInterval(generateHeartbeat, 30000);
 }
 
+// Latency graph animation
+function animateLatencyGraph() {
+    const graph = document.querySelector('.latency-graph');
+    if (!graph) return;
+    
+    const line = document.createElement('div');
+    line.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 2px;
+        height: 60%;
+        background: #00ff41;
+        box-shadow: 0 0 10px #00ff41;
+        animation: latencyPulse 2s ease-in-out infinite;
+    `;
+    
+    graph.style.position = 'relative';
+    graph.appendChild(line);
+    
+    // Animate the line across the graph
+    let position = 0;
+    const moveInterval = setInterval(() => {
+        position += 2;
+        line.style.left = position + 'px';
+        if (position >= graph.offsetWidth) {
+            position = -2;
+        }
+    }, 100);
+}
+
 // Mobile detection and layout fixes
 function isMobileDevice() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
@@ -236,17 +267,41 @@ function isMobileDevice() {
 // Force animations and NOC status on mobile
 function initializeMobileFeatures() {
     if (isMobileDevice()) {
-        // Ensure NOC status HUD starts
-        setTimeout(() => {
-            startNOCStatusHUD();
-        }, 1000);
-        
-        // Force enable animations
+        // Force enable all animations
         document.body.style.setProperty('--mobile-animations', 'enabled');
         
         // Ensure proper scrolling
         document.body.style.overflowY = 'auto';
         document.body.style.webkitOverflowScrolling = 'touch';
+        
+        // Force NOC status HUD visibility
+        const nocHud = document.getElementById('noc-status-hud');
+        if (nocHud) {
+            nocHud.style.display = 'flex';
+            nocHud.style.visibility = 'visible';
+            nocHud.style.opacity = '1';
+        }
+        
+        // Force start NOC status with delay
+        setTimeout(() => {
+            startNOCStatusHUD();
+        }, 500);
+        
+        // Add mobile class for CSS targeting
+        document.body.classList.add('mobile-device');
+        
+        // Force animations by adding CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            .mobile-device body::before,
+            .mobile-device body::after,
+            .mobile-device .system-header::after,
+            .mobile-device .content::before {
+                animation-play-state: running !important;
+                display: block !important;
+            }
+        `;
+        document.head.appendChild(style);
     }
 }
 
@@ -823,12 +878,15 @@ function initializeApplication() {
     startHikariLiveMonitoring();
     startHeartbeatMonitoring();
     startBootLineSequence();
+    animateLatencyGraph();
     updateClock();
 }
 
 // Single initialization point
 document.addEventListener('DOMContentLoaded', initializeApplication);
-if (document.readyState === 'loading') {
+if (document.readyState === 'complete') {
+    initializeApplication();
+} else if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeApplication);
 } else {
     initializeApplication();
