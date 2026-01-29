@@ -240,7 +240,7 @@ const commandRegistry = {
 │ SYSTEM STATUS: All nodes operational    │
 │ AI Core: Offline (503) | Logic: Active │
 └─────────────────────────────────────────┘`,
-    help: () => 'Available commands: status, whoami, clear, scan, help, self-destruct, override, resume, monitor, validate, signal, audit, osi-check',
+    help: () => 'Available commands: status, whoami, clear, scan, help, self-destruct, override, resume, monitor, validate, signal, audit, osi-check, osi-diag',
     'self-destruct': (terminalOutput) => {
         const warningDiv = document.createElement('div');
         warningDiv.textContent = '[!] CRITICAL: INITIATING SELF-DESTRUCT SEQUENCE...';
@@ -421,6 +421,38 @@ const commandRegistry = {
                 terminalOutput.appendChild(completeDiv);
             }
         }, 500);
+        return null;
+    },
+    'osi-diag': (terminalOutput) => {
+        const initDiv = document.createElement('div');
+        initDiv.textContent = 'INITIATING OSI LAYER DIAGNOSTICS...';
+        initDiv.style.color = '#00d4ff';
+        terminalOutput.appendChild(initDiv);
+        
+        const diagLayers = [
+            '[L1] PHYSICAL: Fiber/Twisted-Pair Link... [CONNECTED]',
+            '[L3] NETWORK: IPv4/IPv6 Routing Table... [VALIDATED]',
+            '[L7] APPLICATION: DNS Services & VPN Tunnel... [OPERATIONAL]'
+        ];
+        
+        let diagIndex = 0;
+        const diagInterval = setInterval(() => {
+            if (diagIndex < diagLayers.length) {
+                const layerDiv = document.createElement('div');
+                layerDiv.textContent = diagLayers[diagIndex];
+                layerDiv.style.color = '#00ff41';
+                layerDiv.style.marginLeft = '10px';
+                terminalOutput.appendChild(layerDiv);
+                diagIndex++;
+            } else {
+                clearInterval(diagInterval);
+                const completeDiv = document.createElement('div');
+                completeDiv.textContent = '\nDIAGNOSTIC COMPLETE: Critical OSI layers operational.';
+                completeDiv.style.color = '#00d4ff';
+                completeDiv.style.fontWeight = 'bold';
+                terminalOutput.appendChild(completeDiv);
+            }
+        }, 400);
         return null;
     }
 };
