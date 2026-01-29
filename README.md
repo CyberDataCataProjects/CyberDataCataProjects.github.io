@@ -1,9 +1,16 @@
 # Jesel Kalogris | Cybersecurity Portfolio
 
+![Security Scan](https://github.com/CyberDataCataProjects/CyberDataCataProjects.github.io/actions/workflows/codeql-analysis.yml/badge.svg)
+![Deploy Status](https://github.com/CyberDataCataProjects/CyberDataCataProjects.github.io/actions/workflows/static.yml/badge.svg)
+
 Professional NOC Operations & QA Testing Dashboard showcasing technical expertise and certifications.
 
-## Features
+## 🛡️ Technical Highlights & Professional Habits
+- **Security-First Development:** Integrated [GitHub CodeQL](https://github.com/CyberDataCataProjects/CyberDataCataProjects.github.io/security) for automated vulnerability scanning and threat detection.
+- **Sustained Effort:** Developed through 100+ iterative commits and 70+ automated deployments.
+- **Proactive Hardening:** Successfully patched XSS vulnerabilities and implemented secure error handling.
 
+## Features
 - Interactive cybersecurity terminal interface
 - Real-time system monitoring dashboard
 - Project explorer with technical reports
@@ -11,17 +18,13 @@ Professional NOC Operations & QA Testing Dashboard showcasing technical expertis
 - Responsive design for ultrawide displays
 
 ## Technologies
-
-- HTML5
-- CSS3 (Cybersecurity theme with Matrix green aesthetics)
+- HTML5 / CSS3 (Matrix-themed aesthetics)
 - Vanilla JavaScript
-- Interactive terminal emulation
+- GitHub Actions (CI/CD & Security Scanning)
 
 ## Live Demo
-
-Visit the live portfolio at: [Your GitHub Pages URL]
+Visit the live portfolio at: [https://cyberdatacataprojects.github.io/](https://cyberdatacataprojects.github.io/)
 
 ## Contact
-
-- LinkedIn: [Jesel Kalogris](https://www.linkedin.com/in/jesel-kalogris-7617bb25a/)
+- LinkedIn: [Jesel Kalogris](https://www.linkedin.com/in/jesel-kalogris/)
 - Email: cyberdatacat@gmail.com
