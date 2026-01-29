@@ -112,40 +112,55 @@ body::after {
     100% { transform: translateY(0%); }
 }
 
-/* Main Content - Professional 2-Column Dashboard */
+/* Main Content - CSS Grid Dashboard */
 .content {
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+        "header"
+        "dashboard";
+    gap: 20px;
 }
 
-/* Header Section - Full Width */
+/* Header Section */
 .header-section {
+    grid-area: header;
     width: 100%;
-    margin-bottom: 30px;
 }
 
 /* Dashboard Grid - 2 Column Layout */
 .dashboard-grid {
+    grid-area: dashboard;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+        "arsenal certifications";
     gap: 20px;
-    align-items: start;
+    height: 600px;
 }
 
-/* Left Column Sections */
+/* Left Column - Technical Arsenal */
 .left-column {
+    grid-area: arsenal;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    height: 100%;
+    overflow: hidden;
 }
 
-/* Right Column Sections */
+/* Right Column - Certifications */
 .right-column {
+    grid-area: certifications;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    height: 100%;
+    overflow: hidden;
 }
 
 /* Headers with Phosphor Glow */
@@ -285,24 +300,55 @@ p {
     position: static;
 }
 
-/* Sections - Glassmorphism Effect with CRT Glow */
+/* Sections - Fixed Frame with Scrollable Content */
 .bio-section, .section, .arsenal-section, .cert-section,
 .hikari-core, .hikari-terminal, .project-section,
 .ai-logic-subsystem, .subnet-calculator {
-    margin: 15px auto;
     border: 1px solid #00ff41;
     padding: 12px;
     border-radius: 5px;
     background: rgba(0, 20, 0, 0.6);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    width: 100%;
-    max-width: 100%;
     box-shadow: 0 0 10px rgba(0, 255, 65, 0.1), 0 0 20px rgba(0, 255, 65, 0.05);
-    height: auto;
-    min-height: auto;
     position: relative;
     overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Arsenal Section - Fixed Frame */
+.arsenal-section {
+    grid-area: arsenal;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Certification Section - Fixed Frame */
+.cert-section {
+    grid-area: certifications;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Arsenal Categories - Scrollable Content */
+.arsenal-categories {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+    margin-top: 15px;
+}
+
+/* Certification Categories - Scrollable Content */
+.cert-categories {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 /* Remove global scanline effect */
@@ -334,9 +380,29 @@ p {
     100% { transform: translateY(0%); }
 }
 
-/* Terminal and Certification Scrolling */
-.hikari-terminal, .cert-section {
-    max-height: 400px;
+/* Terminal and Other Sections - Standalone */
+.hikari-terminal, .subnet-calculator, .ai-logic-subsystem {
+    margin: 15px auto;
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    min-height: 200px;
+}
+
+/* Terminal Output - Scrollable */
+.terminal-output, .core-output, .calc-output {
+    color: #ffffff;
+    margin: 10px 0;
+    text-align: left;
+    font-size: 13px;
+    line-height: 1.4;
+    background: rgba(0, 20, 0, 0.6);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    padding: 8px;
+    border: 1px solid rgba(0, 255, 65, 0.3);
+    border-radius: 3px;
+    max-height: 200px;
     overflow-y: auto;
 }
 
@@ -623,40 +689,31 @@ p {
     white-space: nowrap;
 }
 
-/* Dashboard Grid Layout */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    align-items: stretch;
-    width: 100%;
-    margin: 20px 0;
-}
-
-/* Arsenal and Certification Sections - Equal Height */
-.arsenal-section, .cert-section {
-    margin: 0;
-    height: 600px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Arsenal Categories - Scrollable Content */
-.arsenal-categories {
-    flex: 1;
-    overflow-y: auto;
-    padding-right: 5px;
-}
-
-/* Certification Categories - Scrollable Content */
-.cert-categories {
-    flex: 1;
-    overflow-y: auto;
-    padding-right: 5px;
-}
-
+/* Remove conflicting dashboard styles */
 .wide-layout {
+    display: none;
+}
+
+/* Arsenal Categories Layout */
+.arsenal-categories {
+    display: block;
+}
+
+.arsenal-category {
+    margin-bottom: 20px;
+}
+
+.arsenal-category h3 {
+    color: #00ff41;
+    font-size: 14px;
+    margin: 0 0 12px 0;
+    text-align: left;
+}
+
+.arsenal-items {
+    display: inline-grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
     width: 100%;
 }
 
@@ -751,17 +808,27 @@ hr {
 
 /* Mobile Optimization */
 @media (max-width: 767px) {
+    .content {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "header"
+            "dashboard";
+    }
+    
     .dashboard-grid {
-        display: block;
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "arsenal"
+            "certifications";
+        height: auto;
     }
     
     .left-column, .right-column {
-        gap: 15px;
+        height: 400px;
     }
     
     .arsenal-section, .cert-section {
         height: 400px;
-        margin: 15px 0;
     }
     
     .cert-grid {
@@ -859,84 +926,27 @@ hr {
 
 /* Desktop Layout Enhancements */
 @media (min-width: 768px) {
-    h1 {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 15px;
-        font-size: 24px;
+    .content {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "header"
+            "dashboard";
     }
     
-    .system-clock {
-        text-align: right;
-        margin: 10px 0;
+    .dashboard-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: 
+            "arsenal certifications";
+        height: 600px;
     }
     
-    .external-uplinks {
-        max-width: 250px;
+    .left-column, .right-column {
+        height: 100%;
     }
     
-    .bio-section, .section {
-        max-width: 700px;
+    .arsenal-section, .cert-section {
+        height: 100%;
     }
-    
-    .hikari-core, .hikari-terminal, .project-section,
-    .ai-logic-subsystem, .subnet-calculator {
-        max-width: 800px;
-    }
-    
-    .bio-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    
-    .bio-row span:first-child {
-        min-width: 160px;
-        margin-bottom: 0;
-    }
-    
-    .arsenal-categories {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 15px;
-    }
-    
-    .arsenal-items {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    }
-    
-    .terminal-input, .core-input {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    
-    .terminal-prompt, .core-prompt {
-        margin-bottom: 0;
-        margin-right: 10px;
-    }
-    
-    .calc-input-row {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    
-    .calc-prompt {
-        min-width: 120px;
-        margin-bottom: 0;
-    }
-    
-    .calc-field {
-        flex: 1;
-    }
-    
-    .calc-button {
-        width: auto;
-        margin-top: 0;
-    }
-}
 
 /* Dashboard Grid for Large Screens */
 @media (min-width: 1200px) {
