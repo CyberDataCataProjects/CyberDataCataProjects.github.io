@@ -117,14 +117,17 @@ h3 {
     margin-top: 40px;
     padding: 20px;
     border-top: 1px dashed #00ff41;
-    max-width: 800px;
+    max-width: 100%;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
+    height: auto;
 }
 .cert-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 10px;
+    height: auto;
 }
 .cert-item {
     border: 1px solid #00ff41;
@@ -133,6 +136,9 @@ h3 {
     border-radius: 3px;
     transition: all 0.3s ease;
     cursor: pointer;
+    height: auto;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 .cert-item:hover {
     border-color: #00ff41;
@@ -169,6 +175,7 @@ h3 {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 15px;
     margin-top: 20px;
+    align-items: stretch;
 }
 .arsenal-item {
     border: 1px solid #00ff41;
@@ -178,9 +185,12 @@ h3 {
     transition: all 0.3s ease;
     cursor: pointer;
     text-align: left;
-    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    box-sizing: border-box;
 }
 .arsenal-item:hover {
     box-shadow: 0 0 25px #00ff41;
