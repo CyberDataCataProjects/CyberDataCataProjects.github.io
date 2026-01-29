@@ -98,26 +98,26 @@ function handleHikariCommand(input) {
     }
 }
 
-function generateNOCLog() {
-    const nocLogs = [
-        'Packet analysis buffer at 12%',
-        'Firewall rules validated',
-        'Network latency: 8ms optimal',
-        'SSL certificates renewed',
-        'Intrusion detection: No threats',
-        'Port scan completed: 65535 ports',
-        'DNS resolution time: 2ms',
-        'VPN tunnel established',
-        'Log rotation completed',
-        'Backup verification: Success'
+function generateHikariLogs() {
+    const hikariLogs = [
+        '[OK] Integrity check: [TECHNICAL_ARSENAL] secured.',
+        '[INFO] Monitoring packet flow... No anomalies detected.',
+        '[OK] Credential validation: Splunk Core User status confirmed.',
+        '[WARN] Latency spike detected in external uplink... Stabilized.',
+        '[INFO] HIKARI logic gates operating at 98.4% efficiency.',
+        '[OK] GitHub repository sync complete. All source code validated.',
+        '[INFO] Environment check: Kali Linux sub-systems active.',
+        '[OK] Azure Cloud nodes responding. Connectivity nominal.',
+        '[INFO] Running heuristic analysis on latest project logs...',
+        '[SYSTEM] Heartbeat pulse sent. Operator Jesel Kalogris online.'
     ];
     
-    const randomLog = nocLogs[Math.floor(Math.random() * nocLogs.length)];
-    addToTerminalLogs('NOC_MONITOR', `[${new Date().toLocaleTimeString()}] ${randomLog}`);
+    const randomLog = hikariLogs[Math.floor(Math.random() * hikariLogs.length)];
+    addToTerminalLogs('HIKARI_SYSTEM', randomLog);
 }
 
-function startNOCMonitoring() {
-    setInterval(generateNOCLog, 20000);
+function startHikariLiveMonitoring() {
+    setInterval(generateHikariLogs, 15000);
 }
 
 function hikariProcess(input) {
@@ -275,5 +275,5 @@ clear - Clear terminal output`;
 window.onload = function() {
     updateClock();
     startHeartbeatMonitoring();
-    startNOCMonitoring();
+    startHikariLiveMonitoring();
 };
