@@ -228,6 +228,43 @@ function startHeartbeatMonitoring() {
     heartbeatInterval = setInterval(generateHeartbeat, 30000);
 }
 
+// Mobile detection and layout fixes
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+}
+
+function applyMobileFixes() {
+    if (isMobileDevice()) {
+        document.body.classList.add('mobile-device');
+        
+        // Force mobile viewport
+        let viewport = document.querySelector('meta[name=viewport]');
+        if (viewport) {
+            viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes');
+        }
+        
+        // Disable problematic animations on mobile
+        const style = document.createElement('style');
+        style.textContent = `
+            .mobile-device .system-glitch,
+            .mobile-device .critical-meltdown,
+            .mobile-device .scanline,
+            .mobile-device body::before,
+            .mobile-device body::after {
+                display: none !important;
+                animation: none !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+// Apply mobile fixes immediately
+document.addEventListener('DOMContentLoaded', applyMobileFixes);
+if (document.readyState === 'loading') {
+    applyMobileFixes();
+}
+
 // Command registry for consistent handling
 const commandRegistry = {
     scan: () => 'Running integrity check on GitHub repositories...',

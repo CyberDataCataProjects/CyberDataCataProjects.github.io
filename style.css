@@ -1,3 +1,9 @@
+/* Critical Mobile Fix - Force proper rendering */
+html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
 body {
     background: #0b0e14;
     color: #ffffff;
@@ -10,6 +16,7 @@ body {
     position: relative;
     overflow-x: hidden;
     padding-bottom: 40px;
+    min-width: 320px;
 }
 body::before {
     content: '';
