@@ -76,6 +76,19 @@
                 <span>DISPLAY:</span>
                 <span>49-inch Ultrawide Tactical Visualization Suite</span>
             </div>
+            
+            <div class="network-monitor">
+                <h3 style="color: #00ff41; font-size: 1rem; margin-bottom: 15px;">[ NETWORK_LATENCY ]</h3>
+                <div class="latency-graph">
+                    <div class="latency-line"></div>
+                </div>
+                <div class="latency-stats">
+                    <span>Min: 8ms</span>
+                    <span>Avg: 12ms</span>
+                    <span>Max: 24ms</span>
+                    <span>Jitter: 2ms</span>
+                </div>
+            </div>
         </div>
     </section>
     
@@ -168,6 +181,7 @@
             ACTIVITY: Wireless Network Auditing using Alfa Network Adapter and Airodump-ng<br>
             FINDING: Successfully identified local BSSID and validated WPA2 encryption layers<br>
             METHODOLOGY: Used Kali Linux terminal to monitor packet handshakes and verify network integrity<br>
+            OSI_LAYERS: L1 (Physical RF Analysis), L2 (Data Link MAC Filtering), L7 (Application WPA2 Auth)<br>
             STATUS: COMPLETE<br>
             ============================
         </div>
@@ -184,6 +198,7 @@
             FINDINGS: Implemented real-time alerting for CPU >85%, Memory >90%, Disk I/O anomalies<br>
             COST_OPTIMIZATION: Identified $2,400/month savings through rightsizing recommendations<br>
             UPTIME: Achieved 99.97% availability through proactive monitoring and auto-scaling<br>
+            OSI_LAYERS: L3 (Network IP Routing), L4 (Transport Load Balancing), L7 (Application Health Checks)<br>
             STATUS: OPERATIONAL - 24/7 NOC monitoring established<br>
             =====================================
         </div>
@@ -290,3 +305,16 @@
     <div id="noc-status-text" class="noc-status-text"></div>
     <span class="noc-cursor">_</span>
 </div>
+    <section class="subnet-calculator">
+        <h2>[ IPv4_SUBNET_CALCULATOR ]</h2>
+        <div class="calc-input-row">
+            <span class="calc-prompt">IP Address:</span>
+            <input type="text" class="calc-field" id="ip-input" placeholder="192.168.1.0" value="192.168.1.0">
+        </div>
+        <div class="calc-input-row">
+            <span class="calc-prompt">CIDR:</span>
+            <input type="text" class="calc-field" id="cidr-input" placeholder="24" value="24">
+            <button class="calc-button" onclick="calculateSubnet()">CALCULATE</button>
+        </div>
+        <div id="calc-output" class="calc-output">Enter IP and CIDR to calculate subnet information...</div>
+    </section>
