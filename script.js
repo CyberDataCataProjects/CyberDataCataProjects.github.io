@@ -260,11 +260,24 @@ function handleCommand(command) {
             response = handleHikariCommand(command);
             break;
         case 'help':
-            response = 'Available commands: status, whoami, clear, scan, help, monitor, validate, signal, linkedin, purge, self-destruct - Initiate system purge, override';
+        case 'commands':
+            response = 'Available commands: status, whoami, clear, scan, help, monitor, validate, signal, linkedin, purge, self-destruct, override';
             break;
         case 'status':
             response = 'AI Core: Offline (Handshake Error 503) | Logic Engine: Active';
             break;
+        case 'self-destruct':
+            terminalLogs = [];
+            updateTerminalDisplay();
+            addToTerminalLogs(command, '[!] CRITICAL: SYSTEM PURGE INITIATED', 'error');
+            return;
+        case 'override':
+            document.documentElement.style.setProperty('--primary-color', '#ff0000');
+            addToTerminalLogs(command, 'OVERRIDE ACTIVATED: Emergency mode engaged', 'error');
+            setTimeout(() => {
+                document.documentElement.style.setProperty('--primary-color', '#00ff41');
+            }, 5000);
+            return;
         case 'signal':
         case 'linkedin':
             addToTerminalLogs(command, 'Establishing secure uplink to Operator profile...');
@@ -277,32 +290,12 @@ function handleCommand(command) {
             response = hikariProcess(command);
             break;
         case 'whoami':
-            addToTerminalLogs(command, '');
-            const responseText = 'I am HIKARI, your Adaptive Tactical Interface. Current Mission: Portfolio Security and QA Validation.';
-            const lastLogIndex = terminalLogs.length - 1;
-            const responseElement = document.createElement('div');
-            responseElement.id = 'typewriter-response';
-            
-            updateTerminalDisplay();
-            const output = document.getElementById('terminal-output');
-            if (output) {
-                output.appendChild(responseElement);
-                typewriterEffect(responseText, 'typewriter-response', () => {
-                    terminalLogs[lastLogIndex].response = responseText;
-                    updateTerminalDisplay();
-                });
-            }
-            return;
+            response = 'I am HIKARI, your Adaptive Tactical Interface. Current Mission: Portfolio Security and QA Validation.';
+            break;
         case 'purge':
             terminalLogs = [];
             addToTerminalLogs(command, '[!] SYSTEM PURGE COMPLETE. REBOOTING HIKARI...', 'error');
             break;
-        case 'self-destruct':
-            triggerSelfDestruct();
-            return;
-        case 'override':
-            triggerOverrideSequence();
-            return;
         case 'clear':
             terminalLogs = [];
             updateTerminalDisplay();
