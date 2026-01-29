@@ -318,6 +318,9 @@ h3 { color: #00ff41; }
     margin: 3px 0;
     text-align: left;
 }
+.identity-line.booting {
+    opacity: 0.7;
+}
 .hikari-core {
     margin-top: 40px;
     border: 1px solid #00ff41;
@@ -332,9 +335,11 @@ h3 { color: #00ff41; }
     z-index: 3;
 }
 .core-input {
-    display: flex;
+    display: none;
     align-items: center;
     margin: 15px 0;
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
 }
 .core-prompt {
     color: #00ff41;
