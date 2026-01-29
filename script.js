@@ -85,18 +85,107 @@ function typewriterEffect(text, elementId, callback) {
     type();
 }
 
+function handleHikariCommand(input) {
+    switch(input) {
+        case 'scan':
+            return 'Running integrity check on GitHub repositories...';
+        case 'monitor':
+            return 'NOC Heartbeat: All systems nominal. Latency: 14ms.';
+        case 'validate':
+            return 'Auditing credentials... [Splunk: Validated] [Cisco: Validated].';
+        default:
+            return 'Unknown command. Type help for system protocols.';
+    }
+}
+
+function generateNOCLog() {
+    const nocLogs = [
+        'Packet analysis buffer at 12%',
+        'Firewall rules validated',
+        'Network latency: 8ms optimal',
+        'SSL certificates renewed',
+        'Intrusion detection: No threats',
+        'Port scan completed: 65535 ports',
+        'DNS resolution time: 2ms',
+        'VPN tunnel established',
+        'Log rotation completed',
+        'Backup verification: Success'
+    ];
+    
+    const randomLog = nocLogs[Math.floor(Math.random() * nocLogs.length)];
+    addToTerminalLogs('NOC_MONITOR', `[${new Date().toLocaleTimeString()}] ${randomLog}`);
+}
+
+function startNOCMonitoring() {
+    setInterval(generateNOCLog, 20000);
+}
+
+function hikariProcess(input) {
+    const hikariResponse = handleHikariCommand(input);
+    if (hikariResponse !== 'Unknown command. Type help for system protocols.') {
+        return hikariResponse;
+    }
+    
+    switch(input) {
+        case 'monitor':
+            return `SYSTEM STATUS REPORT:
+[✓] Connectivity Layer: ACTIVE
+[✓] Security Layer: ACTIVE  
+[✓] Portfolio Interface: OPERATIONAL
+[✓] Terminal Systems: ONLINE
+[!] Background Monitoring: ENABLED`;
+        case 'validate':
+            return `CREDENTIAL VALIDATION SUITE:
+[TESTING] Azure Certifications... PASS
+[TESTING] Google Cybersecurity... PASS
+[TESTING] Cisco Networking... PASS
+[TESTING] QA Validation Skills... PASS
+[RESULT] All 12+ certifications verified and active`;
+        default:
+            return `HIKARI: Unknown process '${input}'. Available: monitor, validate`;
+    }
+}
+
+function generateHeartbeat() {
+    const heartbeats = [
+        '[HEARTBEAT] System integrity check: All layers operational',
+        '[HEARTBEAT] Security monitoring: No threats detected',
+        '[HEARTBEAT] Portfolio connectivity: Stable connection maintained',
+        '[HEARTBEAT] Background processes: All systems nominal',
+        '[HEARTBEAT] Terminal interface: Responsive and secure'
+    ];
+    
+    const randomHeartbeat = heartbeats[Math.floor(Math.random() * heartbeats.length)];
+    addToTerminalLogs('SYSTEM', randomHeartbeat);
+}
+
+function startHeartbeatMonitoring() {
+    setInterval(generateHeartbeat, 30000);
+}
+
 function handleCommand(command) {
     let response;
     
     switch(command) {
         case 'scan':
-            response = '[OK] Port scan initiated...';
+            response = handleHikariCommand(command);
             break;
         case 'help':
-            response = 'Available commands: status, whoami, clear, scan, help';
+            response = 'Available commands: status, whoami, clear, scan, help, monitor, validate, signal, linkedin';
             break;
         case 'status':
             response = 'AI Core: Offline (Handshake Error 503) | Logic Engine: Active';
+            break;
+        case 'signal':
+        case 'linkedin':
+            addToTerminalLogs(command, 'Establishing secure uplink to Operator profile...');
+            setTimeout(() => {
+                window.open('https://www.linkedin.com/in/jesel-kalogris-7617bb25a/', '_blank');
+            }, 1500);
+            return;
+        case 'monitor':
+        case 'validate':
+            response = hikariProcess(command);
             break;
         case 'whoami':
             addToTerminalLogs(command, '');
@@ -185,4 +274,6 @@ clear - Clear terminal output`;
 // Initialize clock when page loads
 window.onload = function() {
     updateClock();
+    startHeartbeatMonitoring();
+    startNOCMonitoring();
 };
