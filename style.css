@@ -114,14 +114,16 @@ h3 {
     box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
 }
 .cert-section {
-    margin-top: 40px;
+    margin: 40px auto;
     padding: 20px;
-    border-top: 1px dashed #00ff41;
-    max-width: 100%;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    height: auto;
+    border: 1px solid #00ff41;
+    border-radius: 5px;
+    background: rgba(0, 255, 65, 0.05);
+    max-width: 1200px;
+    width: 95%;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+    clear: both;
+    overflow: hidden;
 }
 .cert-grid {
     display: grid;
@@ -159,16 +161,16 @@ h3 {
     margin: 10px 0;
 }
 .arsenal-section {
-    margin-top: 40px;
+    margin: 40px auto;
     border: 1px solid #00ff41;
     padding: 20px;
     border-radius: 5px;
     background: rgba(0, 255, 65, 0.05);
-    max-width: 100%;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 1200px;
+    width: 95%;
     box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+    clear: both;
+    overflow: hidden;
 }
 .arsenal-grid {
     display: grid;
