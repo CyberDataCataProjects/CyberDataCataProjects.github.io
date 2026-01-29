@@ -331,6 +331,16 @@ h3 { color: #00ff41; }
     75% { transform: translateX(5px); }
 }
 
+.screen-vibrate {
+    animation: vibrate 0.1s ease-in-out infinite;
+}
+@keyframes vibrate {
+    0%, 100% { transform: translate(0); }
+    25% { transform: translate(-2px, -2px); }
+    50% { transform: translate(2px, -2px); }
+    75% { transform: translate(-2px, 2px); }
+}
+
 .emergency-mode {
     --primary-color: #ff0000;
     --primary-glow: rgba(255, 0, 0, 0.1);
