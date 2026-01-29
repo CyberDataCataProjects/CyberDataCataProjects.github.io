@@ -235,7 +235,7 @@ function handleCommand(command) {
             response = handleHikariCommand(command);
             break;
         case 'help':
-            response = 'Available commands: status, whoami, clear, scan, help, monitor, validate, signal, linkedin';
+            response = 'Available commands: status, whoami, clear, scan, help, monitor, validate, signal, linkedin, purge, self-destruct, override';
             break;
         case 'status':
             response = 'AI Core: Offline (Handshake Error 503) | Logic Engine: Active';
@@ -268,6 +268,11 @@ function handleCommand(command) {
                 });
             }
             return;
+        case 'purge':
+        case 'self-destruct':
+            terminalLogs = [];
+            addToTerminalLogs(command, '[!] SYSTEM PURGE COMPLETE. REBOOTING HIKARI...');
+            break;
         case 'override':
             triggerOverrideSequence();
             return;
