@@ -1,7 +1,7 @@
 # Jesel Kalogris | Cybersecurity Portfolio
 
 ![Security Scan](https://github.com/CyberDataCataProjects/CyberDataCataProjects.github.io/actions/workflows/codeql-analysis.yml/badge.svg)
-![Deploy Status](https://github.com/CyberDataCataProjects/CyberDataCataProjects.github.io/actions/workflows/static.yml/badge.svg)
+![Deploy Status](https://github.com/CyberDataCataProjects/CyberDataCataProjects.github.io/actions/workflows/pages-build-deployment/badge.svg)
 
 Professional NOC Operations & QA Testing Dashboard showcasing technical expertise and certifications.
 
