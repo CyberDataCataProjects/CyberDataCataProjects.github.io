@@ -354,13 +354,56 @@ STEPS TO REPRODUCE:
 EXPECTED: Successful API handshake
 ACTUAL: Service unavailable error
 STATUS: Investigating upstream service`;
+        } else if (command === 'self-destruct') {
+            output.textContent = '[!] CRITICAL: INITIATING SELF-DESTRUCT SEQUENCE...';
+            document.body.classList.add('system-glitch');
+            setTimeout(() => {
+                output.textContent = '[SYSTEM_FATAL] HIKARI CORE DELETED. REBOOT REQUIRED.';
+                document.body.classList.remove('system-glitch');
+            }, 3000);
+        } else if (command === 'override') {
+            document.documentElement.style.setProperty('--primary-color', '#ff0000');
+            output.textContent = 'OVERRIDE ACTIVATED: Emergency Red mode engaged';
+        } else if (command === 'resume') {
+            output.textContent = '[ACCESSING_ARCHIVES] Resume link found: https://drive.google.com/file/d/your-cv-link-here';
+        } else if (command === 'monitor') {
+            output.textContent = `SYSTEM STATUS REPORT:
+[✓] Connectivity Layer: ACTIVE
+[✓] Security Layer: ACTIVE
+[✓] Portfolio Interface: OPERATIONAL
+[✓] Terminal Systems: ONLINE
+[!] Background Monitoring: ENABLED`;
+        } else if (command === 'validate') {
+            output.textContent = `CREDENTIAL VALIDATION SUITE:
+[TESTING] Azure Certifications... PASS
+[TESTING] Google Cybersecurity... PASS
+[TESTING] Cisco Networking... PASS
+[TESTING] QA Validation Skills... PASS
+[RESULT] All 12+ certifications verified and active`;
+        } else if (command === 'whoami') {
+            output.textContent = 'I am HIKARI, your Adaptive Tactical Interface. Current Mission: Portfolio Security and QA Validation.';
+        } else if (command === 'purge') {
+            output.textContent = '[!] SYSTEM PURGE COMPLETE. REBOOTING HIKARI...';
+        } else if (command === 'signal' || command === 'linkedin') {
+            output.textContent = 'Establishing secure uplink to Operator profile...';
+            setTimeout(() => {
+                window.open('https://www.linkedin.com/in/jesel-kalogris-7617bb25a/', '_blank');
+            }, 1500);
         } else if (command === 'help') {
             output.textContent = `Available Commands:
 status - Check system status
 scan - Analyze system integrity
 report - Generate OpenAI error report
 help - Show this help menu
-clear - Clear terminal output`;
+clear - Clear terminal output
+self-destruct - Initiate system purge
+override - Emergency mode activation
+resume - Access CV archives
+monitor - System status report
+validate - Credential validation
+whoami - System identity
+purge - System reboot
+signal - LinkedIn uplink`;
         } else if (command === 'clear') {
             output.textContent = '';
         } else if (command !== '') {
