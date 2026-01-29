@@ -261,48 +261,13 @@ function handleCommand(command) {
             break;
         case 'help':
         case 'commands':
-            response = 'Available commands: status, whoami, clear, scan, help, monitor, validate, signal, linkedin, purge, self-destruct, override, resume';
+            response = 'Available commands: status, whoami, clear, scan, help';
             break;
         case 'status':
             response = 'AI Core: Offline (Handshake Error 503) | Logic Engine: Active';
             break;
-        case 'self-destruct':
-            addToTerminalLogs(command, '[!] CRITICAL: INITIATING SELF-DESTRUCT SEQUENCE...', 'error');
-            addToTerminalLogs(command, '[!] WARNING: 3... 2... 1...', 'error');
-            document.body.classList.add('system-glitch');
-            document.body.classList.add('screen-shake');
-            setTimeout(() => {
-                terminalLogs = [];
-                updateTerminalDisplay();
-                document.body.classList.remove('system-glitch');
-                document.body.classList.remove('screen-shake');
-                addToTerminalLogs('SYSTEM', '[SYSTEM_FATAL] HIKARI CORE DELETED. REBOOT REQUIRED.', 'error');
-            }, 3000);
-            return;
-        case 'override':
-            document.documentElement.style.setProperty('--primary-color', '#ff0000');
-            addToTerminalLogs(command, 'OVERRIDE ACTIVATED: Emergency Red mode engaged', 'error');
-            return;
-        case 'resume':
-            response = '[ACCESSING_ARCHIVES] Resume link found: https://drive.google.com/file/d/your-cv-link-here';
-            break;
-        case 'signal':
-        case 'linkedin':
-            addToTerminalLogs(command, 'Establishing secure uplink to Operator profile...');
-            setTimeout(() => {
-                window.open('https://www.linkedin.com/in/jesel-kalogris-7617bb25a/', '_blank');
-            }, 1500);
-            return;
-        case 'monitor':
-        case 'validate':
-            response = hikariProcess(command);
-            break;
         case 'whoami':
             response = 'I am HIKARI, your Adaptive Tactical Interface. Current Mission: Portfolio Security and QA Validation.';
-            break;
-        case 'purge':
-            terminalLogs = [];
-            addToTerminalLogs(command, '[!] SYSTEM PURGE COMPLETE. REBOOTING HIKARI...', 'error');
             break;
         case 'clear':
             terminalLogs = [];
