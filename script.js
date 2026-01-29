@@ -248,7 +248,6 @@ function animateLatencyGraph() {
     graph.style.position = 'relative';
     graph.appendChild(line);
     
-    // Animate the line across the graph
     let position = 0;
     const moveInterval = setInterval(() => {
         position += 2;
@@ -292,6 +291,75 @@ function startNetworkMonitoring() {
 
 // Mobile detection and layout fixes
 function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+}
+
+// Force animations and NOC status on mobile
+function initializeMobileFeatures() {
+    if (isMobileDevice()) {
+        // Force enable all animations
+        document.body.style.setProperty('--mobile-animations', 'enabled');
+        
+        // Ensure proper scrolling
+        document.body.style.overflowY = 'auto';
+        document.body.style.webkitOverflowScrolling = 'touch';
+        
+        // Force NOC status HUD visibility
+        const nocHud = document.getElementById('noc-status-hud');
+        if (nocHud) {
+            nocHud.style.display = 'flex';
+            nocHud.style.visibility = 'visible';
+            nocHud.style.opacity = '1';
+        }
+        
+        // Force start NOC status with delay
+        setTimeout(() => {
+            startNOCStatusHUD();
+        }, 500);
+        
+        // Add mobile class for CSS targeting
+        document.body.classList.add('mobile-device');
+        
+        // Force animations by adding CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            .mobile-device body::before,
+            .mobile-device body::after,
+            .mobile-device .system-header::after,
+            .mobile-device .content::before {
+                animation-play-state: running !important;
+                display: block !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+function applyMobileFixes() {
+    if (isMobileDevice()) {
+        document.body.classList.add('mobile-device');
+        
+        // Force mobile viewport
+        let viewport = document.querySelector('meta[name=viewport]');
+        if (viewport) {
+            viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes');
+        }
+        
+        // Disable problematic animations on mobile
+        const style = document.createElement('style');
+        style.textContent = `
+            .mobile-device .system-glitch,
+            .mobile-device .critical-meltdown,
+            .mobile-device .scanline,
+            .mobile-device body::before,
+            .mobile-device body::after {
+                display: none !important;
+                animation: none !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
 }
 
