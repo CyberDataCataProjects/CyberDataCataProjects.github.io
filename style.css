@@ -610,6 +610,27 @@ hr {
     }
 }
 
+.critical-meltdown {
+    animation: criticalMeltdown 0.05s ease-in-out infinite;
+}
+@keyframes criticalMeltdown {
+    0% { transform: translate(0) scale(1); filter: brightness(1) contrast(1); }
+    20% { transform: translate(-10px, 5px) scale(0.95); filter: brightness(2) contrast(3) hue-rotate(90deg); }
+    40% { transform: translate(8px, -8px) scale(1.1); filter: brightness(0.5) contrast(5) hue-rotate(180deg); }
+    60% { transform: translate(-5px, 10px) scale(0.9); filter: brightness(3) contrast(2) hue-rotate(270deg); }
+    80% { transform: translate(12px, -3px) scale(1.05); filter: brightness(0.3) contrast(8) hue-rotate(360deg); }
+    100% { transform: translate(-7px, 7px) scale(1.02); filter: brightness(1.5) contrast(4) hue-rotate(45deg); }
+}
+
+.system-explosion {
+    animation: systemExplosion 0.3s ease-out;
+}
+@keyframes systemExplosion {
+    0% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.5); filter: brightness(10) saturate(0); }
+    100% { transform: scale(0); filter: brightness(0); opacity: 0; }
+}
+
 .scanline {
     position: fixed;
     top: 0;
